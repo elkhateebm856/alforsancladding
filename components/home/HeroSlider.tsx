@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const slides = [
@@ -12,8 +11,6 @@ const slides = [
     subtitle:
       'متخصصون في تنفيذ وتركيب الواجهات الزجاجية والكلادينج بأعلى معايير الجودة والدقة.',
     image: '/hero3.png',
-    cta: 'اعرف أكثر',
-    link: '/services',
   },
   {
     id: 2,
@@ -21,8 +18,6 @@ const slides = [
     subtitle:
       'تنفيذ Curtain Wall وStructural Glazing وSpider Glass بأحدث التقنيات والتصميمات الحديثة.',
     image: '/2b8b48e5-4d5e-4af7-9132-e33fb6e046a2.png',
-    cta: 'تصفح الخدمات',
-    link: '/services',
   },
   {
     id: 3,
@@ -30,8 +25,6 @@ const slides = [
     subtitle:
       'تنفيذ جميع أنواع واجهات الكلادينج للمحلات والمولات والفيلات والمباني التجارية بأفضل الخامات.',
     image: '/4a9de293-e977-465e-af76-ccf72e1d4f4b.png',
-    cta: 'تواصل معنا',
-    link: '/contact',
   },
 ]
 
@@ -78,7 +71,7 @@ export function HeroSlider() {
             className="object-cover"
           />
 
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/50" />
 
           <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-4">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -89,12 +82,23 @@ export function HeroSlider() {
               {slide.subtitle}
             </p>
 
-            <Link
-              href={slide.link}
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-3 text-white font-semibold transition hover:bg-primary/90"
-            >
-              {slide.cta}
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a
+                href="tel:+201094656501"
+                className="rounded-lg bg-primary px-8 py-3 text-white font-semibold transition hover:bg-primary/90"
+              >
+                اتصل الآن
+              </a>
+
+              <a
+                href="https://wa.me/201094656501"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border-2 border-white px-8 py-3 text-white font-semibold transition hover:bg-white hover:text-primary"
+              >
+                تواصل عبر واتساب
+              </a>
+            </div>
           </div>
         </div>
       ))}
