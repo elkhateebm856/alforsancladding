@@ -1,12 +1,14 @@
 import { services } from '@/data/services'
 import { blogPosts } from '@/data/blog'
 
+const BASE_URL = 'https://www.alforsancladding.com'
+
 export async function GET() {
-  const baseUrl = 'https://www.alforsancladding.com'
+  const currentDate = new Date().toISOString()
 
   const staticPages = [
     {
-      url: '',
+      url: '/',
       changefreq: 'weekly',
       priority: '1.0',
     },
@@ -49,7 +51,11 @@ export async function GET() {
     priority: '0.7',
   }))
 
-  const allPages = [...staticPages, ...servicePages, ...blogPages]
+  const allPages = [
+    ...staticPages,
+    ...servicePages,
+    ...blogPages,
+  ]
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -57,8 +63,8 @@ ${allPages
   .map(
     (page) => `
   <url>
-    <loc>${baseUrl}${page.url}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
+    <loc>${BASE_URL}${page.url}</loc>
+    <lastmod>${currentDate}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`
@@ -67,9 +73,13 @@ ${allPages
 </urlset>`
 
   return new Response(sitemap, {
+    status: 200,
+
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
-      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+
+      'Cache-Control':
+        'public, s-maxage=3600, stale-while-revalidate=86400',
     },
   })
 }
