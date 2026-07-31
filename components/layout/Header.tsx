@@ -45,7 +45,7 @@ export function Header() {
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="tel:+966"
+              href="tel:+201094656501"
               className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-semibold"
             >
               اتصل بنا
