@@ -1,12 +1,23 @@
 export const SITE_NAME = 'الفرسان'
-export const SITE_DESCRIPTION = 'شركة متخصصة في تركيب الواجهات الزجاجية والكلادينج بأعلى مستويات الجودة والاحترافية'
+
+export const SITE_DESCRIPTION =
+  'شركة متخصصة في تركيب الواجهات الزجاجية والكلادينج بأعلى مستويات الجودة والاحترافية'
+
 export const SITE_URL = 'https://alfarsan.com'
+
+// يظهر للمستخدم
 export const CONTACT_PHONE = '01094656501'
+
+// إذا كان عندك زر اتصال
+export const CONTACT_TEL = 'tel:+201094656501'
+
 export const CONTACT_EMAIL = 'info@alfarsan.com'
 export const CONTACT_ADDRESS = 'الدقهلية - المنصورة - طريق السنبلاوين'
 
 export const SOCIAL_LINKS = {
-  whatsapp: 'https://wa.me/01094656501',
+  // واتساب (لازم يكون بصيغة دولية)
+  whatsapp: 'https://wa.me/201094656501',
+
   instagram: 'https://instagram.com/alfarsan',
   facebook: 'https://facebook.com/alfarsan',
   linkedin: 'https://linkedin.com/company/alfarsan',
@@ -45,7 +56,7 @@ export const WHY_CHOOSE_US = [
   },
   {
     title: 'أسعار تنافسية',
-    description: 'نقدم أفضل الأسعار مع عدم التنازل عن الجودة',
+    description: 'نقدم أفضل الأسعار مع الحفاظ على أعلى جودة',
     icon: 'DollarSign',
   },
   {
@@ -60,7 +71,7 @@ export const WHY_CHOOSE_US = [
   },
   {
     title: 'مشاريع متنوعة',
-    description: 'خبرة في مشاريع تجارية وسكنية وحكومية',
+    description: 'خبرة في تنفيذ المشاريع السكنية والتجارية والإدارية',
     icon: 'Building',
   },
 ]
