@@ -23,7 +23,7 @@ export default function BlogPage() {
         <Hero
           title="المدونة"
           subtitle="اقرأ أحدث المقالات والنصائح من خبرائنا"
-          backgroundImage="https://images.unsplash.com/photo-1487215078519-a680043e092e?w=1200"
+          backgroundImage="/hero1.jpg"
         />
 
         {/* Blog Posts */}
