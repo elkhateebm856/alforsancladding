@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /api
 
-Sitemap: https://alfarsan.com/sitemap.xml
+Host: https://www.alforsancladding.com
+
+Sitemap: https://www.alforsancladding.com/sitemap.xml
