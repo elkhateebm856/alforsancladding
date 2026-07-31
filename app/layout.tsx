@@ -8,8 +8,17 @@ const tajawal = Tajawal({
   weight: ['200', '300', '400', '500', '700', '800', '900'],
 })
 
+const SITE_URL = 'https://www.alforsancladding.com'
+
+const SITE_NAME = 'الفرسان للواجهات الزجاجية والكلادينج'
+
+const SITE_DESCRIPTION =
+  'شركة الفرسان متخصصة في تصميم وتنفيذ وتركيب واجهات الكلادينج والواجهات الزجاجية والكيرتن وول وأبواب وشبابيك الألمنيوم وPVC وجميع أنواع المطابخ في المنصورة والدقهلية والقاهرة بأعلى جودة وأسعار تنافسية.'
+
+const SHARE_IMAGE = `${SITE_URL}/logo.png`
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.alforsancladding.com'),
+  metadataBase: new URL(SITE_URL),
 
   title: {
     default:
@@ -17,10 +26,10 @@ export const metadata: Metadata = {
     template: '%s | الفرسان',
   },
 
-  description:
-    'شركة الفرسان متخصصة في تصميم وتنفيذ وتركيب واجهات الكلادينج، الواجهات الزجاجية، الكيرتن وول، أبواب وشبابيك الألمنيوم، أبواب وشبابيك PVC، وجميع أنواع المطابخ في المنصورة وجميع مدن الدقهلية والقاهرة بأعلى جودة وأسعار تنافسية.',
+  description: SITE_DESCRIPTION,
 
   keywords: [
+    'الفرسان',
     'واجهات كلادينج',
     'كلادينج',
     'كلادينج المنصورة',
@@ -74,7 +83,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: 'شركة الفرسان',
-      url: 'https://www.alforsancladding.com',
+      url: SITE_URL,
     },
   ],
 
@@ -85,6 +94,7 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+
     googleBot: {
       index: true,
       follow: true,
@@ -95,7 +105,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: 'https://www.alforsancladding.com',
+    canonical: SITE_URL,
   },
 
   icons: {
@@ -105,26 +115,28 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
+    type: 'website',
+
+    locale: 'ar_EG',
+
+    url: SITE_URL,
+
+    siteName: SITE_NAME,
+
     title:
       'الفرسان | واجهات كلادينج وواجهات زجاجية وكيرتن وول بالمنصورة',
 
     description:
       'شركة الفرسان متخصصة في تنفيذ واجهات الكلادينج والواجهات الزجاجية والكيرتن وول وأبواب وشبابيك الألمنيوم وPVC وجميع أنواع المطابخ.',
 
-    url: 'https://www.alforsancladding.com',
-
-    siteName: 'الفرسان',
-
-    locale: 'ar_EG',
-
-    type: 'website',
-
     images: [
       {
-        url: 'https://www.alforsancladding.com/logo.png',
+        url: SHARE_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'الفرسان',
+        alt:
+          'الفرسان للواجهات الزجاجية والكلادينج بالمنصورة والدقهلية والقاهرة',
+        type: 'image/png',
       },
     ],
   },
@@ -132,23 +144,34 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
 
-    title: 'الفرسان',
+    title:
+      'الفرسان | واجهات كلادينج وواجهات زجاجية وكيرتن وول بالمنصورة',
 
     description:
-      'شركة متخصصة في واجهات الكلادينج والواجهات الزجاجية والكيرتن وول.',
+      'شركة متخصصة في واجهات الكلادينج والواجهات الزجاجية والكيرتن وول وأعمال الألومنيوم.',
 
     images: [
-      'https://www.alforsancladding.com/logo.png',
+      {
+        url: SHARE_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'الفرسان للواجهات الزجاجية والكلادينج',
+      },
     ],
   },
 }
 
 export const viewport: Viewport = {
   colorScheme: 'light',
+
   themeColor: '#C9A227',
+
   width: 'device-width',
+
   initialScale: 1,
+
   maximumScale: 5,
+
   userScalable: true,
 }
 export default function RootLayout({
@@ -158,15 +181,31 @@ export default function RootLayout({
 }>) {
   const schema = {
     '@context': 'https://schema.org',
+
     '@graph': [
       {
         '@type': 'Organization',
-        '@id': 'https://www.alforsancladding.com/#organization',
-        name: 'الفرسان',
-        url: 'https://www.alforsancladding.com',
-        logo: 'https://www.alforsancladding.com/logo.png',
-        image: 'https://www.alforsancladding.com/logo.png',
+
+        '@id': `${SITE_URL}/#organization`,
+
+        name: 'شركة الفرسان',
+
+        url: SITE_URL,
+
+        logo: {
+          '@type': 'ImageObject',
+
+          url: SHARE_IMAGE,
+
+          width: 1200,
+
+          height: 630,
+        },
+
+        image: SHARE_IMAGE,
+
         telephone: '+201094656501',
+
         email: 'info@alforsancladding.com',
 
         sameAs: [
@@ -178,13 +217,17 @@ export default function RootLayout({
 
       {
         '@type': 'LocalBusiness',
-        '@id': 'https://www.alforsancladding.com/#localbusiness',
 
-        name: 'الفرسان',
+        '@id': `${SITE_URL}/#localbusiness`,
 
-        url: 'https://www.alforsancladding.com',
+        name:
+          'شركة الفرسان للواجهات الزجاجية والكلادينج',
 
-        image: 'https://www.alforsancladding.com/logo.png',
+        url: SITE_URL,
+
+        image: SHARE_IMAGE,
+
+        logo: SHARE_IMAGE,
 
         telephone: '+201094656501',
 
@@ -207,9 +250,9 @@ export default function RootLayout({
         geo: {
           '@type': 'GeoCoordinates',
 
-          latitude: '31.0409',
+          latitude: 31.0409,
 
-          longitude: '31.3785',
+          longitude: 31.3785,
         },
 
         areaServed: [
@@ -227,7 +270,6 @@ export default function RootLayout({
           'المنزلة',
           'المطرية',
           'جمصة',
-
           'القاهرة',
           'القاهرة الجديدة',
           'مدينة نصر',
@@ -246,51 +288,68 @@ export default function RootLayout({
       {
         '@type': 'WebSite',
 
-        '@id': 'https://www.alforsancladding.com/#website',
+        '@id': `${SITE_URL}/#website`,
 
-        url: 'https://www.alforsancladding.com',
+        url: SITE_URL,
 
-        name: 'الفرسان',
+        name: SITE_NAME,
+
+        description: SITE_DESCRIPTION,
 
         inLanguage: 'ar',
 
         publisher: {
-          '@id':
-            'https://www.alforsancladding.com/#organization',
+          '@id': `${SITE_URL}/#organization`,
         },
       },
-            {
+
+      {
         '@type': 'WebPage',
-        '@id': 'https://www.alforsancladding.com/#webpage',
-        url: 'https://www.alforsancladding.com',
-        name: 'الفرسان للواجهات الزجاجية والكلادينج',
+
+        '@id': `${SITE_URL}/#webpage`,
+
+        url: SITE_URL,
+
+        name:
+          'الفرسان للواجهات الزجاجية والكلادينج',
+
+        description: SITE_DESCRIPTION,
+
+        primaryImageOfPage: {
+          '@type': 'ImageObject',
+
+          url: SHARE_IMAGE,
+
+          width: 1200,
+
+          height: 630,
+        },
+
         isPartOf: {
-          '@id': 'https://www.alforsancladding.com/#website',
+          '@id': `${SITE_URL}/#website`,
         },
+
         about: {
-          '@id': 'https://www.alforsancladding.com/#organization',
+          '@id': `${SITE_URL}/#organization`,
         },
+
         inLanguage: 'ar',
       },
 
       {
-        '@type': 'SearchAction',
-        target: 'https://www.alforsancladding.com/search?q={search_term_string}',
-        'query-input': 'required name=search_term_string',
-      },
-
-      {
         '@type': 'Service',
+
         serviceType:
-          'تركيب واجهات كلادينج، واجهات زجاجية، كيرتن وول، أبواب ألمنيوم، شبابيك ألمنيوم، أبواب وشبابيك PVC، جميع أنواع المطابخ',
+          'تركيب واجهات كلادينج وواجهات زجاجية وكيرتن وول وأبواب وشبابيك ألمنيوم وأبواب وشبابيك PVC وجميع أنواع المطابخ',
 
         provider: {
-          '@id': 'https://www.alforsancladding.com/#organization',
+          '@id': `${SITE_URL}/#organization`,
         },
 
         areaServed: [
           'المنصورة',
           'الدقهلية',
+          'القاهرة',
           'طلخا',
           'ميت غمر',
           'أجا',
@@ -303,7 +362,6 @@ export default function RootLayout({
           'المنزلة',
           'جمصة',
           'المطرية',
-          'القاهرة',
           'مدينة نصر',
           'القاهرة الجديدة',
           'التجمع الخامس',
@@ -313,90 +371,137 @@ export default function RootLayout({
 
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
+
           name: 'خدمات الفرسان',
-          itemListElement: [
+                    itemListElement: [
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
+
                 name: 'تركيب واجهات كلادينج',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات كلادينج للمحلات',
+
+                name:
+                  'واجهات كلادينج للمحلات',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات كلادينج للمولات التجارية',
+
+                name:
+                  'واجهات كلادينج للمولات التجارية',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات كلادينج للمباني الإدارية',
+
+                name:
+                  'واجهات كلادينج للمباني الإدارية',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات كلادينج للفيلات',
+
+                name:
+                  'واجهات كلادينج للفيلات',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات كلادينج للمستشفيات',
+
+                name:
+                  'واجهات كلادينج للمستشفيات',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات عمائر سكنية',
+
+                name:
+                  'واجهات عمائر سكنية',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'واجهات كيرتن وول',
+
+                name:
+                  'واجهات كيرتن وول',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'أبواب ألمنيوم',
+
+                name:
+                  'أبواب ألمنيوم',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'شبابيك ألمنيوم',
+
+                name:
+                  'شبابيك ألمنيوم',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'جميع أنواع المطابخ',
+
+                name:
+                  'جميع أنواع المطابخ',
               },
             },
+
             {
               '@type': 'Offer',
+
               itemOffered: {
                 '@type': 'Service',
-                name: 'أبواب وشبابيك PVC',
+
+                name:
+                  'أبواب وشبابيك PVC',
               },
             },
           ],
@@ -406,7 +511,11 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="ar" dir="rtl" className={tajawal.className}>
+    <html
+      lang="ar"
+      dir="rtl"
+      className={tajawal.className}
+    >
       <body className="antialiased bg-background text-foreground">
         <script
           type="application/ld+json"
@@ -417,7 +526,9 @@ export default function RootLayout({
 
         {children}
 
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && (
+          <Analytics />
+        )}
       </body>
     </html>
   )
