@@ -11,6 +11,7 @@ import { AboutSection } from '@/components/home/AboutSection'
 import { StatsSection } from '@/components/home/StatsSection'
 import { ServicesSection } from '@/components/home/ServicesSection'
 import { TeamSection } from '@/components/home/TeamSection'
+import { PortfolioSection } from '@/components/home/PortfolioSection'
 import { WhyChooseUs } from '@/components/home/WhyChooseUs'
 import { TestimonialsSection } from '@/components/home/TestimonialsSection'
 
@@ -117,6 +118,9 @@ export default function Home() {
 
         {/* Team Section */}
         <TeamSection />
+
+        {/* Portfolio Showcase */}
+        <PortfolioSection />
 
         {/* Why Choose Us */}
         <WhyChooseUs />

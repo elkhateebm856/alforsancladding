@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronLeft, Calendar, User, Clock } from 'lucide-react'
+import { ChevronLeft, Calendar, User } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
@@ -31,9 +31,34 @@ export async function generateMetadata(
     }
   }
 
+  const canonicalUrl = `https://www.alforsancladding.com/blog/${post.slug}`
+
   return {
     title: `${post.title} | ${SITE_NAME}`,
     description: post.excerpt,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${post.title} | ${SITE_NAME}`,
+      description: post.excerpt,
+      url: canonicalUrl,
+      type: 'article',
+      images: [
+        {
+          url: `https://www.alforsancladding.com${post.image}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} | ${SITE_NAME}`,
+      description: post.excerpt,
+      images: [`https://www.alforsancladding.com${post.image}`],
+    },
   }
 }
 
@@ -59,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   }
 
   const relatedPosts = blogPosts
-    .filter((p) => p.category === post.category && p.id !== post.id)
+    .filter((p) => p.id !== post.id)
     .slice(0, 3)
 
   return (
@@ -95,12 +120,8 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             {/* Article Header */}
             <div className="mb-8">
-              <div className="mb-4 inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
-                {post.category}
-              </div>
-
               <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
-                <div className="flex items-center gap-2">
+                <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 ${post.authorAccentClass ?? 'bg-amber-100 text-amber-700'}`}>
                   <User size={16} />
                   <span>{post.author}</span>
                 </div>
@@ -113,10 +134,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       day: 'numeric',
                     })}
                   </time>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock size={16} />
-                  <span>{post.readingTime} دقائق قراءة</span>
                 </div>
               </div>
             </div>
@@ -132,22 +149,12 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </div>
 
             {/* Article Content */}
-            <article className="prose prose-lg max-w-none">
-              <div className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                {post.content}
-              </div>
+            <article className="max-w-none">
+              <div
+                className="space-y-4 text-lg text-foreground leading-8 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-4 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-6 [&_p]:mb-4 [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_img]:rounded-xl [&_img]:my-6"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
             </article>
-
-            {/* Tags/Category */}
-            <div className="mt-12 pt-8 border-t border-border">
-              <h3 className="font-semibold text-foreground mb-4">الفئة:</h3>
-              <Link
-                href={`/blog?category=${post.category}`}
-                className="inline-block px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-md"
-              >
-                {post.category}
-              </Link>
-            </div>
 
             {/* Related Posts */}
             {relatedPosts.length > 0 && (
