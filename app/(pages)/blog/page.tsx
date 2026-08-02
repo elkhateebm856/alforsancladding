@@ -12,6 +12,29 @@ import { SITE_NAME } from '@/lib/constants'
 export const metadata: Metadata = {
   title: `المدونة | ${SITE_NAME}`,
   description: 'اقرأ أحدث المقالات والنصائح عن الواجهات الزجاجية والكلادينج',
+  alternates: {
+    canonical: 'https://www.alforsancladding.com/blog',
+  },
+  openGraph: {
+    title: `المدونة | ${SITE_NAME}`,
+    description: 'اقرأ أحدث المقالات والنصائح عن الواجهات الزجاجية والكلادينج',
+    url: 'https://www.alforsancladding.com/blog',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.alforsancladding.com/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'المدونة الخاصة بشركة الفرسان',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `المدونة | ${SITE_NAME}`,
+    description: 'اقرأ أحدث المقالات والنصائح عن الواجهات الزجاجية والكلادينج',
+    images: ['https://www.alforsancladding.com/logo.png'],
+  },
 }
 
 export default function BlogPage() {

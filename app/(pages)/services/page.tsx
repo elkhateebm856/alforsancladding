@@ -13,6 +13,29 @@ export const metadata: Metadata = {
   title: `الخدمات | ${SITE_NAME}`,
   description: 'تصفح جميع خدماتنا المتخصصة في الواجهات الزجاجية والكلادينج',
   keywords: ['خدمات', 'واجهات', 'كلادينج', 'زجاج'],
+  alternates: {
+    canonical: 'https://www.alforsancladding.com/services',
+  },
+  openGraph: {
+    title: `الخدمات | ${SITE_NAME}`,
+    description: 'تصفح جميع خدماتنا المتخصصة في الواجهات الزجاجية والكلادينج',
+    url: 'https://www.alforsancladding.com/services',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.alforsancladding.com/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'خدمات شركة الفرسان للواجهات الزجاجية والكلادينج',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `الخدمات | ${SITE_NAME}`,
+    description: 'تصفح جميع خدماتنا المتخصصة في الواجهات الزجاجية والكلادينج',
+    images: ['https://www.alforsancladding.com/logo.png'],
+  },
 }
 
 export default function ServicesPage() {

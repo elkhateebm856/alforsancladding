@@ -16,6 +16,29 @@ import { services } from '@/data/services'
 export const metadata: Metadata = {
   title: `تواصل معنا | ${SITE_NAME}`,
   description: 'اتصل بنا أو أرسل لنا رسالة. نحن هنا لخدمتك وتحقيق احتياجاتك',
+  alternates: {
+    canonical: 'https://www.alforsancladding.com/contact',
+  },
+  openGraph: {
+    title: `تواصل معنا | ${SITE_NAME}`,
+    description: 'اتصل بنا أو أرسل لنا رسالة. نحن هنا لخدمتك وتحقيق احتياجاتك',
+    url: 'https://www.alforsancladding.com/contact',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.alforsancladding.com/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'تواصل مع شركة الفرسان',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `تواصل معنا | ${SITE_NAME}`,
+    description: 'اتصل بنا أو أرسل لنا رسالة. نحن هنا لخدمتك وتحقيق احتياجاتك',
+    images: ['https://www.alforsancladding.com/logo.png'],
+  },
 }
 
 export default function ContactPage() {

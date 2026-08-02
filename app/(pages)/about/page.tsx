@@ -11,6 +11,31 @@ export const metadata: Metadata = {
   title: `من نحن | ${SITE_NAME}`,
   description:
     'تعرف على شركة الفرسان وخبرتنا في تنفيذ الواجهات الزجاجية والكلادينج في مصر والإمارات',
+  alternates: {
+    canonical: 'https://www.alforsancladding.com/about',
+  },
+  openGraph: {
+    title: `من نحن | ${SITE_NAME}`,
+    description:
+      'تعرف على شركة الفرسان وخبرتنا في تنفيذ الواجهات الزجاجية والكلادينج في مصر والإمارات',
+    url: 'https://www.alforsancladding.com/about',
+    type: 'website',
+    images: [
+      {
+        url: 'https://www.alforsancladding.com/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'شركة الفرسان للواجهات الزجاجية والكلادينج',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `من نحن | ${SITE_NAME}`,
+    description:
+      'تعرف على شركة الفرسان وخبرتنا في تنفيذ الواجهات الزجاجية والكلادينج في مصر والإمارات',
+    images: ['https://www.alforsancladding.com/logo.png'],
+  },
 }
 
 export default function AboutPage() {
