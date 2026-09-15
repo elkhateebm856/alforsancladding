@@ -3783,7 +3783,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <p>&nbsp;</p>
 `,
     image: '/blog/tempered-glass-facades-shops-companies-egypt (1).jpg',
-    date: '2026-08-06',
+    date: '2026-09-15',
     author: 'مهندس محمد الخطيب ',
     authorAccentClass: 'bg-blue-100 text-blue-700',
   },
