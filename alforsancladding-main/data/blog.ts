@@ -2193,7 +2193,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <p><span style="font-weight: 400;">كما تؤثر مساحة الواجهة وعدد الفتحات والأبواب ونوع قطاعات الألومنيوم والإكسسوارات وارتفاع المبنى في التكلفة النهائية.</span></p>
 <p><span style="font-weight: 400;">لذلك من الأفضل طلب </span><strong>تسعير خاص بالمشروع</strong><span style="font-weight: 400;"> بعد تحديد المقاسات والتصميم ونوع الزجاج ونظام الواجهة، بدلًا من الاعتماد على رقم عام قد لا يعكس التكلفة الفعلية.</span></p>
 <h2><strong>ما العوامل التي تحدد سعر الواجهة؟</strong></h2>
-<img src="/blog/glass-facades-installation-egypt-5.png"
+<img src="/blog/glass-facade-installation-company-egypt (5).png"
 alt="تركيب واجهات زجاج وألمنيوم للمشروعات التجارية في مصر"
 style="width:100%; border-radius:12px; margin:20px 0;" />
 <p><span style="font-weight: 400;">هناك مجموعة من العوامل التي تؤثر في </span><strong>أسعار الواجهات الزجاجية في مصر</strong><span style="font-weight: 400;">، ومن أهمها:</span></p>
@@ -2920,7 +2920,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
     excerpt: '   شركة تركيب واجهات زجاجية في مصر للمحلات والشركات والفلل والمباني، مع تصميم وتنفيذ وتركيب الواجهات واختيار الزجاج المناسب لكل مشروع. 📞 01094656501    ',
     content: `
     <h1><strong>شركة تركيب واجهات زجاجية في مصر | الفرسان للواجهات&nbsp;</strong></h1>
-<img src="/blog/glass-facade-installation-company-egypt (5).png"
+<img src="/blog/glass-facades-installation-egypt-5.png"
 alt="تنفيذ واجهات زجاج وألمنيوم للمحلات والمشروعات التجارية في مصر"
 style="width:100%; border-radius:12px; margin:20px 0;" />
 
@@ -3451,7 +3451,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <p><span style="font-weight: 400;">بعد مراجعة هذه البيانات يمكن تحديد متطلبات التنفيذ والمقاسات ونظام التركيب المناسب للمشروع.</span></p>
 <p><strong>للتواصل مع الفرسان للواجهات الزجاجية والكلادينج: 01094656501</strong></p>
 <h2><strong>الأسئلة الشائعة</strong></h2>
-img src="/blog/glass-facade-installation-company-egypt (1).png"
+<img src="/blog/glass-facade-installation-company-egypt (1).png"
 alt="شركة تركيب واجهات زجاجية في مصر للمحلات والشركات والمباني التجارية"
 style="width:100%; border-radius:12px; margin:20px 0;" />
 <h3><strong>ما أفضل شركة تركيب واجهات زجاجية في مصر؟</strong></h3>
@@ -3514,7 +3514,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <li style="font-weight: 400;"><strong>إمكانية استخدامه مع أنظمة وأجزاء مختلفة من الواجهة:</strong><span style="font-weight: 400;"> يختلف نظام التركيب والمكونات المستخدمة حسب تصميم الواجهة وطبيعة المبنى.</span></li>
 </ul>
 <h2><strong>واجهات زجاج سيكوريت للمحلات</strong></h2>
-c="/blog/tempered-glass-facades-shops-companies-egypt (4).jpg"
+<img src="/blog/tempered-glass-facades-shops-companies-egypt (4).jpg"
 alt="تنفيذ واجهات زجاج سيكوريت للمحلات والمباني التجارية في مصر"
 style="width:100%; border-radius:12px; margin:20px 0;" />
 
