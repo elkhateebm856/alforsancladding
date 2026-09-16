@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { Hero } from '@/components/common/Hero'
-import { blogPosts } from '@/data/blog'
+import { blogPosts } from '@/alforsancladding-main/data/blog'
 import { SITE_NAME } from '@/lib/constants'
 
 interface BlogPageProps {
@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   }
 
   const relatedPosts = blogPosts
-    .filter((p) => p.id !== post.id)
+    .filter((p) => p.slug !== post.slug)
     .slice(0, 3)
 
   return (
@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {relatedPosts.map((relatedPost) => (
                     <Link
-                      key={relatedPost.id}
+                      key={relatedPost.slug}
                       href={`/blog/${relatedPost.slug}`}
                       className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all"
                     >
