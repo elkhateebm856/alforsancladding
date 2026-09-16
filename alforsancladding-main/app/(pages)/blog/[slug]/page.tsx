@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   }
 
   const relatedPosts = blogPosts
-    .filter((p) => p.id !== post.id)
+    .filter((p) => p.slug !== post.slug)
     .slice(0, 3)
 
   return (
@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {relatedPosts.map((relatedPost) => (
                     <Link
-                      key={relatedPost.id}
+                      key={relatedPost.slug}
                       href={`/blog/${relatedPost.slug}`}
                       className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all"
                     >
