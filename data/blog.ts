@@ -3789,7 +3789,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
   },
    {
     id: 1,
-    slug: '',
+    slug: 'cladding-types-facades-advantages-egypt',
     title: '  أنواع الكلادينج للواجهات ومميزات كل نوع في مصر | 01094656501  ',
     excerpt: '  تعرف على أنواع الكلادينج للواجهات في مصر ومميزات كل نوع واستخداماته للمحلات والشركات والمباني، مع اختيار الخامة المناسبة وتنفيذ الواجهة. 📞 01094656501     ',
     content: `
@@ -5248,4 +5248,5 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
     author: 'مهندس محمد الخطيب ',
     authorAccentClass: 'bg-blue-100 text-blue-700',
   },
+  
 ]

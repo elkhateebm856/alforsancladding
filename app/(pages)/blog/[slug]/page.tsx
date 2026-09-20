@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { Hero } from '@/components/common/Hero'
-import { blogPosts } from '@/alforsancladding-main/data/blog'
+import { blogPosts } from '@/data/blog'
 import { SITE_NAME } from '@/lib/constants'
 
 interface BlogPageProps {

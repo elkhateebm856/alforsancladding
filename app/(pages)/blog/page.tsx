@@ -6,14 +6,15 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { Hero } from '@/components/common/Hero'
-import { blogPosts } from '@/alforsancladding-main/data/blog'
+import { blogPosts } from '@/data/blog'
 import { SITE_NAME } from '@/lib/constants'
 
-const featuredPostSlug = 'experts-cladding-facades-egypt'
-
 const sortedBlogPosts = blogPosts
+  .filter((post) => post.slug.trim() && post.title.trim() && post.image.trim())
   .map((post, index) => ({ post, index }))
   .sort((firstPost, secondPost) => {
+    const featuredPostSlug = 'experts-cladding-facades-egypt'
+
     if (firstPost.post.slug === featuredPostSlug) return -1
     if (secondPost.post.slug === featuredPostSlug) return 1
 

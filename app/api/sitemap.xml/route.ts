@@ -1,5 +1,5 @@
 import { services } from '@/data/services'
-import { blogPosts } from '@/alforsancladding-main/data/blog'
+import { blogPosts } from '@/data/blog'
 
 const BASE_URL = 'https://www.alforsancladding.com'
 
