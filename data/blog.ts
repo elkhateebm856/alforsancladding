@@ -7556,7 +7556,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 
     
   `,
-  image: '/blog/curtain-wall-glass-facades-egypt.jpg',
+  image: '/blog/curtain-wall-glass-facades-egypt-1.jpg',
   date: '2026-10-07',
   author: 'مهندس محمد الخطيب ',
   authorAccentClass: 'bg-blue-100 text-blue-700',
@@ -7879,7 +7879,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <p><span style="font-weight: 400;">يمكن التواصل مع </span><a href="https://www.alforsancladding.com/contact"><strong>الفرسان للواجهات الزجاجية والكلادينج</strong></a><span style="font-weight: 400;"> على الرقم </span><strong>01094656501</strong><span style="font-weight: 400;">، وإرسال صور الواجهة وموقع المشروع والمساحة التقريبية إن أمكن. وبعد دراسة التفاصيل يمكن تحديد الخامة والتصميم وطريقة التنفيذ المناسبة وإعداد عرض سعر للمشروع.</span></p>
 <p>&nbsp;</p>
   `,
-  image: '/blog/cladding-facades-installation-cairo.jpg',
+  image: '/blog/cladding-facades-installation-cairo-1.jpg',
   date: '2026-10-07',
   author: 'مهندس محمد الخطيب ',
   authorAccentClass: 'bg-blue-100 text-blue-700',
