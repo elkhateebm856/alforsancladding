@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export function AboutSection() {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="py-16 md:py-24 bg-primary/[0.04]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center text-balance">

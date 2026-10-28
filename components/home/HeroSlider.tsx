@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
 
 const slides = [
   {
@@ -31,16 +32,17 @@ const slides = [
 export function HeroSlider() {
   const [current, setCurrent] = useState(0)
   const [autoPlay, setAutoPlay] = useState(true)
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
-    if (!autoPlay) return
+    if (!autoPlay || prefersReducedMotion) return
 
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length)
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [autoPlay])
+  }, [autoPlay, prefersReducedMotion])
 
   const goToPrevious = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
@@ -57,7 +59,9 @@ export function HeroSlider() {
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ${
+          className={`absolute inset-0 ${
+            prefersReducedMotion ? '' : 'transition-opacity duration-700'
+          } ${
             index === current
               ? 'opacity-100 z-20 pointer-events-auto'
               : 'opacity-0 z-0 pointer-events-none'
@@ -73,33 +77,69 @@ export function HeroSlider() {
 
           <div className="absolute inset-0 bg-black/50" />
 
-          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {slide.title}
-            </h2>
-
-            <p className="text-lg md:text-xl text-gray-100 mb-8 max-w-2xl">
-              {slide.subtitle}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="tel:+201094656501"
-                className="rounded-lg bg-primary px-8 py-3 text-white font-semibold transition hover:bg-primary/90"
+          {index === current && (
+            <motion.div
+              key={slide.id}
+              initial={{
+                opacity: 0,
+                y: prefersReducedMotion ? 0 : 20,
+              }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.55,
+                ease: 'easeOut',
+                staggerChildren: prefersReducedMotion ? 0 : 0.12,
+              }}
+              className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4 text-center"
+            >
+              <motion.h2
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.45 }}
+                className="mb-4 text-3xl font-bold text-white sm:text-4xl md:text-5xl"
               >
-                اتصل الآن
-              </a>
+                {slide.title}
+              </motion.h2>
 
-              <a
-                href="https://wa.me/201094656501"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg border-2 border-white px-8 py-3 text-white font-semibold transition hover:bg-white hover:text-primary"
+              <motion.p
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.45,
+                  delay: prefersReducedMotion ? 0 : 0.1,
+                }}
+                className="mb-8 max-w-2xl text-base text-gray-100 sm:text-lg md:text-xl"
               >
-                تواصل عبر واتساب
-              </a>
-            </div>
-          </div>
+                {slide.subtitle}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.45,
+                  delay: prefersReducedMotion ? 0 : 0.2,
+                }}
+                className="flex flex-col gap-4 sm:flex-row"
+              >
+                <a
+                  href="tel:+201094656501"
+                  className="rounded-full bg-primary px-8 py-3 font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-primary/90"
+                >
+                  اتصل الآن
+                </a>
+
+                <a
+                  href="https://wa.me/201094656501"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border-2 border-white px-8 py-3 font-semibold text-white transition hover:bg-white hover:text-primary"
+                >
+                  تواصل عبر واتساب
+                </a>
+              </motion.div>
+            </motion.div>
+          )}
         </div>
       ))}
 

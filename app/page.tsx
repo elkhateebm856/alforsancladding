@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { Map } from '@/components/common/Map'
+import { ScrollReveal } from '@/components/common/ScrollReveal'
 
 import { HeroSlider } from '@/components/home/HeroSlider'
 import { AboutSection } from '@/components/home/AboutSection'
@@ -105,82 +106,97 @@ export default function Home() {
       <main className="bg-background">
 
         {/* Hero Slider */}
-        <HeroSlider />
+        <ScrollReveal>
+          <HeroSlider />
+        </ScrollReveal>
 
         {/* About Section */}
-        <AboutSection />
+        <ScrollReveal>
+          <AboutSection />
+        </ScrollReveal>
 
         {/* Stats Section */}
-        <StatsSection />
+        <ScrollReveal>
+          <StatsSection />
+        </ScrollReveal>
 
         {/* Services Section */}
-        <ServicesSection />
+        <ScrollReveal>
+          <ServicesSection />
+        </ScrollReveal>
 
         {/* Team Section */}
-        <TeamSection />
+        <ScrollReveal>
+          <TeamSection />
+        </ScrollReveal>
 
         {/* Portfolio Showcase */}
-        <PortfolioSection />
+        <ScrollReveal>
+          <PortfolioSection />
+        </ScrollReveal>
 
         {/* Why Choose Us */}
-        <WhyChooseUs />
+        <ScrollReveal>
+          <WhyChooseUs />
+        </ScrollReveal>
 
         {/* Testimonials */}
-        <TestimonialsSection />
+        <ScrollReveal>
+          <TestimonialsSection />
+        </ScrollReveal>
 
         {/* Map */}
-        <Map />
+        <ScrollReveal>
+          <Map />
+        </ScrollReveal>
 
         {/* CTA Section */}
-        <section className="py-16 md:py-24 bg-primary text-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollReveal>
+          <section className="py-16 md:py-24 bg-primary text-white">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                مستعد للبدء؟
+              </h2>
 
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              مستعد للبدء؟
-            </h2>
+              <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
+                تواصل معنا اليوم واحصل على عرض سعر خاص لمشروعك
+              </p>
 
-            <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-              تواصل معنا اليوم واحصل على عرض سعر خاص لمشروعك
-            </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href={PHONE_LINK}
+                  className="px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                  aria-label={`اتصل بالفرسان على الرقم ${PHONE_NUMBER}`}
+                >
+                  اتصل الآن: {PHONE_NUMBER}
+                </a>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-
-              {/* زر الاتصال */}
-              <a
-                href={PHONE_LINK}
-                className="px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                aria-label={`اتصل بالفرسان على الرقم ${PHONE_NUMBER}`}
-              >
-                اتصل الآن: {PHONE_NUMBER}
-              </a>
-
-              {/* زر واتساب */}
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-                aria-label="تواصل مع الفرسان عبر واتساب"
-              >
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/whatsapp-logo-8BlB1bIAhVHSHl3FcWdBTRgXT4HWEn.png"
-                  alt="واتساب الفرسان"
-                  width={20}
-                  height={20}
-                  className="invert"
-                />
-
-                تواصل عبر واتساب
-              </a>
-
+                <a
+                  href={WHATSAPP_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                  aria-label="تواصل مع الفرسان عبر واتساب"
+                >
+                  <Image
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/whatsapp-logo-8BlB1bIAhVHSHl3FcWdBTRgXT4HWEn.png"
+                    alt="واتساب الفرسان"
+                    width={20}
+                    height={20}
+                    className="invert"
+                  />
+                  تواصل عبر واتساب
+                </a>
+              </div>
             </div>
-
-          </div>
-        </section>
+          </section>
+        </ScrollReveal>
 
       </main>
 
-      <Footer />
+      <ScrollReveal>
+        <Footer />
+      </ScrollReveal>
 
       <ContactButtons />
     </>

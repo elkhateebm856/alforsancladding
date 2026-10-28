@@ -8,7 +8,9 @@ import {
   Heart,
   Share,
   MessageCircle,
+  ExternalLink,
 } from 'lucide-react'
+import { Space_Grotesk } from 'next/font/google'
 import {
   CONTACT_ADDRESS,
   CONTACT_EMAIL,
@@ -18,6 +20,11 @@ import {
   SITE_NAME,
 } from '@/lib/constants'
 import { services } from '@/data/services'
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: '700',
+})
 
 export function Footer() {
   return (
@@ -168,20 +175,35 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
-  <p>
-    جميع الحقوق محفوظة © {new Date().getFullYear()} {SITE_NAME}.
-    <br />
-    تم التصميم والإهداء بواسطة{' '}
-    <a
-      href="https://wa.me/201062672771"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-primary hover:underline font-bold"
-    >
-      المهندس محمد الخطيب
-    </a>
-  </p>
-</div>
+          <p>
+            جميع الحقوق محفوظة © {new Date().getFullYear()} {SITE_NAME}.
+          </p>
+        </div>
+        <div className="mt-3 flex justify-center">
+          <a
+            href="https://www.top1markting.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="الموقع من تنفيذ Top1Markting"
+            className="group inline-flex items-center gap-2.5 rounded-full bg-white py-2 ps-3 pe-4 shadow-[0_4px_18px_rgba(0,0,0,0.25)] ring-1 ring-black/5 transition-transform hover:-translate-y-0.5 touch-manipulation"
+          >
+            <Image
+              src="/top1markting-mark.png"
+              alt=""
+              width={33}
+              height={24}
+              className="h-6 w-auto"
+            />
+            <span className="text-xs text-slate-500 sm:text-sm">تنفيذ</span>
+            <span
+              dir="ltr"
+              className={`${spaceGrotesk.className} text-sm font-bold text-[#0a285f] sm:text-base`}
+            >
+              Top<span className="text-[#f5a623]">1</span>Markting
+            </span>
+            <ExternalLink className="h-4 w-4 text-slate-500 transition-colors group-hover:text-[#0a285f]" />
+          </a>
+        </div>
       </div>
     </footer>
   )

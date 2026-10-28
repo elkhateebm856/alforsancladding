@@ -1,11 +1,12 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
+import { Phone } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { StatsSection } from '@/components/home/StatsSection'
 import { Hero } from '@/components/common/Hero'
-import { SITE_NAME } from '@/lib/constants'
+import { CONTACT_PHONE, CONTACT_TEL, SITE_NAME } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: `من نحن | ${SITE_NAME}`,
@@ -70,18 +71,26 @@ export default function AboutPage() {
                 </p>
 
                 <p className="text-lg text-muted-foreground leading-8 mb-5">
-                  يقود الشركة المهندس <strong>محروس الصياد</strong>، الذي يمتلك
+                  المدير والمؤسس المهندس <strong>محروس الصياد</strong> يمتلك
                   خبرة عملية تتجاوز <strong>15 عامًا</strong>، وقد تلقى التدريب
                   والتأهيل المهني داخل إحدى الشركات الإماراتية المتخصصة في
                   الواجهات الزجاجية والكلادينج، مما أكسبه خبرة واسعة في أحدث
                   أنظمة التنفيذ والمعايير الهندسية العالمية.
                 </p>
 
-                <p className="text-lg text-muted-foreground leading-8">
+                <p className="text-lg text-muted-foreground leading-8 mb-6">
                   اليوم تواصل شركة الفرسان تنفيذ مشاريعها بفريق من المهندسين
                   والفنيين المحترفين، مع الحرص على تقديم حلول تجمع بين الجودة
                   العالية والتصميم العصري والالتزام الكامل بالمواعيد.
                 </p>
+
+                <a
+                  href={CONTACT_TEL}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <Phone size={18} aria-hidden="true" />
+                  تواصل مع المهندس محروس: <span dir="ltr">{CONTACT_PHONE}</span>
+                </a>
               </div>
 
               <div className="relative h-96">
