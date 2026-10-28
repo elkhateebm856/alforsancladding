@@ -8112,7 +8112,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <p>&nbsp;</p>
 
   `,
-  image: '/blog/cladding-supply-installation-new-cairo.jpg',
+  image: '/blog/cladding-supply-installation-new-cairo-1.jpg',
   date: '2026-10-28',
   author: 'مهندس محمد الخطيب ',
   authorAccentClass: 'bg-blue-100 text-blue-700',
