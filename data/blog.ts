@@ -8256,7 +8256,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 
 
   `,
-  image: '/blog/glass-facades-installation-mansoura.jpg',
+  image: '/blog/glass-facades-installation-mansoura-1.jpg',
   date: '2026-10-29',
   author: 'مهندس محمد الخطيب ',
   authorAccentClass: 'bg-blue-100 text-blue-700',
@@ -8378,7 +8378,7 @@ style="width:100%; border-radius:12px; margin:20px 0;" />
 <p><strong>للتواصل والاستفسار: 01094656501</strong><span style="font-weight: 400;">.</span></p>
 <p>&nbsp;</p>
   `,
-  image: '/blog/cladding-supply-installation-nasr-city.jpg',
+  image: '/blog/cladding-supply-installation-nasr-city-1.jpg',
   date: '2026-10-29',
   author: 'مهندس محمد الخطيب ',
   authorAccentClass: 'bg-blue-100 text-blue-700',
