@@ -6,7 +6,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { collection, doc, getDocs, serverTimestamp, setDoc, writeBatch } from 'firebase/firestore'
 import { signOut } from 'firebase/auth'
 import { getFirebaseAuth, getFirebaseDb } from '@/lib/firebase/client'
-import { Check, FileText, LogOut, Plus, Search, Star, X } from 'lucide-react'
+import { ArrowLeft, Check, FileText, LogOut, Plus, Search, Star, X } from 'lucide-react'
 
 interface Article {
   id: string
@@ -204,13 +204,21 @@ export function AdminDashboard({
             <h1 className="text-2xl font-extrabold text-slate-900">إدارة المحتوى</h1>
             <p className="mt-1 text-xs text-slate-500" dir="ltr">{email}</p>
           </div>
-          <button
-            type="button"
-            onClick={() => void logout()}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-          >
-            <LogOut size={16} /> تسجيل الخروج
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              <ArrowLeft size={16} aria-hidden="true" /> العودة للموقع
+            </Link>
+            <button
+              type="button"
+              onClick={() => void logout()}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              <LogOut size={16} /> تسجيل الخروج
+            </button>
+          </div>
         </div>
       </header>
 
