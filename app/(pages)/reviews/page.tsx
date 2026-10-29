@@ -9,11 +9,39 @@ import { SITE_NAME } from '@/lib/constants'
 
 export const revalidate = 300
 
+const reviewsTitle = 'تقييمات العملاء | شركة الفرسان للواجهات الزجاجية والكلادينج'
+const reviewsDescription =
+  'اقرأ آراء وتقييمات عملاء شركة الفرسان عن خدمات الواجهات الزجاجية والكلادينج، وشاركنا تجربتك.'
+
 export const metadata: Metadata = {
-  title: `آراء العملاء | ${SITE_NAME}`,
-  description: 'اقرأ تقييمات عملاء الفرسان المعتمدة وشاركنا تجربتك.',
+  title: {
+    absolute: reviewsTitle,
+  },
+  description: reviewsDescription,
   alternates: {
     canonical: 'https://www.alforsancladding.com/reviews',
+  },
+  openGraph: {
+    title: reviewsTitle,
+    description: reviewsDescription,
+    url: 'https://www.alforsancladding.com/reviews',
+    siteName: SITE_NAME,
+    type: 'website',
+    locale: 'ar_EG',
+    images: [
+      {
+        url: 'https://www.alforsancladding.com/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'تقييمات عملاء شركة الفرسان',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: reviewsTitle,
+    description: reviewsDescription,
+    images: ['https://www.alforsancladding.com/logo.png'],
   },
 }
 
