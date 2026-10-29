@@ -1,8 +1,10 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 export function AboutSection() {
   return (
-    <section className="py-16 md:py-24 bg-primary/[0.04]">
+    <section className="bg-amber-50/60 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center text-balance">
@@ -12,7 +14,7 @@ export function AboutSection() {
         {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
           {/* Image */}
-          <div className="relative h-96 md:h-[450px] rounded-lg overflow-hidden shadow-lg">
+          <div className="relative h-96 overflow-hidden rounded-lg shadow-lg ring-1 ring-primary/20 md:h-[450px]">
             <Image
               src="/من نحن.png"
               alt="واجهات زجاجية احترافية"
@@ -29,6 +31,22 @@ export function AboutSection() {
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
               فريقنا ذو خبرة عميقة في هذا المجال، ملتزمون بتقديم حلول مبتكرة تجمع بين الجمال والوظيفة والاستدامة. نؤمن بأن كل مشروع فريد، لذا نقدم خدمات مخصصة تلبي احتياجاتك بدقة.
             </p>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/about"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 font-bold text-white transition-colors hover:bg-primary/90"
+              >
+                تعرف على الفرسان
+                <ArrowLeft size={16} aria-hidden="true" />
+              </Link>
+              <Link
+                href="/services"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-primary/30 bg-white px-5 py-3 font-bold text-primary transition-colors hover:bg-primary/10"
+              >
+                خدماتنا
+                <ArrowLeft size={16} aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -43,7 +61,7 @@ export function AboutSection() {
   </h3>
 
   <p className="text-muted-foreground max-w-3xl mx-auto leading-8">
-    مهندس متخصص بخبرة تتجاوز 15 عامًا في مجال الواجهات الزجاجية والكلادينج،
+    مهندس متخصص بخبرة تتجاوز 20 عامًا في مجال الواجهات الزجاجية والكلادينج،
     تلقى التدريب والتأهيل المهني داخل إحدى الشركات الإماراتية المتخصصة، مما
     أكسبه خبرة عملية في أحدث أنظمة التنفيذ ومعايير الجودة العالمية. ويقود
     اليوم فريقًا متكاملًا من المهندسين والفنيين المحترفين لتنفيذ المشاريع

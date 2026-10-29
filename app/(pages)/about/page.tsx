@@ -4,6 +4,7 @@ import { Phone } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { StatsSection } from '@/components/home/StatsSection'
 import { Hero } from '@/components/common/Hero'
 import { CONTACT_PHONE, CONTACT_TEL, SITE_NAME } from '@/lib/constants'
@@ -64,7 +65,7 @@ export default function AboutPage() {
                 </h2>
 
                 <p className="text-lg text-muted-foreground leading-8 mb-5">
-                  تأسست شركة <strong className="text-primary">الفرسان</strong>
+                  تأسست شركة <strong className="text-primary">الفرسان</strong>{' '}
                   برؤية واضحة تهدف إلى تقديم حلول احترافية في مجال الواجهات
                   الزجاجية والكلادينج، مع الالتزام بأعلى معايير الجودة والدقة في
                   جميع مراحل التنفيذ.
@@ -72,7 +73,7 @@ export default function AboutPage() {
 
                 <p className="text-lg text-muted-foreground leading-8 mb-5">
                   المدير والمؤسس المهندس <strong>محروس الصياد</strong> يمتلك
-                  خبرة عملية تتجاوز <strong>15 عامًا</strong>، وقد تلقى التدريب
+                  خبرة عملية تتجاوز <strong>20 عامًا</strong>، وقد تلقى التدريب
                   والتأهيل المهني داخل إحدى الشركات الإماراتية المتخصصة في
                   الواجهات الزجاجية والكلادينج، مما أكسبه خبرة واسعة في أحدث
                   أنظمة التنفيذ والمعايير الهندسية العالمية.
@@ -224,6 +225,7 @@ export default function AboutPage() {
 
         {/* Stats */}
         <StatsSection />
+        <PublicReviewForm />
       </main>
 
       <Footer />

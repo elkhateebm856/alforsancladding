@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { Hero } from '@/components/common/Hero'
 import {
@@ -145,7 +146,7 @@ export default function ContactPage() {
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
-                  allowFullScreen=""
+                  allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="w-full h-full"
@@ -157,6 +158,7 @@ export default function ContactPage() {
             </div>
           </div>
         </section>
+        <PublicReviewForm />
       </main>
       <Footer />
       <ContactButtons />

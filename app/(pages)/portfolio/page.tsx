@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { PortfolioPageClient } from '@/components/portfolio/PortfolioPageClient'
 import { SITE_NAME } from '@/lib/constants'
 
@@ -39,6 +40,7 @@ export default function PortfolioPage() {
       <Header />
       <main className="bg-background">
         <PortfolioPageClient />
+        <PublicReviewForm />
       </main>
       <Footer />
       <ContactButtons />

@@ -5,28 +5,12 @@ import { Calendar, User, ArrowLeft } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { Hero } from '@/components/common/Hero'
-import { blogPosts } from '@/data/blog'
+import { getPublishedArticles } from '@/lib/content-store'
 import { SITE_NAME } from '@/lib/constants'
 
-const sortedBlogPosts = blogPosts
-  .filter((post) => post.slug.trim() && post.title.trim() && post.image.trim())
-  .map((post, index) => ({ post, index }))
-  .sort((firstPost, secondPost) => {
-    const featuredPostSlug = 'experts-cladding-facades-egypt'
-
-    if (firstPost.post.slug === featuredPostSlug) return -1
-    if (secondPost.post.slug === featuredPostSlug) return 1
-
-    const dateDifference =
-      new Date(secondPost.post.date).getTime() -
-      new Date(firstPost.post.date).getTime()
-
-    return dateDifference !== 0
-      ? dateDifference
-      : secondPost.index - firstPost.index
-  })
-  .map(({ post }) => post)
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: `المدونة | ${SITE_NAME}`,
@@ -56,7 +40,27 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const posts = await getPublishedArticles()
+  const sortedBlogPosts = posts
+    .filter((post) => post.slug.trim() && post.title.trim() && post.image.trim())
+    .map((post, index) => ({ post, index }))
+    .sort((firstPost, secondPost) => {
+      const featuredPostSlug = 'experts-cladding-facades-egypt'
+
+      if (firstPost.post.slug === featuredPostSlug) return -1
+      if (secondPost.post.slug === featuredPostSlug) return 1
+
+      const dateDifference =
+        new Date(secondPost.post.date).getTime() -
+        new Date(firstPost.post.date).getTime()
+
+      return dateDifference !== 0
+        ? dateDifference
+        : secondPost.index - firstPost.index
+    })
+    .map(({ post }) => post)
+
   return (
     <>
       <Header />
@@ -190,6 +194,7 @@ export default function BlogPage() {
             )}
           </div>
         </section>
+        <PublicReviewForm />
       </main>
       <Footer />
       <ContactButtons />

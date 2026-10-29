@@ -1,9 +1,11 @@
 export const SITE_NAME = 'الفرسان'
+export const ADMIN_FIREBASE_EMAIL = 'alforsancladding@gmail.com'
+export const ADMIN_FIREBASE_UID = 'KS2tzaUCrachoXvCoJUeDRYrQt32'
 
 export const SITE_DESCRIPTION =
   'شركة متخصصة في تركيب الواجهات الزجاجية والكلادينج بأعلى مستويات الجودة والاحترافية'
 
-export const SITE_URL = 'https://alfarsan.com'
+export const SITE_URL = 'https://www.alforsancladding.com'
 
 // يظهر للمستخدم
 export const CONTACT_PHONE = '01094656501'
@@ -30,13 +32,14 @@ export const NAVIGATION_ITEMS = [
   { label: 'الخدمات', href: '/services' },
   { label: 'أعمالنا', href: '/portfolio' },
   { label: 'المدونة', href: '/blog' },
+  { label: 'آراء العملاء', href: '/reviews' },
   { label: 'تواصل معنا', href: '/contact' },
 ]
 
 export const WHY_CHOOSE_US = [
   {
     title: 'خبرة عالية',
-    description: 'أكثر من 15 سنة في مجال الواجهات الزجاجية والكلادينج',
+    description: 'أكثر من 20 سنة في مجال الواجهات الزجاجية والكلادينج',
     icon: 'Award',
   },
   {

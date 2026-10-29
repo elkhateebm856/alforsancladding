@@ -1,6 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import Image from 'next/image'
 
 const team = [
@@ -9,7 +11,7 @@ const team = [
     role: 'مؤسس الشركة',
     image:
       '/محروس الصياد.png',
-    bio: 'خبرة أكثر من 15 عامًا في تنفيذ الواجهات الزجاجية والكلادينج وإدارة المشاريع.',
+    bio: 'خبرة أكثر من 20 عامًا في تنفيذ الواجهات الزجاجية والكلادينج وإدارة المشاريع.',
   },
   {
     name: 'م. السيد نفعي',
@@ -22,7 +24,7 @@ const team = [
 
 export function TeamSection() {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className="bg-slate-50 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -80,6 +82,16 @@ export function TeamSection() {
               <div className="w-16 h-1 bg-primary mx-auto rounded-full mt-4"></div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            href="/contact"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-3 font-bold text-slate-800 transition-colors hover:border-primary hover:text-primary"
+          >
+            تواصل مع فريقنا
+            <ArrowLeft size={16} aria-hidden="true" />
+          </Link>
         </div>
 
       </div>

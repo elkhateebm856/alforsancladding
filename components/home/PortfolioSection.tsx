@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { ArrowLeft } from 'lucide-react'
 
 const showcaseItems = [
   {
@@ -27,7 +28,7 @@ const showcaseItems = [
 
 export function PortfolioSection() {
   return (
-    <section className="py-16 md:py-24 bg-primary/[0.04]">
+    <section id="projects" className="bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -45,9 +46,10 @@ export function PortfolioSection() {
 
           <Link
             href="/portfolio"
-            className="inline-flex items-center justify-center rounded-lg border border-primary px-5 py-3 text-primary font-semibold hover:bg-primary hover:text-white transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-primary px-5 py-3 text-primary font-semibold hover:bg-primary hover:text-white transition-colors"
           >
             استعرض جميع الأعمال
+            <ArrowLeft size={17} aria-hidden="true" />
           </Link>
         </motion.div>
 
@@ -83,6 +85,13 @@ export function PortfolioSection() {
                 <p className="text-muted-foreground leading-7">
                   مشاريع تنفيذية تُظهر دقة التنفيذ وجودة الخامات في كل مرحلة.
                 </p>
+                <Link
+                  href={item.href}
+                  className="mt-5 inline-flex items-center gap-2 font-bold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:text-amber-800"
+                >
+                  شاهد تفاصيل الأعمال
+                  <ArrowLeft size={16} aria-hidden="true" />
+                </Link>
               </div>
             </motion.article>
           ))}

@@ -5,6 +5,7 @@ import { ChevronLeft, CheckCircle, Phone } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { Hero } from '@/components/common/Hero'
 import { services } from '@/data/services'
 import { SITE_NAME, SOCIAL_LINKS, CONTACT_PHONE } from '@/lib/constants'
@@ -280,6 +281,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </div>
           </div>
         </section>
+        <PublicReviewForm />
       </main>
       <Footer />
       <ContactButtons />

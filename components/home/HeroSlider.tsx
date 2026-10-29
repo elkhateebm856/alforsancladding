@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, useReducedMotion } from 'framer-motion'
+import { FacadeScene } from '@/components/home/FacadeScene'
 
 const slides = [
   {
@@ -76,6 +78,9 @@ export function HeroSlider() {
           />
 
           <div className="absolute inset-0 bg-black/50" />
+          {index === current && (
+            <FacadeScene className="pointer-events-none absolute bottom-0 left-0 z-10 h-64 w-[74%] opacity-80 sm:h-80 md:inset-y-0 md:h-full md:w-[54%] md:opacity-95" />
+          )}
 
           {index === current && (
             <motion.div
@@ -90,7 +95,7 @@ export function HeroSlider() {
                 ease: 'easeOut',
                 staggerChildren: prefersReducedMotion ? 0 : 0.12,
               }}
-              className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4 text-center"
+              className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4 text-center md:items-start md:pl-[48%] md:pr-[8%] md:text-right"
             >
               <motion.h2
                 initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
@@ -120,7 +125,7 @@ export function HeroSlider() {
                   duration: prefersReducedMotion ? 0 : 0.45,
                   delay: prefersReducedMotion ? 0 : 0.2,
                 }}
-                className="flex flex-col gap-4 sm:flex-row"
+                className="flex flex-col gap-3 sm:flex-row sm:items-center"
               >
                 <a
                   href="tel:+201094656501"
@@ -137,6 +142,13 @@ export function HeroSlider() {
                 >
                   تواصل عبر واتساب
                 </a>
+                <Link
+                  href="/services"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/80 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur-sm transition hover:bg-white hover:text-primary"
+                >
+                  اكتشف خدماتنا
+                  <ArrowLeft size={17} aria-hidden="true" />
+                </Link>
               </motion.div>
             </motion.div>
           )}

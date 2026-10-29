@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { Hero } from '@/components/common/Hero'
 import { services } from '@/data/services'
 import { SITE_NAME } from '@/lib/constants'
@@ -107,6 +108,7 @@ export default function ServicesPage() {
             </div>
           </div>
         </section>
+        <PublicReviewForm />
       </main>
       <Footer />
       <ContactButtons />

@@ -11,6 +11,8 @@ import {
   Building,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 const reasons = [
   {
@@ -18,48 +20,64 @@ const reasons = [
     description:
       'تلقى مؤسس الفرسان تدريبًا وتأهيلًا مهنيًا داخل إحدى الشركات الإماراتية المتخصصة في تنفيذ الواجهات الزجاجية والكلادينج.',
     icon: Award,
+    iconColor: 'text-amber-700',
+    iconBackground: 'bg-amber-100',
   },
   {
-    title: 'خبرة عملية تزيد عن 15 عامًا',
+    title: 'خبرة عملية تزيد عن 20 عامًا',
     description:
       'خبرة واسعة في تصميم وتنفيذ وتركيب الواجهات الزجاجية والكلادينج للمشاريع السكنية والتجارية.',
     icon: CheckCircle,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
   {
     title: 'معايير تنفيذ عالمية',
     description:
       'نعتمد أحدث أساليب وتقنيات التنفيذ وفق أفضل الممارسات الهندسية لضمان الجودة والدقة.',
     icon: Shield,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
   {
     title: 'فريق هندسي محترف',
     description:
       'فريق من المهندسين والفنيين المدربين على تنفيذ المشاريع بأعلى مستويات الاحترافية.',
     icon: Users,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
   {
     title: 'الالتزام بالمواعيد',
     description:
       'نحرص على تسليم جميع المشاريع في الوقت المحدد مع الحفاظ على أعلى جودة في التنفيذ.',
     icon: Clock,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
   {
     title: 'أسعار تنافسية',
     description:
       'حلول متكاملة بأسعار مناسبة دون التأثير على جودة المواد أو التنفيذ.',
     icon: DollarSign,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
   {
     title: 'خدمة ما بعد التنفيذ',
     description:
       'متابعة مستمرة ودعم فني وصيانة لضمان رضا العملاء واستدامة جودة المشروع.',
     icon: Headphones,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
   {
     title: 'مشاريع متنوعة',
     description:
       'خبرة في تنفيذ مشاريع الفلل والعمائر والمجمعات التجارية والإدارية والمنشآت الحكومية.',
     icon: Building,
+    iconColor: 'text-primary',
+    iconBackground: 'bg-primary/10',
   },
 ]
 
@@ -87,7 +105,7 @@ export function WhyChooseUs() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-muted/60">
+    <section className="bg-slate-50 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
@@ -120,8 +138,8 @@ export function WhyChooseUs() {
                 variants={itemVariants}
                 className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:-translate-y-2"
               >
-                <div className="mb-5 inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full">
-                  <Icon className="text-primary" size={30} />
+                <div className={`mb-5 inline-flex items-center justify-center w-16 h-16 ${reason.iconBackground} rounded-full`}>
+                  <Icon className={reason.iconColor} size={30} />
                 </div>
 
                 <h3 className="text-lg font-bold text-foreground mb-3">
@@ -135,6 +153,16 @@ export function WhyChooseUs() {
             )
           })}
         </motion.div>
+
+        <div className="mt-10 text-center">
+          <Link
+            href="/contact"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 font-bold text-white transition-colors hover:bg-primary/90"
+          >
+            اطلب استشارة لمشروعك
+            <ArrowLeft size={16} aria-hidden="true" />
+          </Link>
+        </div>
 
       </div>
     </section>

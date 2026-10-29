@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { Map } from '@/components/common/Map'
 import { ScrollReveal } from '@/components/common/ScrollReveal'
 
@@ -15,10 +16,10 @@ import { TeamSection } from '@/components/home/TeamSection'
 import { PortfolioSection } from '@/components/home/PortfolioSection'
 import { WhyChooseUs } from '@/components/home/WhyChooseUs'
 import { TestimonialsSection } from '@/components/home/TestimonialsSection'
+import { LatestArticlesSection } from '@/components/home/LatestArticlesSection'
 
 import {
   SITE_NAME,
-  SITE_DESCRIPTION,
 } from '@/lib/constants'
 
 const SITE_URL = 'https://www.alforsancladding.com'
@@ -106,48 +107,43 @@ export default function Home() {
       <main className="bg-background">
 
         {/* Hero Slider */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <HeroSlider />
         </ScrollReveal>
 
         {/* About Section */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <AboutSection />
         </ScrollReveal>
 
         {/* Stats Section */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <StatsSection />
         </ScrollReveal>
 
         {/* Services Section */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <ServicesSection />
         </ScrollReveal>
 
         {/* Team Section */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <TeamSection />
         </ScrollReveal>
 
         {/* Portfolio Showcase */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <PortfolioSection />
         </ScrollReveal>
 
         {/* Why Choose Us */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <WhyChooseUs />
         </ScrollReveal>
 
         {/* Testimonials */}
-        <ScrollReveal>
+        <ScrollReveal className="border-b border-primary/40">
           <TestimonialsSection />
-        </ScrollReveal>
-
-        {/* Map */}
-        <ScrollReveal>
-          <Map />
         </ScrollReveal>
 
         {/* CTA Section */}
@@ -190,6 +186,18 @@ export default function Home() {
               </div>
             </div>
           </section>
+        </ScrollReveal>
+
+        <PublicReviewForm />
+
+        {/* Latest Articles */}
+        <ScrollReveal className="border-b border-primary/40">
+          <LatestArticlesSection />
+        </ScrollReveal>
+
+        {/* Map */}
+        <ScrollReveal>
+          <Map />
         </ScrollReveal>
 
       </main>

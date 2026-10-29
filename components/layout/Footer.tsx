@@ -4,10 +4,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Share2,
-  Heart,
-  Share,
-  MessageCircle,
   ExternalLink,
 } from 'lucide-react'
 import { Space_Grotesk } from 'next/font/google'
@@ -174,9 +170,18 @@ export function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+        <div className="border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
           <p>
-            جميع الحقوق محفوظة © {new Date().getFullYear()} {SITE_NAME}.
+            جميع الحقوق محفوظة{' '}
+            <Link
+              href="/admin"
+              aria-label="صفحة الإدارة"
+              title="صفحة الإدارة"
+              className="transition-colors hover:text-primary"
+            >
+              ©
+            </Link>{' '}
+            2026 {SITE_NAME}.
           </p>
         </div>
         <div className="mt-3 flex justify-center">

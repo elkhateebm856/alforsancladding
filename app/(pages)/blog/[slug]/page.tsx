@@ -5,8 +5,14 @@ import { ChevronLeft, Calendar, User } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
+import { ArticleShareActions } from '@/components/common/ArticleShareActions'
+import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { Hero } from '@/components/common/Hero'
-import { blogPosts } from '@/data/blog'
+import {
+  getPublishedArticle,
+  getPublishedArticles,
+  sanitizeArticleContent,
+} from '@/lib/content-store'
 import { SITE_NAME } from '@/lib/constants'
 
 interface BlogPageProps {
@@ -14,16 +20,19 @@ interface BlogPageProps {
 }
 
 export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
+  const posts = await getPublishedArticles()
+  return posts.map((post) => ({
     slug: post.slug,
   }))
 }
+
+export const revalidate = 300
 
 export async function generateMetadata(
   { params }: BlogPageProps
 ): Promise<Metadata> {
   const { slug } = await params
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = await getPublishedArticle(slug)
 
   if (!post) {
     return {
@@ -32,21 +41,27 @@ export async function generateMetadata(
   }
 
   const canonicalUrl = `https://www.alforsancladding.com/blog/${post.slug}`
+  const imageUrl = new URL(
+    post.image,
+    'https://www.alforsancladding.com',
+  ).toString()
+  const title = post.seoTitle || post.title
 
   return {
-    title: `${post.title} | ${SITE_NAME}`,
-    description: post.excerpt,
+    title: `${title} | ${SITE_NAME}`,
+    description: post.seoDescription || post.excerpt,
+    keywords: post.keywords,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${post.title} | ${SITE_NAME}`,
-      description: post.excerpt,
+      title: `${title} | ${SITE_NAME}`,
+      description: post.seoDescription || post.excerpt,
       url: canonicalUrl,
       type: 'article',
       images: [
         {
-          url: `https://www.alforsancladding.com${post.image}`,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -55,16 +70,16 @@ export async function generateMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${post.title} | ${SITE_NAME}`,
-      description: post.excerpt,
-      images: [`https://www.alforsancladding.com${post.image}`],
+      title: `${title} | ${SITE_NAME}`,
+      description: post.seoDescription || post.excerpt,
+      images: [imageUrl],
     },
   }
 }
 
 export default async function BlogPostPage({ params }: BlogPageProps) {
   const { slug } = await params
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = await getPublishedArticle(slug)
 
   if (!post) {
     return (
@@ -83,7 +98,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     )
   }
 
-  const relatedPosts = blogPosts
+  const relatedPosts = (await getPublishedArticles())
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3)
 
@@ -142,7 +157,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             <div className="relative w-full h-96 mb-12 rounded-lg overflow-hidden">
               <Image
                 src={post.image}
-                alt={post.title}
+                alt={post.imageAlt || post.title}
                 fill
                 className="object-cover"
               />
@@ -152,9 +167,13 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             <article className="max-w-none">
               <div
                 className="space-y-4 text-lg text-foreground leading-8 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-4 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-6 [&_p]:mb-4 [&_strong]:font-bold [&_a]:text-primary [&_a]:underline [&_img]:rounded-xl [&_img]:my-6"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeArticleContent(post.content),
+                }}
               />
             </article>
+
+            <ArticleShareActions title={post.title} />
 
             {/* Related Posts */}
             {relatedPosts.length > 0 && (
@@ -203,6 +222,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </div>
           </div>
         </section>
+        <PublicReviewForm />
       </main>
       <Footer />
       <ContactButtons />

@@ -8,10 +8,12 @@ const stats = [
   {
     id: 1,
     icon: Landmark,
-    value: 15,
+    value: 20,
     suffix: '+',
     label: 'سنة من الخبرة',
-    color: 'text-primary',
+    color: 'text-amber-300',
+    iconBackground: 'bg-amber-400/10',
+    borderColor: 'border-t-amber-400',
   },
   {
     id: 2,
@@ -19,7 +21,9 @@ const stats = [
     value: 850,
     suffix: '+',
     label: 'مشروع تم تنفيذه',
-    color: 'text-primary',
+    color: 'text-amber-300',
+    iconBackground: 'bg-amber-400/10',
+    borderColor: 'border-t-amber-400',
   },
   {
     id: 3,
@@ -27,7 +31,9 @@ const stats = [
     value: 600,
     suffix: '+',
     label: 'عميل سعيد',
-    color: 'text-primary',
+    color: 'text-amber-300',
+    iconBackground: 'bg-amber-400/10',
+    borderColor: 'border-t-amber-400',
   },
   {
     id: 4,
@@ -35,7 +41,9 @@ const stats = [
     value: 25,
     suffix: '+',
     label: 'مهندس وفني متخصص',
-    color: 'text-primary',
+    color: 'text-amber-300',
+    iconBackground: 'bg-amber-400/10',
+    borderColor: 'border-t-amber-400',
   },
 ]
 
@@ -47,7 +55,6 @@ function AnimatedCounter({ from = 0, to = 100, duration = 2.5, suffix = '' }) {
   useEffect(() => {
     if (!isInView) return
 
-    let startValue = from
     const increment = (to - from) / (duration * 60)
     let currentValue = from
 
@@ -76,7 +83,7 @@ export function StatsSection() {
   const containerRef = useRef(null)
 
   return (
-    <section ref={containerRef} className="py-16 md:py-24 bg-background">
+    <section id="stats" ref={containerRef} className="bg-slate-950 py-16 text-white md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -85,10 +92,10 @@ export function StatsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             إحصائيات الفرسان
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto">
             أرقام تعكس تفاني فريقنا والإنجازات التي حققناها
           </p>
         </motion.div>
@@ -108,11 +115,11 @@ export function StatsSection() {
                 }}
                 className="group"
               >
-                <div className="bg-card border border-border rounded-lg p-8 text-center hover:shadow-lg hover:border-primary/30 transition-all duration-300 hover:scale-105">
+                <div className={`bg-white/5 border border-white/10 border-t-4 ${stat.borderColor} rounded-lg p-8 text-center transition-all duration-300 hover:bg-white/10 hover:shadow-xl`}>
                   <motion.div
                     initial={{ scale: 1 }}
                     whileHover={{ scale: 1.1 }}
-                    className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary/10 to-primary/5 rounded-full mb-6 group-hover:from-primary/20 group-hover:to-primary/10 transition-colors"
+                    className={`inline-flex items-center justify-center w-16 h-16 ${stat.iconBackground} rounded-full mb-6 transition-transform`}
                   >
                     <Icon className={`${stat.color} w-8 h-8`} />
                   </motion.div>
@@ -128,7 +135,7 @@ export function StatsSection() {
                     </div>
                   </div>
 
-                  <p className="text-foreground font-semibold text-lg">
+                  <p className="text-white/90 font-semibold text-lg">
                     {stat.label}
                   </p>
                 </div>
