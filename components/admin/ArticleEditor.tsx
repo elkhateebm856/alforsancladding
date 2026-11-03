@@ -251,6 +251,9 @@ export function ArticleEditor({
           ? getDoc(previousArticleRef)
           : Promise.resolve(null),
       ])
+      const currentArticle = existing.exists()
+        ? existing.data()
+        : previousArticle?.data() || initialArticle
       if (!slug && existing.exists()) {
         throw new Error('يوجد مقال بهذا الرابط بالفعل. افتحه للتعديل بدل إنشاء نسخة.')
       }
@@ -263,6 +266,11 @@ export function ArticleEditor({
         id: payload.slug,
         slug: payload.slug,
         createdAt: existing.data()?.createdAt || previousArticle?.data()?.createdAt || serverTimestamp(),
+        publishedAt: payload.status === 'published'
+          ? currentArticle?.status === 'published'
+            ? currentArticle.publishedAt || null
+            : serverTimestamp()
+          : null,
         updatedAt: serverTimestamp(),
       }, { merge: true })
       batch.set(doc(db, 'contentVisibility', `article-${payload.slug}`), {

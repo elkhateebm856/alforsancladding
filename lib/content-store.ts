@@ -27,6 +27,7 @@ export interface ArticleRecord {
   image: string
   imageAlt?: string
   date: string
+  publishedAt?: unknown
   author: string
   authorAccentClass?: string
   category?: string
@@ -88,6 +89,7 @@ function toPlainRecord<T extends Record<string, unknown>>(
     ...data,
     id: String(data.id ?? snapshot.id),
     createdAt: toIsoString(data.createdAt),
+    publishedAt: toIsoString(data.publishedAt),
     updatedAt: toIsoString(data.updatedAt),
   } as unknown as T
 }

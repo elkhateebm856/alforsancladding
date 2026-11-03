@@ -107,6 +107,7 @@ export async function POST(request: NextRequest) {
         typeof body.date === 'string' && body.date
           ? body.date
           : new Date().toISOString().slice(0, 10),
+      publishedAt: body.status === 'published' ? FieldValue.serverTimestamp() : null,
       createdAt: FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
     }

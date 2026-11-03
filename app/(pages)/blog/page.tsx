@@ -9,6 +9,7 @@ import { PublicReviewForm } from '@/components/common/PublicReviewForm'
 import { Hero } from '@/components/common/Hero'
 import { getPublishedArticles } from '@/lib/content-store'
 import { SITE_NAME } from '@/lib/constants'
+import { formatRelativeTime } from '@/lib/date-format'
 
 export const revalidate = 300
 
@@ -60,6 +61,11 @@ export default async function BlogPage() {
         : secondPost.index - firstPost.index
     })
     .map(({ post }) => post)
+  const featuredPublicationTime = sortedBlogPosts[0]
+    ? formatRelativeTime(
+        sortedBlogPosts[0].publishedAt ?? sortedBlogPosts[0].date,
+      )
+    : null
 
   return (
     <>
@@ -122,6 +128,9 @@ export default async function BlogPage() {
                                 'ar-SA'
                               )}
                             </div>
+                            {featuredPublicationTime && (
+                              <span>نُشر {featuredPublicationTime}</span>
+                            )}
                             <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 ${sortedBlogPosts[0].authorAccentClass ?? 'bg-amber-100 text-amber-700'}`}>
                               <User size={16} />
                               {sortedBlogPosts[0].author}
@@ -179,6 +188,11 @@ export default async function BlogPage() {
                                 <Calendar size={14} />
                                 {new Date(post.date).toLocaleDateString('ar-SA')}
                               </div>
+                              {formatRelativeTime(post.publishedAt ?? post.date) && (
+                                <span>
+                                  نُشر {formatRelativeTime(post.publishedAt ?? post.date)}
+                                </span>
+                              )}
                               <div className={`inline-flex items-center gap-1 rounded-full px-2 py-1 ${post.authorAccentClass ?? 'bg-amber-100 text-amber-700'}`}>
                                 <User size={14} />
                                 {post.author}

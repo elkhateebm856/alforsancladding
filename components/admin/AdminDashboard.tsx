@@ -151,7 +151,11 @@ export function AdminDashboard({
     try {
       const batch = writeBatch(getFirebaseDb())
       batch.set(doc(getFirebaseDb(), 'articles', article.slug), {
-        id: article.slug, slug: article.slug, status: nextStatus, updatedAt: serverTimestamp(),
+        id: article.slug,
+        slug: article.slug,
+        status: nextStatus,
+        publishedAt: nextStatus === 'published' ? serverTimestamp() : null,
+        updatedAt: serverTimestamp(),
       }, { merge: true })
       batch.set(doc(getFirebaseDb(), 'contentVisibility', `article-${article.slug}`), {
         kind: 'article', id: article.slug, status: nextStatus, updatedAt: serverTimestamp(),

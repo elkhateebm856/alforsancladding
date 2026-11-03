@@ -74,6 +74,11 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       id: slug,
       slug,
       content: sanitizeArticleContent(body.content),
+      publishedAt: body.status === 'published'
+        ? currentData.status === 'published'
+          ? currentData.publishedAt || null
+          : FieldValue.serverTimestamp()
+        : null,
       createdAt: currentData.createdAt || FieldValue.serverTimestamp(),
       updatedAt: FieldValue.serverTimestamp(),
     }
@@ -162,6 +167,11 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         id: slug,
         slug,
         status: body.status,
+        publishedAt: body.status === 'published'
+          ? existing.get('status') === 'published'
+            ? existing.get('publishedAt') || null
+            : FieldValue.serverTimestamp()
+          : null,
         updatedAt: FieldValue.serverTimestamp(),
       },
       { merge: true },

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, CalendarDays } from 'lucide-react'
 import { getPublishedArticles } from '@/lib/content-store'
+import { formatRelativeTime } from '@/lib/date-format'
 
 export async function LatestArticlesSection() {
   const articles = (await getPublishedArticles())
@@ -39,6 +40,9 @@ export async function LatestArticlesSection() {
                     month: 'long',
                     day: 'numeric',
                   })
+              const relativePublicationTime = formatRelativeTime(
+                article.publishedAt ?? article.date,
+              )
 
               return (
                 <article
@@ -67,6 +71,11 @@ export async function LatestArticlesSection() {
                         <CalendarDays size={14} aria-hidden="true" />
                         {formattedDate}
                       </time>
+                    )}
+                    {relativePublicationTime && (
+                      <span className="mb-3 inline-block text-xs text-muted-foreground">
+                        نُشر {relativePublicationTime}
+                      </span>
                     )}
                     <h3 className="mb-2 text-lg font-bold leading-7 text-foreground [overflow-wrap:anywhere]">
                       <Link
