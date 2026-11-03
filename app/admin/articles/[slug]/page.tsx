@@ -13,7 +13,11 @@ export default async function EditArticlePage({
   const initialArticle = blogPosts.find((article) => article.slug === slug) || null
   return (
     <AdminAccessGate>
-      <ArticleEditor slug={slug} initialArticle={initialArticle} />
+      <ArticleEditor
+        slug={slug}
+        initialArticle={initialArticle}
+        legacySlugs={blogPosts.map((article) => article.slug)}
+      />
     </AdminAccessGate>
   )
 }

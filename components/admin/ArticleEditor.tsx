@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { doc, getDoc, serverTimestamp, writeBatch } from 'firebase/firestore'
@@ -71,10 +72,13 @@ function getImageAlt(image: string) {
 export function ArticleEditor({
   slug,
   initialArticle,
+  legacySlugs = [],
 }: {
   slug?: string
   initialArticle?: Record<string, unknown> | null
+  legacySlugs?: string[]
 }) {
+  const router = useRouter()
   const [article, setArticle] = useState<ArticleDraft>(emptyArticle)
   const [loading, setLoading] = useState(Boolean(slug))
   const [saving, setSaving] = useState(false)
@@ -232,31 +236,60 @@ export function ArticleEditor({
       if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(payload.slug)) {
         throw new Error('استخدم رابطًا مختصرًا باللغة الإنجليزية وأرقامًا وشرطات فقط.')
       }
+      if (slug && payload.slug !== slug && legacySlugs.includes(payload.slug)) {
+        throw new Error('يوجد مقال بهذا الرابط بالفعل. اختر رابطًا مختصرًا آخر.')
+      }
       if (new TextEncoder().encode(JSON.stringify(payload)).length > 900_000) {
         throw new Error('حجم المقال يتجاوز الحد المسموح به في Firestore.')
       }
-      const articleRef = doc(getFirebaseDb(), 'articles', payload.slug)
-      const existing = await getDoc(articleRef)
+      const db = getFirebaseDb()
+      const articleRef = doc(db, 'articles', payload.slug)
+      const previousArticleRef = slug ? doc(db, 'articles', slug) : null
+      const [existing, previousArticle] = await Promise.all([
+        getDoc(articleRef),
+        previousArticleRef && payload.slug !== slug
+          ? getDoc(previousArticleRef)
+          : Promise.resolve(null),
+      ])
       if (!slug && existing.exists()) {
         throw new Error('يوجد مقال بهذا الرابط بالفعل. افتحه للتعديل بدل إنشاء نسخة.')
       }
-      const batch = writeBatch(getFirebaseDb())
+      if (slug && payload.slug !== slug && existing.exists()) {
+        throw new Error('يوجد مقال بهذا الرابط بالفعل. اختر رابطًا مختصرًا آخر.')
+      }
+      const batch = writeBatch(db)
       batch.set(articleRef, {
         ...payload,
         id: payload.slug,
         slug: payload.slug,
-        createdAt: existing.data()?.createdAt || serverTimestamp(),
+        createdAt: existing.data()?.createdAt || previousArticle?.data()?.createdAt || serverTimestamp(),
         updatedAt: serverTimestamp(),
       }, { merge: true })
-      batch.set(doc(getFirebaseDb(), 'contentVisibility', `article-${payload.slug}`), {
+      batch.set(doc(db, 'contentVisibility', `article-${payload.slug}`), {
         kind: 'article',
         id: payload.slug,
         status: payload.status,
         updatedAt: serverTimestamp(),
       })
+      if (slug && payload.slug !== slug && previousArticleRef) {
+        batch.set(previousArticleRef, {
+          id: slug,
+          slug,
+          status: 'deleted',
+          updatedAt: serverTimestamp(),
+        }, { merge: true })
+        batch.set(doc(db, 'contentVisibility', `article-${slug}`), {
+          kind: 'article',
+          id: slug,
+          status: 'deleted',
+          updatedAt: serverTimestamp(),
+        })
+      }
       await batch.commit()
       setSaved(true)
-      if (!slug) window.location.assign(`/admin/articles/${encodeURIComponent(article.slug)}`)
+      if (!slug || payload.slug !== slug) {
+        router.replace(`/admin/articles/${encodeURIComponent(payload.slug)}`)
+      }
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : 'تعذر حفظ المقال.')
     } finally {
@@ -309,7 +342,7 @@ export function ArticleEditor({
           </label>
           <label className="space-y-2 text-sm font-semibold text-slate-700">
             الرابط المختصر
-            <input required readOnly={Boolean(slug)} dir="ltr" value={article.slug} onChange={(event) => update('slug', event.target.value)} placeholder="article-slug" className={`${fieldClass} text-left`} />
+            <input required dir="ltr" value={article.slug} onChange={(event) => update('slug', event.target.value)} placeholder="article-slug" className={`${fieldClass} text-left`} />
           </label>
           <label className="space-y-2 text-sm font-semibold text-slate-700 md:col-span-2">
             الوصف المختصر
