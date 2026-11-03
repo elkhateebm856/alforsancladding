@@ -287,6 +287,22 @@ export function ArticleEditor({
         {saved && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">تم حفظ المقال بنجاح.</p>}
 
         <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 md:grid-cols-2">
+          <h2 className="text-lg font-bold text-slate-900 md:col-span-2">إعدادات SEO</h2>
+          <label className="space-y-2 text-sm font-semibold text-slate-700">
+            عنوان SEO
+            <input value={article.seoTitle} onChange={(event) => update('seoTitle', event.target.value)} className={fieldClass} />
+          </label>
+          <label className="space-y-2 text-sm font-semibold text-slate-700">
+            الكلمات المفتاحية
+            <input value={article.keywords} onChange={(event) => update('keywords', event.target.value)} className={fieldClass} />
+          </label>
+          <label className="space-y-2 text-sm font-semibold text-slate-700 md:col-span-2">
+            وصف SEO
+            <textarea rows={2} value={article.seoDescription} onChange={(event) => update('seoDescription', event.target.value)} className={fieldClass} />
+          </label>
+        </section>
+
+        <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 md:grid-cols-2">
           <label className="space-y-2 text-sm font-semibold text-slate-700">
             عنوان المقال
             <input required value={article.title} onChange={(event) => update('title', event.target.value)} className={fieldClass} />
@@ -429,22 +445,6 @@ export function ArticleEditor({
               className="mt-4 h-96 w-full rounded-lg border bg-white"
             />
           </details>
-        </section>
-
-        <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 md:grid-cols-2">
-          <h2 className="text-lg font-bold text-slate-900 md:col-span-2">إعدادات SEO</h2>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            عنوان SEO
-            <input value={article.seoTitle} onChange={(event) => update('seoTitle', event.target.value)} className={fieldClass} />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
-            الكلمات المفتاحية
-            <input value={article.keywords} onChange={(event) => update('keywords', event.target.value)} className={fieldClass} />
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700 md:col-span-2">
-            وصف SEO
-            <textarea rows={2} value={article.seoDescription} onChange={(event) => update('seoDescription', event.target.value)} className={fieldClass} />
-          </label>
         </section>
 
         <div className="sticky bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur">
