@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { ArticleShareActions } from '@/components/common/ArticleShareActions'
 import { PublicReviewForm } from '@/components/common/PublicReviewForm'
+import { RelativePublicationTime } from '@/components/common/RelativePublicationTime'
 import { Hero } from '@/components/common/Hero'
 import {
   getPublishedArticle,
@@ -14,7 +15,6 @@ import {
   sanitizeArticleContent,
 } from '@/lib/content-store'
 import { SITE_NAME } from '@/lib/constants'
-import { formatRelativeTime } from '@/lib/date-format'
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>
@@ -95,7 +95,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   const relatedPosts = (await getPublishedArticles())
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3)
-  const relativePublicationTime = formatRelativeTime(post.publishedAt ?? post.date)
 
   return (
     <>
@@ -144,11 +143,11 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       day: 'numeric',
                     })}
                   </time>
-                  {relativePublicationTime && (
-                    <span aria-label={`نُشر ${relativePublicationTime}`}>
-                      ({relativePublicationTime})
-                    </span>
-                  )}
+                  <RelativePublicationTime
+                    value={post.publishedAt ?? post.date}
+                    prefix="("
+                    suffix=")"
+                  />
                 </div>
               </div>
             </div>

@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, CalendarDays } from 'lucide-react'
+import { RelativePublicationTime } from '@/components/common/RelativePublicationTime'
 import { getPublishedArticles } from '@/lib/content-store'
-import { formatRelativeTime } from '@/lib/date-format'
 
 export async function LatestArticlesSection() {
   const articles = (await getPublishedArticles())
@@ -40,10 +40,6 @@ export async function LatestArticlesSection() {
                     month: 'long',
                     day: 'numeric',
                   })
-              const relativePublicationTime = formatRelativeTime(
-                article.publishedAt ?? article.date,
-              )
-
               return (
                 <article
                   key={article.slug}
@@ -72,11 +68,11 @@ export async function LatestArticlesSection() {
                         {formattedDate}
                       </time>
                     )}
-                    {relativePublicationTime && (
-                      <span className="mb-3 inline-block text-xs text-muted-foreground">
-                        نُشر {relativePublicationTime}
-                      </span>
-                    )}
+                    <RelativePublicationTime
+                      value={article.publishedAt ?? article.date}
+                      prefix="نُشر "
+                      className="mb-3 inline-block text-xs text-muted-foreground"
+                    />
                     <h3 className="mb-2 text-lg font-bold leading-7 text-foreground [overflow-wrap:anywhere]">
                       <Link
                         href={`/blog/${article.slug}`}
