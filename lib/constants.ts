@@ -3,7 +3,7 @@ export const ADMIN_FIREBASE_EMAIL = 'alforsancladding@gmail.com'
 export const ADMIN_FIREBASE_UID = 'KS2tzaUCrachoXvCoJUeDRYrQt32'
 
 export const SITE_DESCRIPTION =
-  'شركة متخصصة في تركيب الواجهات الزجاجية والكلادينج بأعلى مستويات الجودة والاحترافية'
+  'شركة متخصصة في تركيب الواجهات الزجاجية والكلادينج والزجاج الذكي بأعلى مستويات الجودة والاحترافية'
 
 export const SITE_URL = 'https://www.alforsancladding.com'
 

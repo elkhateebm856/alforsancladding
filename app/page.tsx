@@ -11,6 +11,7 @@ import { ScrollReveal } from '@/components/common/ScrollReveal'
 import { HeroSlider } from '@/components/home/HeroSlider'
 import { AboutSection } from '@/components/home/AboutSection'
 import { StatsSection } from '@/components/home/StatsSection'
+import { ModernFeaturesSection } from '@/components/home/ModernFeaturesSection'
 import { ServicesSection } from '@/components/home/ServicesSection'
 import { TeamSection } from '@/components/home/TeamSection'
 import { PortfolioSection } from '@/components/home/PortfolioSection'
@@ -34,11 +35,14 @@ export const metadata: Metadata = {
   title: `${SITE_NAME} | واجهات زجاجية وكلادينج احترافي بالمنصورة`,
 
   description:
-    'شركة الفرسان متخصصة في تنفيذ وتركيب واجهات الكلادينج والواجهات الزجاجية والكيرتن وول وأعمال الألمنيوم والمطابخ في المنصورة والدقهلية والقاهرة بأعلى جودة.',
+    'شركة الفرسان متخصصة في تنفيذ واجهات الكلادينج والزجاج والكيرتن وول والزجاج الذكي المتغير وأعمال الألمنيوم والمطابخ في المنصورة والدقهلية والقاهرة.',
 
   keywords: [
     'الفرسان',
     'واجهات زجاجية',
+    'الزجاج الذكي',
+    'Smart Glass',
+    'زجاج ذكي متغير الشفافية',
     'واجهات زجاجية بالمنصورة',
     'كلادينج',
     'كلادينج المنصورة',
@@ -71,7 +75,7 @@ export const metadata: Metadata = {
       'الفرسان للواجهات الزجاجية والكلادينج بالمنصورة',
 
     description:
-      'تنفيذ وتركيب واجهات الكلادينج والواجهات الزجاجية والكيرتن وول وأعمال الألمنيوم والمطابخ بأعلى جودة.',
+      'تنفيذ وتركيب واجهات الكلادينج والزجاج والكيرتن وول والزجاج الذكي وأعمال الألمنيوم والمطابخ بأعلى جودة.',
 
     images: [
       {
@@ -111,14 +115,19 @@ export default function Home() {
           <HeroSlider />
         </ScrollReveal>
 
-        {/* About Section */}
-        <ScrollReveal className="border-b border-primary/40">
-          <AboutSection />
-        </ScrollReveal>
-
         {/* Stats Section */}
         <ScrollReveal className="border-b border-primary/40">
           <StatsSection />
+        </ScrollReveal>
+
+        {/* Modern Features */}
+        <ScrollReveal className="border-b border-primary/40">
+          <ModernFeaturesSection />
+        </ScrollReveal>
+
+        {/* About Section */}
+        <ScrollReveal className="border-b border-primary/40">
+          <AboutSection />
         </ScrollReveal>
 
         {/* Services Section */}

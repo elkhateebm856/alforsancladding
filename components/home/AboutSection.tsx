@@ -16,10 +16,11 @@ export function AboutSection() {
           {/* Image */}
           <div className="relative h-96 overflow-hidden rounded-lg shadow-lg ring-1 ring-primary/20 md:h-[450px]">
             <Image
-              src="/من نحن.png"
-              alt="واجهات زجاجية احترافية"
+              src="/واجهات كلادينج للمباني الإدارية.png"
+              alt="مبنى إداري مكتمل بتشطيب واجهات زجاجية وكلادينج وإضاءة معمارية"
               fill
-              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
 

@@ -1,192 +1,71 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { FacadeScene } from '@/components/home/FacadeScene'
-
-const slides = [
-  {
-    id: 1,
-    title: 'الفرسان للواجهات الزجاجية والكلادينج',
-    subtitle:
-      'متخصصون في تنفيذ وتركيب الواجهات الزجاجية والكلادينج بأعلى معايير الجودة والدقة.',
-    image: '/hero3.png',
-  },
-  {
-    id: 2,
-    title: 'واجهات زجاجية عصرية',
-    subtitle:
-      'تنفيذ Curtain Wall وStructural Glazing وSpider Glass بأحدث التقنيات والتصميمات الحديثة.',
-    image: '/2b8b48e5-4d5e-4af7-9132-e33fb6e046a2.png',
-  },
-  {
-    id: 3,
-    title: 'واجهات كلادينج احترافية',
-    subtitle:
-      'تنفيذ جميع أنواع واجهات الكلادينج للمحلات والمولات والفيلات والمباني التجارية بأفضل الخامات.',
-    image: '/4a9de293-e977-465e-af76-ccf72e1d4f4b.png',
-  },
-]
+import { ArrowLeft, ArrowUpLeft, Check } from 'lucide-react'
+import { FacadeShowcase } from '@/components/home/FacadeShowcase'
 
 export function HeroSlider() {
-  const [current, setCurrent] = useState(0)
-  const [autoPlay, setAutoPlay] = useState(true)
-  const prefersReducedMotion = useReducedMotion()
-
-  useEffect(() => {
-    if (!autoPlay || prefersReducedMotion) return
-
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [autoPlay, prefersReducedMotion])
-
-  const goToPrevious = () => {
-    setCurrent((prev) => (prev - 1 + slides.length) % slides.length)
-    setAutoPlay(false)
-  }
-
-  const goToNext = () => {
-    setCurrent((prev) => (prev + 1) % slides.length)
-    setAutoPlay(false)
-  }
-
   return (
-    <section className="relative h-96 md:h-[500px] w-full overflow-hidden">
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 ${
-            prefersReducedMotion ? '' : 'transition-opacity duration-700'
-          } ${
-            index === current
-              ? 'opacity-100 z-20 pointer-events-auto'
-              : 'opacity-0 z-0 pointer-events-none'
-          }`}
-        >
-          <Image
-            src={slide.image}
-            alt={slide.title}
-            fill
-            priority={index === current}
-            className="object-cover"
-          />
+    <section className="relative overflow-hidden bg-[#f7f5ef]">
+      <div className="pointer-events-none absolute -right-32 -top-40 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
 
-          <div className="absolute inset-0 bg-black/50" />
-          {index === current && (
-            <FacadeScene className="pointer-events-none absolute bottom-0 left-0 z-10 h-64 w-[74%] opacity-80 sm:h-80 md:inset-y-0 md:h-full md:w-[54%] md:opacity-95" />
-          )}
+      <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 md:min-h-[620px] md:grid-cols-2 md:gap-x-10 md:gap-y-4 md:py-20 lg:px-8">
+        <div className="relative z-10 text-right md:col-start-1 md:row-start-1">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white/80 px-4 py-2 text-sm font-semibold text-primary shadow-sm">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            خبرة هندسية وجودة تُرى في كل تفصيلة
+          </div>
 
-          {index === current && (
-            <motion.div
-              key={slide.id}
-              initial={{
-                opacity: 0,
-                y: prefersReducedMotion ? 0 : 20,
-              }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.55,
-                ease: 'easeOut',
-                staggerChildren: prefersReducedMotion ? 0 : 0.12,
-              }}
-              className="absolute inset-0 z-30 flex flex-col items-center justify-center px-4 text-center md:items-start md:pl-[48%] md:pr-[8%] md:text-right"
-            >
-              <motion.h2
-                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: prefersReducedMotion ? 0 : 0.45 }}
-                className="mb-4 text-3xl font-bold text-white sm:text-4xl md:text-5xl"
-              >
-                {slide.title}
-              </motion.h2>
+          <h1 className="mb-6 text-balance text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
+            واجهات تصنع
+            <span className="block text-primary">انطباعًا يدوم</span>
+          </h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: prefersReducedMotion ? 0 : 0.45,
-                  delay: prefersReducedMotion ? 0 : 0.1,
-                }}
-                className="mb-8 max-w-2xl text-base text-gray-100 sm:text-lg md:text-xl"
-              >
-                {slide.subtitle}
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: prefersReducedMotion ? 0 : 0.45,
-                  delay: prefersReducedMotion ? 0 : 0.2,
-                }}
-                className="flex flex-col gap-3 sm:flex-row sm:items-center"
-              >
-                <a
-                  href="tel:+201094656501"
-                  className="rounded-full bg-primary px-8 py-3 font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-primary/90"
-                >
-                  اتصل الآن
-                </a>
-
-                <a
-                  href="https://wa.me/201094656501"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full border-2 border-white px-8 py-3 font-semibold text-white transition hover:bg-white hover:text-primary"
-                >
-                  تواصل عبر واتساب
-                </a>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/80 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur-sm transition hover:bg-white hover:text-primary"
-                >
-                  اكتشف خدماتنا
-                  <ArrowLeft size={17} aria-hidden="true" />
-                </Link>
-              </motion.div>
-            </motion.div>
-          )}
         </div>
-      ))}
 
-      <button
-        onClick={goToPrevious}
-        className="absolute right-4 top-1/2 z-40 -translate-y-1/2 rounded-full bg-white/30 p-2 text-white transition hover:bg-white/50"
-        aria-label="السابق"
-      >
-        <ChevronRight size={24} />
-      </button>
+        <div className="relative mx-auto w-full max-w-[560px] md:col-start-2 md:row-span-2 md:row-start-1">
+          <div className="absolute -inset-4 rounded-[2rem] bg-primary/15 blur-2xl" />
+          <div className="relative rounded-[1.75rem] border border-primary/30 bg-white p-3 shadow-2xl shadow-slate-900/20">
+            <FacadeShowcase />
+          </div>
+        </div>
 
-      <button
-        onClick={goToNext}
-        className="absolute left-4 top-1/2 z-40 -translate-y-1/2 rounded-full bg-white/30 p-2 text-white transition hover:bg-white/50"
-        aria-label="التالي"
-      >
-        <ChevronLeft size={24} />
-      </button>
+        <div className="relative z-10 text-right md:col-start-1 md:row-start-2">
+          <p className="mb-6 max-w-xl text-lg leading-9 text-slate-600 sm:text-xl">
+            في الفرسان نصمم وننفذ الواجهات الزجاجية والكلادينج والكيرتن وول،
+            ونقدم الزجاج الذكي الذي يغيّر درجة شفافيته لخصوصية وراحة أكبر.
+          </p>
 
-      <div className="absolute bottom-6 left-1/2 z-40 flex -translate-x-1/2 gap-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setCurrent(index)
-              setAutoPlay(false)
-            }}
-            className={`transition-all ${
-              index === current
-                ? 'h-2 w-8 rounded-full bg-primary'
-                : 'h-2 w-2 rounded-full bg-white/60 hover:bg-white'
-            }`}
-            aria-label={`اذهب إلى الشريحة ${index + 1}`}
-          />
-        ))}
+          <div className="mb-7 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-slate-700 sm:text-base">
+            <span className="inline-flex items-center gap-2">
+              <Check size={18} className="text-primary" aria-hidden="true" />
+              تصميم وتنفيذ متكامل
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Check size={18} className="text-primary" aria-hidden="true" />
+              حلول للمباني والمحلات
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Check size={18} className="text-primary" aria-hidden="true" />
+              عرض متكامل للنهار والليل والزجاج الذكي
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/services"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:bg-primary/90"
+            >
+              اكتشف خدماتنا
+              <ArrowLeft size={18} aria-hidden="true" />
+            </Link>
+            <a
+              href="tel:+201094656501"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-7 py-3 font-bold text-slate-800 transition hover:border-primary hover:text-primary"
+            >
+              تواصل معنا
+              <ArrowUpLeft size={18} aria-hidden="true" />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   )

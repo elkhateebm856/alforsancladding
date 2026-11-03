@@ -12,8 +12,9 @@ import { SITE_NAME } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: `الخدمات | ${SITE_NAME}`,
-  description: 'تصفح جميع خدماتنا المتخصصة في الواجهات الزجاجية والكلادينج',
-  keywords: ['خدمات', 'واجهات', 'كلادينج', 'زجاج'],
+  description:
+    'تصفح خدمات الفرسان في واجهات الكلادينج والزجاج والكيرتن وول والزجاج الذكي المتغير.',
+  keywords: ['خدمات', 'واجهات', 'كلادينج', 'زجاج', 'الزجاج الذكي', 'Smart Glass'],
   alternates: {
     canonical: 'https://www.alforsancladding.com/services',
   },

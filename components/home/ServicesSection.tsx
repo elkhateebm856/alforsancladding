@@ -4,7 +4,11 @@ import { ArrowLeft } from 'lucide-react'
 import { services } from '@/data/services'
 
 export function ServicesSection() {
-  const featuredServices = services.slice(0, 6)
+  const smartGlassService = services.find((service) => service.slug === 'smart-glass')
+  const featuredServices = [
+    ...services.slice(0, 5),
+    ...(smartGlassService ? [smartGlassService] : []),
+  ]
 
   return (
     <section id="services" className="bg-white py-16 md:py-24">
@@ -15,7 +19,7 @@ export function ServicesSection() {
             خدماتنا المتميزة
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            نقدم مجموعة شاملة من الخدمات المتخصصة في الواجهات الزجاجية والكلادينج
+            من الكلادينج والواجهات الزجاجية إلى الزجاج الذكي المتغير، نقدم حلولًا متكاملة لمشروعك
           </p>
         </div>
 
