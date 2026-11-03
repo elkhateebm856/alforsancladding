@@ -33,6 +33,14 @@ interface Testimonial {
   sourcePath?: string
 }
 
+interface ContentPage {
+  id: string
+  slug: string
+  title: string
+  excerpt: string
+  status: string
+}
+
 interface ArticleResponse {
   articles: Article[]
   total: number
@@ -50,12 +58,13 @@ export function AdminDashboard({
   legacyArticles: Article[]
   legacyTestimonials: Testimonial[]
 }) {
-  const [tab, setTab] = useState<'articles' | 'testimonials'>('articles')
+  const [tab, setTab] = useState<'articles' | 'pages' | 'testimonials'>('articles')
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
   const [category, setCategory] = useState('all')
   const [page, setPage] = useState(1)
   const [articleData, setArticleData] = useState<ArticleResponse | null>(null)
+  const [pages, setPages] = useState<ContentPage[]>([])
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
@@ -89,6 +98,19 @@ export function AdminDashboard({
           pageSize,
           categories: [...new Set(allArticles.map((article) => article.category).filter((value): value is string => Boolean(value)))],
         })
+      } else if (tab === 'pages') {
+        const snapshot = await getDocs(collection(getFirebaseDb(), 'pages'))
+        const allPages = snapshot.docs
+          .map((item) => {
+            const record = item.data() as ContentPage
+            return { ...record, id: item.id, slug: record.slug || item.id }
+          })
+          .filter((page) => page.status !== 'deleted')
+        setPages(allPages.filter((page) =>
+          (status === 'all' || page.status === status) &&
+          (!search || [page.title, page.slug, page.excerpt]
+            .some((value) => String(value || '').toLowerCase().includes(search.toLowerCase()))),
+        ).sort((first, second) => first.title.localeCompare(second.title)))
       } else {
         const snapshot = await getDocs(collection(getFirebaseDb(), 'testimonials'))
         const records = new Map(legacyTestimonials.map((item) => [item.id, item]))
@@ -155,6 +177,32 @@ export function AdminDashboard({
       await loadData()
     } catch (deleteError) {
       setError(deleteError instanceof Error ? deleteError.message : 'تعذر حذف المقال.')
+    }
+  }
+
+  async function updateContentPageStatus(page: ContentPage) {
+    const nextStatus = page.status === 'published' ? 'draft' : 'published'
+    try {
+      await setDoc(doc(getFirebaseDb(), 'pages', page.slug), {
+        status: nextStatus,
+        updatedAt: serverTimestamp(),
+      }, { merge: true })
+      await loadData()
+    } catch (updateError) {
+      setError(updateError instanceof Error ? updateError.message : 'تعذر تحديث حالة الصفحة.')
+    }
+  }
+
+  async function deleteContentPage(page: ContentPage) {
+    if (!window.confirm(`هل تريد نقل صفحة «${page.title}» إلى المحذوفات؟`)) return
+    try {
+      await setDoc(doc(getFirebaseDb(), 'pages', page.slug), {
+        status: 'deleted',
+        updatedAt: serverTimestamp(),
+      }, { merge: true })
+      await loadData()
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : 'تعذر حذف الصفحة.')
     }
   }
 
@@ -234,6 +282,13 @@ export function AdminDashboard({
             </button>
             <button
               type="button"
+              onClick={() => { setTab('pages'); setPage(1); setStatus('all') }}
+              className={`rounded-xl px-4 py-2 text-sm font-bold ${tab === 'pages' ? 'bg-white text-primary shadow-sm' : 'text-slate-600'}`}
+            >
+              الصفحات
+            </button>
+            <button
+              type="button"
               onClick={() => { setTab('testimonials'); setPage(1); setStatus('pending') }}
               className={`rounded-xl px-4 py-2 text-sm font-bold ${tab === 'testimonials' ? 'bg-white text-primary shadow-sm' : 'text-slate-600'}`}
             >
@@ -246,6 +301,13 @@ export function AdminDashboard({
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-primary/90"
             >
               <Plus size={18} /> مقال جديد
+            </Link>
+          ) : tab === 'pages' ? (
+            <Link
+              href="/admin/pages/new"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-primary/90"
+            >
+              <Plus size={18} /> صفحة جديدة
             </Link>
           ) : (
             <button
@@ -278,7 +340,7 @@ export function AdminDashboard({
             <input
               value={search}
               onChange={(event) => { setSearch(event.target.value); setPage(1) }}
-              placeholder={tab === 'articles' ? 'ابحث بالعنوان أو الرابط...' : 'ابحث بالاسم أو نص التقييم...'}
+              placeholder={tab === 'testimonials' ? 'ابحث بالاسم أو نص التقييم...' : 'ابحث بالعنوان أو الرابط...'}
               className="w-full rounded-xl border border-slate-200 bg-white py-3 pe-11 ps-4 outline-none focus:border-primary"
             />
           </label>
@@ -288,7 +350,7 @@ export function AdminDashboard({
             className="rounded-xl border border-slate-200 bg-white px-4 py-3"
           >
             <option value="all">كل الحالات</option>
-            {tab === 'articles' ? (
+            {tab !== 'testimonials' ? (
               <>
                 <option value="published">منشور</option>
                 <option value="draft">مسودة</option>
@@ -357,6 +419,28 @@ export function AdminDashboard({
               </div>
             </div>
           </div>
+        ) : tab === 'pages' ? (
+          <div className="space-y-3">
+            {pages.map((contentPage) => (
+              <article key={contentPage.slug} className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center">
+                <div className="min-w-0 flex-1">
+                  <h2 className="truncate font-bold text-slate-900">{contentPage.title}</h2>
+                  <p className="mt-1 truncate text-sm text-slate-500" dir="ltr">/{contentPage.slug}</p>
+                  <p className="mt-2 line-clamp-2 text-sm text-slate-600">{contentPage.excerpt}</p>
+                  <span className={`mt-2 inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${contentPage.status === 'published' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
+                    {contentPage.status === 'published' ? 'منشورة' : 'مسودة'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Link href={`/admin/pages/${encodeURIComponent(contentPage.slug)}`} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">تعديل</Link>
+                  {contentPage.status === 'published' && <Link href={`/${contentPage.slug}`} target="_blank" className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">معاينة</Link>}
+                  <button type="button" onClick={() => void updateContentPageStatus(contentPage)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold hover:bg-slate-50">{contentPage.status === 'published' ? 'إلغاء النشر' : 'نشر'}</button>
+                  <button type="button" onClick={() => void deleteContentPage(contentPage)} className="rounded-lg border border-red-100 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">حذف</button>
+                </div>
+              </article>
+            ))}
+            {!pages.length && <p className="rounded-2xl bg-white p-10 text-center text-slate-500">لا توجد صفحات مطابقة.</p>}
+          </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {testimonials.map((testimonial) => (
@@ -391,7 +475,7 @@ export function AdminDashboard({
 
         <div className="mt-8 flex items-center gap-2 text-xs text-slate-500">
           <FileText size={15} />
-          المقالات القديمة ستظهر من المصدر المحلي حتى ترحيلها إلى Firestore.
+          المقالات والصفحات المنشورة تُضاف تلقائيًا إلى خريطة الموقع.
         </div>
       </div>
     </main>

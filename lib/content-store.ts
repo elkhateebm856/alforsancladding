@@ -39,6 +39,21 @@ export interface ArticleRecord {
   [key: string]: unknown
 }
 
+export interface ContentPageRecord {
+  id: string
+  slug: string
+  title: string
+  excerpt: string
+  content: string
+  seoTitle?: string
+  seoDescription?: string
+  keywords?: string[]
+  status: 'draft' | 'published' | 'deleted'
+  date?: string
+  updatedAt?: unknown
+  [key: string]: unknown
+}
+
 export interface TestimonialRecord {
   id: string
   name: string
@@ -207,6 +222,46 @@ export async function getPublishedArticle(slug: string) {
   return legacy
     ? ({ ...legacy, id: String(legacy.id), status: 'published' } as ArticleRecord)
     : null
+}
+
+export async function getPublishedPages(): Promise<ContentPageRecord[]> {
+  if (isFirebaseAdminConfigured()) {
+    const snapshot = await adminDb()
+      .collection('pages')
+      .where('status', '==', 'published')
+      .get()
+    return snapshot.docs.map((document) => ({
+      ...toPlainRecord<ContentPageRecord>(document),
+      slug: String(document.get('slug') || document.id),
+    }))
+  }
+
+  try {
+    return await getPublicDocuments<ContentPageRecord>('pages', 'published')
+  } catch (error) {
+    console.error('Public Firestore page read failed:', error)
+    return []
+  }
+}
+
+export async function getPublishedPage(slug: string) {
+  if (isFirebaseAdminConfigured()) {
+    const snapshot = await adminDb().collection('pages').doc(slug).get()
+    if (!snapshot.exists || snapshot.get('status') !== 'published') return null
+    return {
+      ...snapshot.data(),
+      id: snapshot.id,
+      slug: String(snapshot.get('slug') || snapshot.id),
+    } as ContentPageRecord
+  }
+
+  try {
+    const page = await getPublicDocument<ContentPageRecord>('pages', slug)
+    return page?.status === 'published' ? page : null
+  } catch (error) {
+    console.error(`Public Firestore page read failed for "${slug}":`, error)
+    return null
+  }
 }
 
 export async function getAdminTestimonials(): Promise<TestimonialRecord[]> {

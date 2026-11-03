@@ -365,13 +365,6 @@ export function ArticleEditor({
             <input type="date" value={article.date.slice(0, 10)} onChange={(event) => update('date', event.target.value)} className={fieldClass} />
           </label>
           <label className="space-y-2 text-sm font-semibold text-slate-700">
-            الحالة
-            <select value={article.status} onChange={(event) => update('status', event.target.value as ArticleDraft['status'])} className={fieldClass}>
-              <option value="draft">مسودة</option>
-              <option value="published">منشور</option>
-            </select>
-          </label>
-          <label className="space-y-2 text-sm font-semibold text-slate-700">
             رابط الصورة الرئيسية
             <input dir="ltr" value={article.image} onChange={(event) => update('image', event.target.value)} className={`${fieldClass} text-left`} />
           </label>
@@ -482,9 +475,18 @@ export function ArticleEditor({
         </section>
 
         <div className="sticky bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur">
-          <Link href="/admin" className="rounded-xl border px-5 py-3 text-sm font-semibold">إلغاء والعودة</Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/admin" className="rounded-xl border px-5 py-3 text-sm font-semibold">إلغاء والعودة</Link>
+            <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              الحالة قبل الحفظ
+              <select value={article.status} onChange={(event) => update('status', event.target.value as ArticleDraft['status'])} className="rounded-xl border border-slate-200 bg-white px-3 py-3 outline-none focus:border-primary focus:ring-4 focus:ring-primary/10">
+                <option value="draft">مسودة</option>
+                <option value="published">منشور</option>
+              </select>
+            </label>
+          </div>
           <button type="submit" disabled={saving || uploading} className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-white disabled:cursor-wait disabled:opacity-50">
-            <Save size={18} /> {saving ? 'جارٍ الحفظ...' : 'حفظ المقال'}
+            <Save size={18} /> {saving ? 'جارٍ الحفظ...' : article.status === 'published' ? 'نشر المقال' : 'حفظ كمسودة'}
           </button>
         </div>
       </form>

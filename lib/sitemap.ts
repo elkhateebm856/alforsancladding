@@ -8,6 +8,12 @@ interface SitemapArticle {
   updatedAt?: unknown
 }
 
+interface SitemapContentPage {
+  slug: string
+  date?: string
+  updatedAt?: unknown
+}
+
 interface SitemapPage {
   url: string
   changefreq: string
@@ -16,6 +22,27 @@ interface SitemapPage {
 }
 
 const legacyArticles: SitemapArticle[] = blogPosts
+
+function isFirestoreTimestamp(value: unknown): value is { toDate: () => Date } {
+  return Boolean(
+    value &&
+    typeof value === 'object' &&
+    'toDate' in value &&
+    typeof value.toDate === 'function',
+  )
+}
+
+function getLastmod(record: { date?: string; updatedAt?: unknown }) {
+  const timestamp = isFirestoreTimestamp(record.updatedAt)
+    ? record.updatedAt.toDate()
+    : typeof record.updatedAt === 'string' || record.updatedAt instanceof Date
+      ? record.updatedAt
+      : record.date
+  const parsedDate = timestamp ? new Date(timestamp) : null
+  return parsedDate && !Number.isNaN(parsedDate.getTime())
+    ? parsedDate.toISOString()
+    : undefined
+}
 
 export const staticPages = [
   { url: '/', changefreq: 'weekly', priority: '1.0' },
@@ -27,7 +54,10 @@ export const staticPages = [
   { url: '/contact', changefreq: 'monthly', priority: '0.8' },
 ]
 
-export function getSitemapUrls(articles: SitemapArticle[] = legacyArticles): SitemapPage[] {
+export function getSitemapUrls(
+  articles: SitemapArticle[] = legacyArticles,
+  contentPages: SitemapContentPage[] = [],
+): SitemapPage[] {
   const servicePages = services.map((service) => ({
     url: `/services/${service.slug}`,
     changefreq: 'monthly' as const,
@@ -37,19 +67,24 @@ export function getSitemapUrls(articles: SitemapArticle[] = legacyArticles): Sit
   const blogPages = articles
     .filter((post) => Boolean(post.slug))
     .map((post) => {
-      const timestamp =
-        typeof post.updatedAt === 'string' || post.updatedAt instanceof Date
-          ? post.updatedAt
-          : post.date
-      const parsedDate = timestamp ? new Date(timestamp) : null
-
+      const lastmod = getLastmod(post)
       return {
         url: `/blog/${post.slug}`,
         changefreq: 'weekly' as const,
         priority: '0.7',
-        ...(parsedDate && !Number.isNaN(parsedDate.getTime())
-          ? { lastmod: parsedDate.toISOString() }
-          : {}),
+        ...(lastmod ? { lastmod } : {}),
+      }
+    })
+
+  const customPages = contentPages
+    .filter((page) => Boolean(page.slug))
+    .map((page) => {
+      const lastmod = getLastmod(page)
+      return {
+        url: `/${page.slug}`,
+        changefreq: 'monthly' as const,
+        priority: '0.7',
+        ...(lastmod ? { lastmod } : {}),
       }
     })
 
@@ -57,6 +92,7 @@ export function getSitemapUrls(articles: SitemapArticle[] = legacyArticles): Sit
     ...staticPages.map((page) => ({ ...page, url: page.url })),
     ...servicePages,
     ...blogPages,
+    ...customPages,
   ]
 
   const seen = new Set<string>()
@@ -77,8 +113,11 @@ function escapeXml(value: string) {
     .replaceAll("'", '&apos;')
 }
 
-export function buildSitemapXml(articles: SitemapArticle[] = legacyArticles) {
-  const urls = getSitemapUrls(articles)
+export function buildSitemapXml(
+  articles: SitemapArticle[] = legacyArticles,
+  contentPages: SitemapContentPage[] = [],
+) {
+  const urls = getSitemapUrls(articles, contentPages)
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

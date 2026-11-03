@@ -13,6 +13,11 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    match /pages/{slug} {
+      allow read: if isAdmin() || resource.data.status == 'published';
+      allow create, update, delete: if isAdmin();
+    }
+
     match /testimonials/{id} {
       allow read: if isAdmin() || resource.data.status == 'approved';
       allow create: if isAdmin() || (request.resource.data.keys().hasAll([
