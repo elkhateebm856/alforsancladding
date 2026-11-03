@@ -186,10 +186,10 @@ export function Footer() {
         </div>
         <div className="mt-3 flex justify-center">
           <a
-            href="https://wa.me/201062672771"
+            href="https://wa.me/201062672771?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="التواصل عبر واتساب مع Top1Markting"
+            aria-label="أريد استفسار عبر واتساب مع Top1Markting"
             className="group inline-flex items-center gap-2.5 rounded-full bg-white py-2 ps-3 pe-4 shadow-[0_4px_18px_rgba(0,0,0,0.25)] ring-1 ring-black/5 transition-transform hover:-translate-y-0.5 touch-manipulation"
           >
             <Image
@@ -199,7 +199,7 @@ export function Footer() {
               height={24}
               className="h-6 w-auto"
             />
-            <span className="text-xs text-slate-500 sm:text-sm">تنفيذ</span>
+            <span className="text-xs text-slate-500 sm:text-sm">أريد استفسار</span>
             <span
               dir="ltr"
               className={`${spaceGrotesk.className} text-sm font-bold text-[#0a285f] sm:text-base`}
