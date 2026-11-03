@@ -186,10 +186,10 @@ export function Footer() {
         </div>
         <div className="mt-3 flex justify-center">
           <a
-            href="https://www.top1markting.com"
+            href="https://wa.me/201062672771"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="الموقع من تنفيذ Top1Markting"
+            aria-label="التواصل عبر واتساب مع Top1Markting"
             className="group inline-flex items-center gap-2.5 rounded-full bg-white py-2 ps-3 pe-4 shadow-[0_4px_18px_rgba(0,0,0,0.25)] ring-1 ring-black/5 transition-transform hover:-translate-y-0.5 touch-manipulation"
           >
             <Image
