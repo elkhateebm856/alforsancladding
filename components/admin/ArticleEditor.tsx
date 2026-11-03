@@ -386,7 +386,7 @@ export function ArticleEditor({
         <section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5">
           <div>
             <h2 className="mb-1 text-lg font-bold text-slate-900">محتوى المقال</h2>
-            <p className="text-sm text-slate-500">يُحفظ HTML القديم كما هو مع تعقيم الوسوم الخطرة. استخدم الأدوات لإضافة تنسيق دون إتلاف الصور الموجودة.</p>
+            <p className="text-sm text-slate-500">الصق HTML منسقًا على عدة أسطر أو اكتبه مباشرة؛ تُحفظ فواصل الأسطر في المصدر وتظهر المعاينة بعد تعقيم الوسوم الخطرة. استخدم الأدوات لإضافة تنسيق دون إتلاف الصور الموجودة.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {[
@@ -430,6 +430,7 @@ export function ArticleEditor({
             required
             rows={24}
             dir="ltr"
+            wrap="off"
             value={article.content}
             onChange={(event) => update('content', event.target.value)}
             className={`${fieldClass} font-mono text-sm leading-6`}
