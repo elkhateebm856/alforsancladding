@@ -18,7 +18,7 @@ export function ServicesSection() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
+          {services.slice(0, 6).map((service) => (
             <Link
               key={service.id}
               href={`/services/${service.slug}`}
