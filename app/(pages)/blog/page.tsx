@@ -1,12 +1,12 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Calendar, User, ArrowLeft } from 'lucide-react'
+import { Calendar, User, ArrowLeft, BookOpen } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ContactButtons } from '@/components/common/ContactButtons'
 import { PublicReviewForm } from '@/components/common/PublicReviewForm'
-import { Hero } from '@/components/common/Hero'
+import { ScrollReveal } from '@/components/common/ScrollReveal'
 import { RelativePublicationTime } from '@/components/common/RelativePublicationTime'
 import { getPublishedArticles } from '@/lib/content-store'
 import { SITE_NAME } from '@/lib/constants'
@@ -14,7 +14,7 @@ import { SITE_NAME } from '@/lib/constants'
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: `المدونة | ${SITE_NAME}`,
+  title: 'المدونة',
   description: 'اقرأ أحدث المقالات والنصائح عن الواجهات الزجاجية والكلادينج',
   alternates: {
     canonical: 'https://www.alforsancladding.com/blog',
@@ -65,22 +65,33 @@ export default async function BlogPage() {
     <>
       <Header />
       <main className="bg-background">
-        {/* Hero */}
-        <Hero
-          title="المدونة"
-          subtitle="اقرأ أحدث المقالات والنصائح من خبرائنا"
-          backgroundImage="/hero1.jpg"
-        />
+        <section className="relative overflow-hidden border-b border-primary/20 bg-[#f7f5ef] py-14 md:py-20">
+          <div className="pointer-events-none absolute -right-28 -top-32 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-40 -left-20 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
+          <ScrollReveal className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white/80 px-4 py-2 text-sm font-bold text-[#8f7016] shadow-sm">
+              <BookOpen size={17} aria-hidden="true" />
+              معرفة تساعدك على الاختيار
+            </span>
+            <h1 className="mb-4 text-4xl font-extrabold text-slate-900 md:text-5xl">
+              مدونة <span className="text-primary">الفرسان</span>
+            </h1>
+            <p className="mx-auto max-w-2xl text-base leading-8 text-slate-600 md:text-lg">
+              مقالات ونصائح عملية عن الواجهات الزجاجية والكلادينج والزجاج الذكي،
+              من خبرة فريقنا في تنفيذ المشاريع.
+            </p>
+          </ScrollReveal>
+        </section>
 
         {/* Blog Posts */}
-        <section className="py-16 md:py-24">
+        <section className="bg-white py-14 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {sortedBlogPosts.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center shadow-sm">
-                <h2 className="text-2xl font-bold text-foreground mb-3">
+              <div className="rounded-3xl border border-dashed border-slate-300 bg-[#f7f5ef] p-10 text-center shadow-sm">
+                <h2 className="mb-3 text-2xl font-bold text-slate-900">
                   لا توجد مقالات حالياً
                 </h2>
-                <p className="text-muted-foreground text-lg leading-8">
+                <p className="text-lg leading-8 text-slate-600">
                   سنضيف مقالات جديدة ومفيدة عن الواجهات الزجاجية والكلادينج قريبًا.
                 </p>
               </div>
@@ -88,38 +99,47 @@ export default async function BlogPage() {
               <>
                 {/* Featured Post */}
                 {sortedBlogPosts.length > 0 && (
-                  <div className="mb-16">
-                    <h2 className="text-2xl font-bold text-foreground mb-8">
+                  <ScrollReveal className="mb-16">
+                    <h2 className="mb-7 text-2xl font-bold text-slate-900 md:text-3xl">
                       آخر المقالات
                     </h2>
-                    <div className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="group overflow-hidden rounded-3xl border border-slate-200 bg-[#f7f5ef] shadow-[0_16px_44px_rgba(31,41,55,0.10)] transition-shadow duration-300 hover:shadow-[0_22px_55px_rgba(31,41,55,0.16)]">
+                      <div className="grid grid-cols-1 lg:grid-cols-2">
                         {/* Featured Image */}
-                        <div className="lg:col-span-1 relative h-72 lg:h-full">
+                        <Link
+                          href={`/blog/${sortedBlogPosts[0].slug}`}
+                          aria-label={`اقرأ مقال: ${sortedBlogPosts[0].title}`}
+                          className="relative block min-h-64 overflow-hidden bg-slate-200 lg:min-h-[390px]"
+                        >
                           <Image
                             src={sortedBlogPosts[0].image}
-                            alt={sortedBlogPosts[0].title}
+                            alt={sortedBlogPosts[0].imageAlt || sortedBlogPosts[0].title}
                             fill
-                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 50vw"
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
                           />
-                        </div>
+                          <span className="absolute right-5 top-5 rounded-full border border-white/30 bg-slate-950/65 px-4 py-2 text-xs font-bold text-white backdrop-blur">
+                            المقال الأحدث
+                          </span>
+                        </Link>
 
                         {/* Featured Content */}
-                        <div className="lg:col-span-2 p-8 flex flex-col justify-between">
+                        <div className="flex flex-col justify-center p-6 sm:p-9 lg:p-12">
                           <div>
-                            <h3 className="text-2xl font-bold text-foreground mb-3">
+                            <h3 className="mb-4 text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl">
                               {sortedBlogPosts[0].title}
                             </h3>
-                            <p className="text-muted-foreground mb-6 line-clamp-2">
+                            <p className="mb-7 line-clamp-3 text-base leading-8 text-slate-600">
                               {sortedBlogPosts[0].excerpt}
                             </p>
                           </div>
 
-                          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
+                          <div className="mb-6 flex flex-wrap items-center gap-3 text-sm text-slate-500">
                             <div className="flex items-center gap-2">
-                              <Calendar size={16} />
+                              <Calendar size={16} aria-hidden="true" />
                               {new Date(sortedBlogPosts[0].date).toLocaleDateString(
-                                'ar-SA'
+                                'ar-EG',
+                                { year: 'numeric', month: 'long', day: 'numeric' },
                               )}
                             </div>
                             <RelativePublicationTime
@@ -129,74 +149,79 @@ export default async function BlogPage() {
                               }
                               prefix="نُشر "
                             />
-                            <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 ${sortedBlogPosts[0].authorAccentClass ?? 'bg-amber-100 text-amber-700'}`}>
-                              <User size={16} />
+                            <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 ${sortedBlogPosts[0].authorAccentClass ?? 'bg-amber-100 text-amber-700'}`}>
+                              <User size={16} aria-hidden="true" />
                               {sortedBlogPosts[0].author}
                             </div>
                           </div>
 
                           <Link
                             href={`/blog/${sortedBlogPosts[0].slug}`}
-                            className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+                            className="inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-bold text-white transition-all hover:-translate-y-0.5 hover:gap-3 hover:bg-primary/90"
                           >
                             اقرأ المزيد
-                            <ArrowLeft size={18} />
+                            <ArrowLeft size={18} aria-hidden="true" />
                           </Link>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 )}
 
                 {/* Other Posts */}
                 {sortedBlogPosts.length > 1 && (
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground mb-8">
+                    <h2 className="mb-7 text-2xl font-bold text-slate-900 md:text-3xl">
                       مقالات أخرى
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {sortedBlogPosts.slice(1).map((post) => (
+                        <ScrollReveal key={post.slug}>
                         <Link
-                          key={post.slug}
                           href={`/blog/${post.slug}`}
-                          className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
+                          className="group block h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(31,41,55,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(31,41,55,0.14)]"
                         >
                           {/* Image */}
-                          <div className="relative h-48 overflow-hidden">
+                          <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                             <Image
                               src={post.image}
-                              alt={post.title}
+                              alt={post.imageAlt || post.title}
                               fill
-                              className="object-cover group-hover:scale-110 transition-transform duration-300"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                              className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
                           </div>
 
                           {/* Content */}
-                          <div className="p-6">
-                            <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                          <div className="p-5 sm:p-6">
+                            <h3 className="mb-3 line-clamp-2 text-lg font-bold leading-7 text-slate-900 transition-colors group-hover:text-[#8f7016]">
                               {post.title}
                             </h3>
-                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                            <p className="mb-5 line-clamp-3 text-sm leading-7 text-slate-600">
                               {post.excerpt}
                             </p>
 
-                            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
                               <div className="flex items-center gap-1">
-                                <Calendar size={14} />
-                                {new Date(post.date).toLocaleDateString('ar-SA')}
+                                <Calendar size={14} aria-hidden="true" />
+                                {new Date(post.date).toLocaleDateString('ar-EG')}
                               </div>
                               <RelativePublicationTime
                                 value={post.publishedAt ?? post.date}
                                 prefix="نُشر "
                               />
                               <div className={`inline-flex items-center gap-1 rounded-full px-2 py-1 ${post.authorAccentClass ?? 'bg-amber-100 text-amber-700'}`}>
-                                <User size={14} />
+                                <User size={14} aria-hidden="true" />
                                 {post.author}
                               </div>
                             </div>
+                            <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#8f7016] transition-all group-hover:gap-3">
+                              اقرأ المقال
+                              <ArrowLeft size={15} aria-hidden="true" />
+                            </span>
                           </div>
                         </Link>
+                        </ScrollReveal>
                       ))}
                     </div>
                   </div>

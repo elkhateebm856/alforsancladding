@@ -5,6 +5,8 @@ import {
   Phone,
   Mail,
   ExternalLink,
+  MessageCircle,
+  Music2,
 } from 'lucide-react'
 import { Space_Grotesk } from 'next/font/google'
 import {
@@ -104,67 +106,52 @@ export function Footer() {
         {/* Social Links */}
         <div className="border-t border-gray-700 pt-8 pb-8">
           <h3 className="text-lg font-bold mb-4">تابعنا</h3>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-3">
             <a
               href={SOCIAL_LINKS.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:scale-110 transition-transform"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/50 bg-primary/10 text-[#e4c15a] shadow-[0_0_16px_rgba(201,162,39,0.12)] transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-slate-950 hover:shadow-[0_0_22px_rgba(201,162,39,0.3)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               aria-label="Facebook"
               title="فيسبوك"
             >
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/download-qGwSvW3vVqCILjjZbx19KueaYRznkx.png"
-                alt="Facebook"
-                width={40}
-                height={40}
-              />
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+                <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.8v8h3.4Z" />
+              </svg>
             </a>
             <a
               href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:scale-110 transition-transform"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/50 bg-primary/10 text-[#e4c15a] shadow-[0_0_16px_rgba(201,162,39,0.12)] transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-slate-950 hover:shadow-[0_0_22px_rgba(201,162,39,0.3)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               aria-label="Instagram"
               title="انستجرام"
             >
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/download1-UdJTD5sRMQ2MlZOQxlnkTRlQwMg1tH.jpg"
-                alt="Instagram"
-                width={40}
-                height={40}
-                className="rounded-lg"
-              />
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.6" cy="6.7" r="1" fill="currentColor" stroke="none" />
+              </svg>
             </a>
             <a
               href="https://www.tiktok.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:scale-110 transition-transform"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/50 bg-primary/10 text-[#e4c15a] shadow-[0_0_16px_rgba(201,162,39,0.12)] transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-slate-950 hover:shadow-[0_0_22px_rgba(201,162,39,0.3)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               aria-label="TikTok"
               title="تيك توك"
             >
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%D8%B4%D8%B9%D8%A7%D8%B1%20%D8%AA%D9%8A%D9%83%20%D8%AA%D9%88%D9%83-iAgcYngzgdTx5CrC8bPe35vEPW3OZL.png"
-                alt="TikTok"
-                width={40}
-                height={40}
-              />
+              <Music2 size={20} aria-hidden="true" />
             </a>
             <a
               href={SOCIAL_LINKS.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:scale-110 transition-transform"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-primary/50 bg-primary/10 text-[#e4c15a] shadow-[0_0_16px_rgba(201,162,39,0.12)] transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-slate-950 hover:shadow-[0_0_22px_rgba(201,162,39,0.3)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               aria-label="WhatsApp"
               title="واتساب"
             >
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/whatsapp-logo-8BlB1bIAhVHSHl3FcWdBTRgXT4HWEn.png"
-                alt="WhatsApp"
-                width={40}
-                height={40}
-              />
+              <MessageCircle size={20} aria-hidden="true" />
             </a>
           </div>
         </div>

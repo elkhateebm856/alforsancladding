@@ -21,9 +21,9 @@ export function HeroSlider() {
 
         </div>
 
-        <div className="relative mx-auto w-full max-w-[560px] md:col-start-2 md:row-span-2 md:row-start-1">
+        <div className="relative mx-auto w-full max-w-[620px] md:col-start-2 md:row-span-2 md:row-start-1">
           <div className="absolute -inset-4 rounded-[2rem] bg-primary/15 blur-2xl" />
-          <div className="relative rounded-[1.75rem] border border-primary/30 bg-white p-3 shadow-2xl shadow-slate-900/20">
+          <div className="relative rounded-[1.75rem] border border-primary/30 bg-white p-2 shadow-2xl shadow-slate-900/20 md:p-3">
             <FacadeShowcase />
           </div>
         </div>

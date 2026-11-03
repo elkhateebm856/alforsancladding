@@ -4,81 +4,68 @@ import { ArrowLeft } from 'lucide-react'
 import { services } from '@/data/services'
 
 export function ServicesSection() {
-  const smartGlassService = services.find((service) => service.slug === 'smart-glass')
-  const featuredServices = [
-    ...services.slice(0, 5),
-    ...(smartGlassService ? [smartGlassService] : []),
-  ]
-
   return (
-    <section id="services" className="bg-white py-16 md:py-24">
+    <section id="services" className="bg-[#f7f5ef] py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <div className="mb-9 text-center">
+          <p className="mb-2 text-sm font-bold text-[#8f7016]">حلول متكاملة</p>
+          <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
             خدماتنا المتميزة
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-slate-600">
             من الكلادينج والواجهات الزجاجية إلى الزجاج الذكي المتغير، نقدم حلولًا متكاملة لمشروعك
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {featuredServices.map((service) => (
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => (
             <Link
               key={service.id}
               href={`/services/${service.slug}`}
-              className="group bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
+              className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_28px_rgba(31,41,55,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-48 overflow-hidden bg-slate-100">
                 <Image
                   src={service.image}
                   alt={service.name}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  sizes="(max-width: 640px) 82vw, 330px"
+                  loading="lazy"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-transparent" />
               </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+              <div className="p-5">
+                <h3 className="mb-2 text-lg font-bold text-slate-900 transition-colors group-hover:text-[#8f7016]">
                   {service.name}
                 </h3>
-                <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                <p className="mb-4 line-clamp-2 min-h-12 text-sm leading-6 text-slate-600">
                   {service.shortDescription}
                 </p>
-
-                {/* Features */}
-                <ul className="space-y-2 mb-4">
-                  {service.features.slice(0, 2).map((feature, idx) => (
-                    <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+                <ul className="mb-4 space-y-2">
+                  {service.features.slice(0, 2).map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-sm text-slate-600">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                       {feature}
                     </li>
                   ))}
                 </ul>
-
-                {/* CTA */}
-                <div className="flex items-center gap-2 text-primary font-semibold group-hover:gap-3 transition-all">
+                <span className="inline-flex items-center gap-2 font-bold text-[#8f7016] transition-all group-hover:gap-3">
                   اعرف المزيد
-                  <ArrowLeft size={18} />
-                </div>
+                  <ArrowLeft size={18} aria-hidden="true" />
+                </span>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="text-center">
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+            className="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
           >
             عرض جميع الخدمات
-            <ArrowLeft size={20} />
+            <ArrowLeft size={20} aria-hidden="true" />
           </Link>
         </div>
       </div>

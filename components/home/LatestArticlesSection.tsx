@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, CalendarDays } from 'lucide-react'
 import { RelativePublicationTime } from '@/components/common/RelativePublicationTime'
+import { ScrollReveal } from '@/components/common/ScrollReveal'
 import { getPublishedArticles } from '@/lib/content-store'
 
 export async function LatestArticlesSection() {
@@ -11,26 +12,20 @@ export async function LatestArticlesSection() {
     .slice(0, 3)
 
   return (
-    <section id="latest-articles" className="bg-white py-16 md:py-24">
+    <section id="latest-articles" className="bg-[#f7f5ef] py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="mb-2 text-sm font-bold text-primary">من المدونة</p>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+        <ScrollReveal className="mb-9 text-center">
+            <p className="mb-2 text-sm font-bold text-[#8f7016]">من المدونة</p>
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
               مقالات ونصائح حديثة
             </h2>
-          </div>
-          <Link
-            href="/blog"
-            className="inline-flex min-h-11 items-center gap-2 self-start rounded-md border border-primary/30 px-4 py-2.5 font-bold text-primary transition-colors hover:bg-primary/10 sm:self-auto"
-          >
-            كل المقالات
-            <ArrowLeft size={17} aria-hidden="true" />
-          </Link>
-        </div>
+            <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-600">
+              محتوى عملي يساعدك على اختيار حلول الواجهات المناسبة لمشروعك.
+            </p>
+        </ScrollReveal>
 
         {articles.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {articles.map((article) => {
               const date = new Date(article.date)
               const formattedDate = Number.isNaN(date.getTime())
@@ -41,28 +36,30 @@ export async function LatestArticlesSection() {
                     day: 'numeric',
                   })
               return (
-                <article
-                  key={article.slug}
-                  className="group min-w-0 overflow-hidden rounded-lg border border-border bg-card transition-shadow hover:shadow-lg"
-                >
+                <ScrollReveal key={article.slug} className="h-full">
+                <article className="group min-w-0 h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(31,41,55,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(31,41,55,0.14)]">
                   <Link
                     href={`/blog/${article.slug}`}
                     aria-label={`اقرأ مقال: ${article.title}`}
-                    className="relative block aspect-[16/10] overflow-hidden bg-muted"
+                    className="relative block aspect-[16/10] overflow-hidden bg-slate-100"
                   >
                     <Image
                       src={article.image}
                       alt={article.imageAlt || article.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 84vw, 360px"
+                      loading="lazy"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                     />
+                    <span className="absolute bottom-3 right-3 rounded-full border border-white/30 bg-slate-950/65 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+                      نصائح ومعلومات
+                    </span>
                   </Link>
-                  <div className="p-5">
+                  <div className="p-5 sm:p-6">
                     {formattedDate && (
                       <time
                         dateTime={date.toISOString()}
-                        className="mb-3 inline-flex items-center gap-2 text-xs text-muted-foreground"
+                        className="mb-3 inline-flex items-center gap-2 text-xs text-slate-500"
                       >
                         <CalendarDays size={14} aria-hidden="true" />
                         {formattedDate}
@@ -71,9 +68,9 @@ export async function LatestArticlesSection() {
                     <RelativePublicationTime
                       value={article.publishedAt ?? article.date}
                       prefix="نُشر "
-                      className="mb-3 inline-block text-xs text-muted-foreground"
+                      className="mb-3 inline-block text-xs text-slate-500"
                     />
-                    <h3 className="mb-2 text-lg font-bold leading-7 text-foreground [overflow-wrap:anywhere]">
+                    <h3 className="mb-2 text-lg font-bold leading-7 text-slate-900 [overflow-wrap:anywhere]">
                       <Link
                         href={`/blog/${article.slug}`}
                         className="transition-colors hover:text-primary"
@@ -81,18 +78,19 @@ export async function LatestArticlesSection() {
                         {article.title}
                       </Link>
                     </h3>
-                    <p className="line-clamp-3 break-words text-sm leading-7 text-muted-foreground [overflow-wrap:anywhere]">
+                    <p className="line-clamp-3 break-words text-sm leading-7 text-slate-600 [overflow-wrap:anywhere]">
                       {article.excerpt}
                     </p>
                     <Link
                       href={`/blog/${article.slug}`}
-                      className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-amber-800"
+                      className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#8f7016] transition-all hover:gap-3"
                     >
                       اقرأ المقال
                       <ArrowLeft size={15} aria-hidden="true" />
                     </Link>
                   </div>
                 </article>
+                </ScrollReveal>
               )
             })}
           </div>
@@ -100,6 +98,17 @@ export async function LatestArticlesSection() {
           <p className="rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
             ستظهر المقالات المنشورة هنا.
           </p>
+        )}
+        {articles.length > 0 && (
+          <div className="mt-5 text-center">
+            <Link
+              href="/blog"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary/90"
+            >
+              تصفح المدونة وكل المقالات
+              <ArrowLeft size={17} aria-hidden="true" />
+            </Link>
+          </div>
         )}
       </div>
     </section>

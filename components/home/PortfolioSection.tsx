@@ -4,97 +4,79 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
-
-const showcaseItems = [
-  {
-    title: 'واجهة زجاجية حديثة لمبنى إداري',
-    category: 'واجهات زجاجية',
-    image: '/glass1.jpg',
-    href: '/portfolio',
-  },
-  {
-    title: 'تنفيذ كلادينج لمول تجاري',
-    category: 'كلادينج',
-    image: '/cladding1.jpg',
-    href: '/portfolio',
-  },
-  {
-    title: 'واجهة كيرتن وول مميزة',
-    category: 'كيرتن وول',
-    image: '/curtain1.jpg',
-    href: '/portfolio',
-  },
-]
+import { portfolioItems } from '@/data/portfolio'
 
 export function PortfolioSection() {
   return (
-    <section id="projects" className="bg-white py-16 md:py-24">
+    <section id="projects" className="bg-white py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-10"
+          className="mb-9 text-center"
         >
-          <div>
-            <p className="text-primary font-semibold mb-2">أعمالنا</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              معرض لأبرز مشروعاتنا
-            </h2>
-          </div>
+          <p className="mb-2 font-semibold text-[#8f7016]">أعمالنا</p>
+          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+            معرض لأبرز مشروعاتنا
+          </h2>
+        </motion.div>
 
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {portfolioItems.map((item) => (
+            <Link
+              key={item.id}
+              href="/portfolio"
+              aria-label={`عرض المشروع: ${item.title}`}
+              className="group block overflow-hidden rounded-2xl border border-slate-200 bg-[#f7f5ef] shadow-[0_10px_28px_rgba(31,41,55,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            >
+              <div className="relative h-56 overflow-hidden bg-slate-100">
+                <Image
+                  src={item.type === 'video' ? item.poster || '/hero.jpg' : item.src}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 640px) 84vw, 360px"
+                  loading="lazy"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <span className="inline-flex rounded-full border border-white/40 bg-slate-950/65 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+                    {item.category}
+                  </span>
+                  {item.type === 'video' && (
+                    <span className="mr-2 inline-flex rounded-full border border-white/40 bg-slate-950/65 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+                      فيديو
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="p-5">
+                <h3 className="mb-2 text-lg font-bold text-slate-900">
+                  {item.title}
+                </h3>
+                <p className="leading-7 text-slate-600">
+                  {item.description}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-2 font-bold text-[#8f7016] transition-all group-hover:gap-3">
+                  شاهد تفاصيل الأعمال
+                  <ArrowLeft size={16} aria-hidden="true" />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-5 text-center">
           <Link
             href="/portfolio"
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-primary px-5 py-3 text-primary font-semibold hover:bg-primary hover:text-white transition-colors"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-primary/50 bg-[#f7f5ef] px-7 py-3 font-bold text-[#8f7016] transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-white"
           >
             استعرض جميع الأعمال
             <ArrowLeft size={17} aria-hidden="true" />
           </Link>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {showcaseItems.map((item, index) => (
-            <motion.article
-              key={item.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
-            >
-              <div className="relative h-64 overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <span className="inline-flex rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-primary">
-                    {item.category}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground leading-7">
-                  مشاريع تنفيذية تُظهر دقة التنفيذ وجودة الخامات في كل مرحلة.
-                </p>
-                <Link
-                  href={item.href}
-                  className="mt-5 inline-flex items-center gap-2 font-bold text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:text-amber-800"
-                >
-                  شاهد تفاصيل الأعمال
-                  <ArrowLeft size={16} aria-hidden="true" />
-                </Link>
-              </div>
-            </motion.article>
-          ))}
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
+import type * as ThreeTypes from 'three'
 
 const facadeViews = [
   { label: 'الواجهة الأمامية', src: '/facade-front.png' },
@@ -24,11 +24,15 @@ export function FacadeShowcase() {
   useEffect(() => {
     const host = hostRef.current
     if (!host) return
-    const sceneHost: HTMLDivElement = host
+    let disposed = false
+    let cleanupScene: (() => void) | undefined
 
+    void import('three').then((THREE) => {
+    if (disposed) return
+    const sceneHost: HTMLDivElement = host
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 80)
-    camera.position.set(9.8, 1.9, 9.8)
+    camera.position.set(11.4, 2.2, 11.4)
     camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({
@@ -39,7 +43,7 @@ export function FacadeShowcase() {
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     renderer.toneMappingExposure = 1.12
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25))
     renderer.domElement.style.display = 'block'
     renderer.domElement.style.width = '100%'
     renderer.domElement.style.height = '100%'
@@ -48,12 +52,14 @@ export function FacadeShowcase() {
     const building = new THREE.Group()
     scene.add(building)
 
-    const geometries: THREE.BufferGeometry[] = []
-    const materials: THREE.Material[] = []
-    const textures: THREE.Texture[] = []
-    const nightTextures: THREE.Texture[] = []
-    const facadeMaterials: THREE.MeshStandardMaterial[] = []
-    const daylightTextures: (THREE.CanvasTexture | null)[] = facadeViews.map(
+    const geometries: ThreeTypes.BufferGeometry[] = []
+    const materials: ThreeTypes.Material[] = []
+    const textures: ThreeTypes.Texture[] = []
+    const nightTextures: (ThreeTypes.CanvasTexture | null)[] = facadeViews.map(
+      () => null,
+    )
+    const facadeMaterials: ThreeTypes.MeshStandardMaterial[] = []
+    const daylightTextures: (ThreeTypes.CanvasTexture | null)[] = facadeViews.map(
       () => null,
     )
     let currentNight = true
@@ -62,20 +68,36 @@ export function FacadeShowcase() {
       const texture = new THREE.TextureLoader().load(
         view.src,
         (loadedTexture) => {
-          loadedTexture.colorSpace = THREE.SRGBColorSpace
-          loadedTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
-
           const image = loadedTexture.image
+          const scale = Math.min(1, 1280 / Math.max(image.naturalWidth || image.width, image.naturalHeight || image.height))
+          const textureWidth = Math.max(1, Math.round((image.naturalWidth || image.width) * scale))
+          const textureHeight = Math.max(1, Math.round((image.naturalHeight || image.height) * scale))
+          const nightCanvas = document.createElement('canvas')
+          nightCanvas.width = textureWidth
+          nightCanvas.height = textureHeight
+          const nightContext = nightCanvas.getContext('2d')
+          if (!nightContext) {
+            console.error(`Unable to create the night image for ${view.label}.`)
+            return
+          }
+          nightContext.drawImage(image, 0, 0, textureWidth, textureHeight)
+
+          const nightTexture = new THREE.CanvasTexture(nightCanvas)
+          nightTexture.colorSpace = THREE.SRGBColorSpace
+          nightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
+          nightTextures[index] = nightTexture
+          textures.push(nightTexture)
+
           const dayCanvas = document.createElement('canvas')
-          dayCanvas.width = image.naturalWidth || image.width
-          dayCanvas.height = image.naturalHeight || image.height
+          dayCanvas.width = textureWidth
+          dayCanvas.height = textureHeight
           const context = dayCanvas.getContext('2d')
           if (!context) {
             console.error(`Unable to create the daylight image for ${view.label}.`)
             return
           }
           context.filter = 'brightness(1.62) saturate(0.78) sepia(0.16) contrast(0.92)'
-          context.drawImage(image, 0, 0, dayCanvas.width, dayCanvas.height)
+          context.drawImage(image, 0, 0, textureWidth, textureHeight)
           const daylightTint = context.createLinearGradient(0, 0, 0, dayCanvas.height)
           daylightTint.addColorStop(0, 'rgba(177, 210, 230, 0.25)')
           daylightTint.addColorStop(0.62, 'rgba(238, 224, 194, 0.08)')
@@ -88,14 +110,14 @@ export function FacadeShowcase() {
           daylightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
           daylightTextures[index] = daylightTexture
           textures.push(daylightTexture)
-          facadeMaterials[index].map = currentNight ? loadedTexture : daylightTexture
+          facadeMaterials[index].map = currentNight ? nightTexture : daylightTexture
+          loadedTexture.dispose()
         },
         undefined,
         (error) => console.error(`Unable to load ${view.label} image.`, error),
       )
       texture.colorSpace = THREE.SRGBColorSpace
       textures.push(texture)
-      nightTextures.push(texture)
 
       const material = new THREE.MeshStandardMaterial({
         map: texture,
@@ -212,6 +234,23 @@ export function FacadeShowcase() {
     let animationFrame = 0
     let lastViewIndex = -1
     let previousOpaque = false
+    let isInViewport = false
+    let isPageVisible = !document.hidden
+
+    function updateAnimationState() {
+      const shouldAnimate = isInViewport && isPageVisible
+      if (shouldAnimate && animationFrame === 0) {
+        animationFrame = window.requestAnimationFrame(animate)
+      } else if (!shouldAnimate && animationFrame !== 0) {
+        window.cancelAnimationFrame(animationFrame)
+        animationFrame = 0
+      }
+    }
+
+    function handleVisibilityChange() {
+      isPageVisible = !document.hidden
+      updateAnimationState()
+    }
 
     function resize() {
       const { width, height } = sceneHost.getBoundingClientRect()
@@ -222,6 +261,7 @@ export function FacadeShowcase() {
     }
 
     function animate() {
+      animationFrame = 0
       const elapsed = (performance.now() - startedAt) / 1000
       building.rotation.y = elapsed * turnSpeed
 
@@ -263,29 +303,49 @@ export function FacadeShowcase() {
         currentNight = night
         facadeMaterials.forEach((material, index) => {
           material.map = night
-            ? nightTextures[index]
-            : daylightTextures[index] ?? nightTextures[index]
+            ? nightTextures[index] ?? material.map
+            : daylightTextures[index] ?? material.map
         })
         setIsNight(night)
       }
 
       renderer.render(scene, camera)
-      animationFrame = window.requestAnimationFrame(animate)
+      if (isInViewport && isPageVisible) {
+        animationFrame = window.requestAnimationFrame(animate)
+      }
     }
 
     resize()
     const resizeObserver = new ResizeObserver(resize)
     resizeObserver.observe(sceneHost)
-    animate()
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isInViewport = entry.isIntersecting
+        updateAnimationState()
+      },
+      { rootMargin: '100px' },
+    )
+    intersectionObserver.observe(sceneHost)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
-    return () => {
+    cleanupScene = () => {
       window.cancelAnimationFrame(animationFrame)
       resizeObserver.disconnect()
+      intersectionObserver.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       textures.forEach((texture) => texture.dispose())
       geometries.forEach((geometry) => geometry.dispose())
       materials.forEach((material) => material.dispose())
       renderer.dispose()
       renderer.domElement.remove()
+    }
+    }).catch((error: unknown) => {
+      console.error('Unable to load the 3D facade renderer.', error)
+    })
+
+    return () => {
+      disposed = true
+      cleanupScene?.()
     }
   }, [])
 
@@ -296,7 +356,7 @@ export function FacadeShowcase() {
       aria-label={`مبنى رباعي الواجهات يدور نهارًا وليلًا؛ ${visibleView}، والزجاج الذكي ${
         isGlassOpaque ? 'معتم' : 'شفاف'
       }`}
-      className={`relative aspect-[4/3] w-full overflow-hidden rounded-2xl transition-colors duration-500 ${
+      className={`relative aspect-[5/4] w-full overflow-hidden rounded-xl transition-colors duration-500 md:aspect-[4/3] md:rounded-2xl ${
         isNight
           ? 'bg-[radial-gradient(ellipse_at_50%_48%,_#263c59_0%,_#111c2c_58%,_#070b13_100%)]'
           : 'bg-[radial-gradient(ellipse_at_50%_48%,_#b8cbd7_0%,_#607888_58%,_#263540_100%)]'
