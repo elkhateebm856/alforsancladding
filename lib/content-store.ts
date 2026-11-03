@@ -141,41 +141,52 @@ export async function getAdminArticles(): Promise<ArticleRecord[]> {
     .sort((first, second) => second.date.localeCompare(first.date))
 }
 
-export async function getPublishedArticles(): Promise<ArticleRecord[]> {
-  let articles: ArticleRecord[]
+async function loadPublishedArticles(): Promise<ArticleRecord[]> {
   if (isFirebaseAdminConfigured()) {
-    articles = await getAdminArticles()
-  } else {
-    try {
-      const [remote, states] = await Promise.all([
-        getPublicDocuments<ArticleRecord>('articles', 'published'),
-        getPublicDocumentsAny<{ id: string; kind: string; status: string }>('contentVisibility'),
-      ])
-      const legacyBySlug = new Map(legacyArticles().map((article) => [article.slug, article]))
-      const merged = remote.map((article) => ({
-        ...legacyBySlug.get(article.slug || article.id),
-        ...article,
-        source: 'firestore' as const,
-      }))
-      const remoteSlugs = new Set(merged.map((article) => article.slug))
-      const visibility = new Map(
-        states.filter((state) => state.kind === 'article').map((state) => [state.id, state.status]),
-      )
-      articles = [
-        ...merged,
-        ...legacyArticles().filter((article) =>
-          !remoteSlugs.has(article.slug) &&
-          (!visibility.has(article.slug) || visibility.get(article.slug) === 'published'),
-        ),
-      ]
-    } catch (error) {
-      console.error('Public Firestore article read failed; using local source:', error)
-      articles = legacyArticles()
-    }
+    return (await getAdminArticles())
+      .filter((article) => article.status === 'published')
+      .sort((first, second) => second.date.localeCompare(first.date))
   }
+
+  const [remote, states] = await Promise.all([
+    getPublicDocuments<ArticleRecord>('articles', 'published'),
+    getPublicDocumentsAny<{ id: string; kind: string; status: string }>('contentVisibility'),
+  ])
+  const legacyBySlug = new Map(legacyArticles().map((article) => [article.slug, article]))
+  const merged = remote.map((article) => ({
+    ...legacyBySlug.get(article.slug || article.id),
+    ...article,
+    source: 'firestore' as const,
+  }))
+  const remoteSlugs = new Set(merged.map((article) => article.slug))
+  const visibility = new Map(
+    states.filter((state) => state.kind === 'article').map((state) => [state.id, state.status]),
+  )
+  const articles = [
+    ...merged,
+    ...legacyArticles().filter((article) =>
+      !remoteSlugs.has(article.slug) &&
+      (!visibility.has(article.slug) || visibility.get(article.slug) === 'published'),
+    ),
+  ]
   return articles
     .filter((article) => article.status === 'published')
     .sort((first, second) => second.date.localeCompare(first.date))
+}
+
+export async function getPublishedArticles(): Promise<ArticleRecord[]> {
+  try {
+    return await loadPublishedArticles()
+  } catch (error) {
+    console.error('Public Firestore article read failed; using local source:', error)
+    return legacyArticles()
+      .filter((article) => article.status === 'published')
+      .sort((first, second) => second.date.localeCompare(first.date))
+  }
+}
+
+export async function getPublishedArticlesForSitemap(): Promise<ArticleRecord[]> {
+  return loadPublishedArticles()
 }
 
 export async function getPublishedArticle(slug: string) {
@@ -236,12 +247,7 @@ export async function getPublishedPages(): Promise<ContentPageRecord[]> {
     }))
   }
 
-  try {
-    return await getPublicDocuments<ContentPageRecord>('pages', 'published')
-  } catch (error) {
-    console.error('Public Firestore page read failed:', error)
-    return []
-  }
+  return getPublicDocuments<ContentPageRecord>('pages', 'published')
 }
 
 export async function getPublishedPage(slug: string) {
