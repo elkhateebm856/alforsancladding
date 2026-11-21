@@ -17,3 +17,26 @@ export function isValidArticleSlug(slug: string): boolean {
     slug,
   )
 }
+
+export function getArticleSlugAliases(
+  slug: string,
+  title: string,
+): string[] {
+  const aliases = new Set<string>()
+  const clean = (value: string) =>
+    value
+      .normalize('NFKC')
+      .replace(/^[/?#]+|[/?#]+$/g, '')
+      .replace(/%[0-9A-Fa-f]{2}/g, '')
+      .trim()
+      .toLowerCase()
+
+  if (slug) {
+    aliases.add(clean(slug))
+  }
+  if (title) {
+    aliases.add(clean(slugifyArabicTitle(title)))
+  }
+
+  return [...aliases].filter(Boolean)
+}
