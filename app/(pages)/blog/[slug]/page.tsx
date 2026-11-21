@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { ChevronLeft, Calendar, User } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
@@ -15,6 +16,7 @@ import {
   sanitizeArticleContent,
 } from '@/lib/content-store'
 import { SITE_NAME } from '@/lib/constants'
+import { slugifyArabicTitle } from '@/lib/slug'
 
 interface BlogPageProps {
   params: Promise<{ slug: string }>
@@ -34,7 +36,8 @@ export async function generateMetadata(
     }
   }
 
-  const canonicalUrl = `https://www.alforsancladding.com/blog/${post.slug}`
+  const canonicalSlug = slugifyArabicTitle(post.title) || post.slug
+  const canonicalUrl = `https://www.alforsancladding.com/blog/${canonicalSlug}`
   const imageUrl = new URL(
     post.image,
     'https://www.alforsancladding.com',
@@ -90,6 +93,11 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <Footer />
       </>
     )
+  }
+
+  const canonicalSlug = slugifyArabicTitle(post.title) || post.slug
+  if (decodeURIComponent(slug) !== canonicalSlug) {
+    redirect(`/blog/${encodeURIComponent(canonicalSlug)}`)
   }
 
   const relatedPosts = (await getPublishedArticles())

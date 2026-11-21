@@ -4,6 +4,7 @@ import { blogPosts as legacyBlogPosts } from '@/data/blog'
 import { testimonials as legacyTestimonials } from '@/data/testimonials'
 import { adminDb, isFirebaseAdminConfigured } from '@/lib/firebase/admin'
 import { sanitizeArticleHtml } from '@/lib/content-sanitize'
+import { slugifyArabicTitle } from '@/lib/slug'
 import {
   getPublicDocument,
   getPublicDocuments,
@@ -213,6 +214,16 @@ export async function getPublishedArticle(slug: string) {
       } as ArticleRecord
       return article.status === 'published' ? article : null
     }
+    const articles = await getAdminArticles()
+    const article = articles.find((item) =>
+      item.status === 'published' &&
+      (
+        item.slug === slug ||
+        item.id === slug ||
+        slugifyArabicTitle(item.title) === slug
+      ),
+    )
+    return article || null
   } else {
     try {
       const state = await getPublicDocument<{ status: string }>(
@@ -221,7 +232,11 @@ export async function getPublishedArticle(slug: string) {
       )
       if (state && state.status !== 'published') return null
       const remoteArticles = await getPublicDocuments<ArticleRecord>('articles', 'published')
-      const remote = remoteArticles.find((article) => article.slug === slug || article.id === slug) || null
+      const remote = remoteArticles.find((article) =>
+        article.slug === slug ||
+        article.id === slug ||
+        slugifyArabicTitle(article.title) === slug,
+      ) || null
       if (remote) {
         const legacy = legacyBlogPosts.find((post) => post.slug === slug)
         const article = {
