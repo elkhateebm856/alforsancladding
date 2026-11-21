@@ -17,13 +17,9 @@ export const CONTACT_EMAIL = 'info@alfarsan.com'
 export const CONTACT_ADDRESS = 'الدقهلية - المنصورة - طريق السنبلاوين'
 
 export const SOCIAL_LINKS = {
-  // واتساب (لازم يكون بصيغة دولية)
   whatsapp: 'https://wa.me/201094656501',
-
   instagram: 'https://instagram.com/alfarsan',
   facebook: 'https://facebook.com/alfarsan',
-  linkedin: 'https://linkedin.com/company/alfarsan',
-  twitter: 'https://twitter.com/alfarsan',
 }
 
 export const NAVIGATION_ITEMS = [

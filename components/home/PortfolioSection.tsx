@@ -8,19 +8,17 @@ import { portfolioItems } from '@/data/portfolio'
 
 export function PortfolioSection() {
   return (
-    <section id="projects" className="bg-white py-16 md:py-20">
+    <section id="projects" className="section-soft py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-9 text-center"
+          className="mb-10 text-center"
         >
-          <p className="mb-2 font-semibold text-[#8f7016]">أعمالنا</p>
-          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-            معرض لأبرز مشروعاتنا
-          </h2>
+          <p className="section-eyebrow">أعمالنا</p>
+          <h2 className="section-title">معرض لأبرز مشروعاتنا</h2>
         </motion.div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -29,7 +27,7 @@ export function PortfolioSection() {
               key={item.id}
               href="/portfolio"
               aria-label={`عرض المشروع: ${item.title}`}
-              className="group block overflow-hidden rounded-2xl border border-slate-200 bg-[#f7f5ef] shadow-[0_10px_28px_rgba(31,41,55,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="surface-card group block overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_45px_-22px_rgba(15,23,42,0.3)]"
             >
               <div className="relative h-56 overflow-hidden bg-slate-100">
                 <Image
@@ -69,11 +67,8 @@ export function PortfolioSection() {
           ))}
         </div>
 
-        <div className="mt-5 text-center">
-          <Link
-            href="/portfolio"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-primary/50 bg-[#f7f5ef] px-7 py-3 font-bold text-[#8f7016] transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-white"
-          >
+        <div className="mt-8 text-center">
+          <Link href="/portfolio" className="btn-secondary">
             استعرض جميع الأعمال
             <ArrowLeft size={17} aria-hidden="true" />
           </Link>

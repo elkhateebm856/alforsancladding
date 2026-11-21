@@ -211,7 +211,7 @@ export default function RootLayout({
         sameAs: [
           'https://facebook.com/alfarsan',
           'https://instagram.com/alfarsan',
-          'https://linkedin.com/company/alfarsan',
+          'https://wa.me/201094656501',
         ],
       },
 
@@ -514,9 +514,10 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={tajawal.className}
+      className={`light ${tajawal.className}`}
+      style={{ colorScheme: 'light' }}
     >
-      <body className="antialiased bg-background text-foreground">
+      <body className="bg-background text-foreground antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

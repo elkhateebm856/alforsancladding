@@ -4,22 +4,20 @@ import { useEffect, useRef, useState } from 'react'
 import type * as ThreeTypes from 'three'
 
 const facadeViews = [
-  { label: 'الواجهة الأمامية', src: '/facade-front.png' },
-  { label: 'الجانب الأيمن', src: '/facade-right.png' },
-  { label: 'الواجهة الخلفية', src: '/facade-back.png' },
-  { label: 'الجانب الأيسر', src: '/facade-left.png' },
+  { label: 'الواجهة الأمامية', src: '/facade-front.png?v=2026' },
+  { label: 'الجانب الأيمن', src: '/facade-right.png?v=2026' },
+  { label: 'الواجهة الخلفية', src: '/facade-back.png?v=2026' },
+  { label: 'الجانب الأيسر', src: '/facade-left.png?v=2026' },
 ]
 
-const buildingWidth = 9
-const buildingHeight = 5.3
-const buildingDepth = 8.6
-const turnSpeed = 0.19
+const buildingWidth = 7.6
+const buildingHeight = 6.4
+const buildingDepth = 7.6
+const SPIN_SPEED = 0.18
 
-export function FacadeShowcase() {
+export function FacadeShowcase({ fill = false }: { fill?: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [visibleView, setVisibleView] = useState(facadeViews[0].label)
-  const [isGlassOpaque, setIsGlassOpaque] = useState(false)
-  const [isNight, setIsNight] = useState(true)
 
   useEffect(() => {
     const host = hostRef.current
@@ -28,317 +26,289 @@ export function FacadeShowcase() {
     let cleanupScene: (() => void) | undefined
 
     void import('three').then((THREE) => {
-    if (disposed) return
-    const sceneHost: HTMLDivElement = host
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 80)
-    camera.position.set(11.4, 2.2, 11.4)
-    camera.lookAt(0, 0, 0)
+      if (disposed) return
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance',
-    })
-    renderer.outputColorSpace = THREE.SRGBColorSpace
-    renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.12
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25))
-    renderer.domElement.style.display = 'block'
-    renderer.domElement.style.width = '100%'
-    renderer.domElement.style.height = '100%'
-    sceneHost.appendChild(renderer.domElement)
+      const sceneHost = host
+      const scene = new THREE.Scene()
+      const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100)
+      camera.position.set(15.2, 3.6, 15.2)
+      camera.lookAt(0, -0.1, 0)
 
-    const building = new THREE.Group()
-    scene.add(building)
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance',
+      })
+      renderer.outputColorSpace = THREE.SRGBColorSpace
+      renderer.toneMapping = THREE.ACESFilmicToneMapping
+      renderer.toneMappingExposure = 1.18
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75))
+      renderer.domElement.style.display = 'block'
+      renderer.domElement.style.width = '100%'
+      renderer.domElement.style.height = '100%'
+      sceneHost.appendChild(renderer.domElement)
 
-    const geometries: ThreeTypes.BufferGeometry[] = []
-    const materials: ThreeTypes.Material[] = []
-    const textures: ThreeTypes.Texture[] = []
-    const nightTextures: (ThreeTypes.CanvasTexture | null)[] = facadeViews.map(
-      () => null,
-    )
-    const facadeMaterials: ThreeTypes.MeshStandardMaterial[] = []
-    const daylightTextures: (ThreeTypes.CanvasTexture | null)[] = facadeViews.map(
-      () => null,
-    )
-    let currentNight = true
+      const stage = new THREE.Group()
+      scene.add(stage)
 
-    facadeViews.forEach((view, index) => {
-      const texture = new THREE.TextureLoader().load(
-        view.src,
-        (loadedTexture) => {
-          const image = loadedTexture.image
-          const scale = Math.min(1, 1280 / Math.max(image.naturalWidth || image.width, image.naturalHeight || image.height))
-          const textureWidth = Math.max(1, Math.round((image.naturalWidth || image.width) * scale))
-          const textureHeight = Math.max(1, Math.round((image.naturalHeight || image.height) * scale))
-          const nightCanvas = document.createElement('canvas')
-          nightCanvas.width = textureWidth
-          nightCanvas.height = textureHeight
-          const nightContext = nightCanvas.getContext('2d')
-          if (!nightContext) {
-            console.error(`Unable to create the night image for ${view.label}.`)
-            return
-          }
-          nightContext.drawImage(image, 0, 0, textureWidth, textureHeight)
+      const building = new THREE.Group()
+      stage.add(building)
 
-          const nightTexture = new THREE.CanvasTexture(nightCanvas)
-          nightTexture.colorSpace = THREE.SRGBColorSpace
-          nightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
-          nightTextures[index] = nightTexture
-          textures.push(nightTexture)
+      const geometries: ThreeTypes.BufferGeometry[] = []
+      const materials: ThreeTypes.Material[] = []
+      const textures: ThreeTypes.Texture[] = []
+      const facadeMaterials: ThreeTypes.MeshStandardMaterial[] = []
 
-          const dayCanvas = document.createElement('canvas')
-          dayCanvas.width = textureWidth
-          dayCanvas.height = textureHeight
-          const context = dayCanvas.getContext('2d')
-          if (!context) {
-            console.error(`Unable to create the daylight image for ${view.label}.`)
-            return
-          }
-          context.filter = 'brightness(1.62) saturate(0.78) sepia(0.16) contrast(0.92)'
-          context.drawImage(image, 0, 0, textureWidth, textureHeight)
-          const daylightTint = context.createLinearGradient(0, 0, 0, dayCanvas.height)
-          daylightTint.addColorStop(0, 'rgba(177, 210, 230, 0.25)')
-          daylightTint.addColorStop(0.62, 'rgba(238, 224, 194, 0.08)')
-          daylightTint.addColorStop(1, 'rgba(255, 242, 216, 0.02)')
-          context.fillStyle = daylightTint
-          context.fillRect(0, 0, dayCanvas.width, dayCanvas.height)
+      facadeViews.forEach((view) => {
+        const texture = new THREE.TextureLoader().load(
+          view.src,
+          (loaded) => {
+            loaded.colorSpace = THREE.SRGBColorSpace
+            loaded.anisotropy = renderer.capabilities.getMaxAnisotropy()
+            loaded.needsUpdate = true
+          },
+          undefined,
+          (error) => console.error(`Unable to load ${view.label}`, error),
+        )
+        texture.colorSpace = THREE.SRGBColorSpace
+        textures.push(texture)
 
-          const daylightTexture = new THREE.CanvasTexture(dayCanvas)
-          daylightTexture.colorSpace = THREE.SRGBColorSpace
-          daylightTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
-          daylightTextures[index] = daylightTexture
-          textures.push(daylightTexture)
-          facadeMaterials[index].map = currentNight ? nightTexture : daylightTexture
-          loadedTexture.dispose()
-        },
-        undefined,
-        (error) => console.error(`Unable to load ${view.label} image.`, error),
+        const material = new THREE.MeshStandardMaterial({
+          map: texture,
+          roughness: 0.38,
+          metalness: 0.22,
+          emissive: new THREE.Color(0xffb45a),
+          emissiveIntensity: 0.12,
+          emissiveMap: texture,
+          side: THREE.FrontSide,
+        })
+        facadeMaterials.push(material)
+        materials.push(material)
+      })
+
+      const roof = new THREE.MeshStandardMaterial({
+        color: 0x0a1018,
+        metalness: 0.62,
+        roughness: 0.36,
+      })
+      const underside = new THREE.MeshStandardMaterial({
+        color: 0x101820,
+        metalness: 0.35,
+        roughness: 0.8,
+      })
+      materials.push(roof, underside)
+
+      const shellGeometry = new THREE.BoxGeometry(
+        buildingWidth,
+        buildingHeight,
+        buildingDepth,
       )
-      texture.colorSpace = THREE.SRGBColorSpace
-      textures.push(texture)
+      geometries.push(shellGeometry)
+      building.add(
+        new THREE.Mesh(shellGeometry, [
+          facadeMaterials[1],
+          facadeMaterials[3],
+          roof,
+          underside,
+          facadeMaterials[0],
+          facadeMaterials[2],
+        ]),
+      )
 
-      const material = new THREE.MeshStandardMaterial({
-        map: texture,
-        roughness: 0.55,
-        metalness: 0.08,
+      const shadowGeo = new THREE.CircleGeometry(6.8, 72)
+      geometries.push(shadowGeo)
+      const shadowMat = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        transparent: true,
+        opacity: 0.42,
+        depthWrite: false,
+      })
+      materials.push(shadowMat)
+      const shadow = new THREE.Mesh(shadowGeo, shadowMat)
+      shadow.rotation.x = -Math.PI / 2
+      shadow.position.y = -buildingHeight / 2 - 0.03
+      shadow.scale.set(1.05, 0.62, 1)
+      stage.add(shadow)
+
+      const floorGeo = new THREE.RingGeometry(3.2, 8.6, 72)
+      geometries.push(floorGeo)
+      const floorMat = new THREE.MeshStandardMaterial({
+        color: 0x1a2433,
+        metalness: 0.7,
+        roughness: 0.28,
+        transparent: true,
+        opacity: 0.28,
         side: THREE.DoubleSide,
       })
-      facadeMaterials.push(material)
-      materials.push(material)
-    })
+      materials.push(floorMat)
+      const floor = new THREE.Mesh(floorGeo, floorMat)
+      floor.rotation.x = -Math.PI / 2
+      floor.position.y = -buildingHeight / 2 - 0.05
+      stage.add(floor)
 
-    const invisibleRoofMaterial = new THREE.MeshBasicMaterial({
-      colorWrite: false,
-      depthWrite: false,
-      transparent: true,
-      opacity: 0,
-    })
-    const undersideMaterial = new THREE.MeshStandardMaterial({
-      color: 0x313a40,
-      metalness: 0.3,
-      roughness: 0.66,
-    })
-    materials.push(invisibleRoofMaterial, undersideMaterial)
+      const hemi = new THREE.HemisphereLight(0xb8c9e0, 0x121820, 0.95)
+      const key = new THREE.DirectionalLight(0xffd9a8, 1.35)
+      key.position.set(-5, 9, 7)
+      const fill = new THREE.DirectionalLight(0x7aa0c4, 0.4)
+      fill.position.set(7, 3, -5)
+      const rim = new THREE.DirectionalLight(0xc9a227, 0.7)
+      rim.position.set(4, 5, -8)
+      const glow = new THREE.PointLight(0xffb45a, 5.5, 16, 2)
+      glow.position.set(0, 0.8, buildingDepth / 2 + 1.8)
+      const warmFill = new THREE.PointLight(0xffc777, 3.2, 14, 2)
+      warmFill.position.set(-2.2, 1.4, -buildingDepth / 2 - 1.4)
+      building.add(glow, warmFill)
+      scene.add(hemi, key, fill, rim)
 
-    const buildingGeometry = new THREE.BoxGeometry(
-      buildingWidth,
-      buildingHeight,
-      buildingDepth,
-    )
-    geometries.push(buildingGeometry)
-    const buildingShell = new THREE.Mesh(buildingGeometry, [
-      facadeMaterials[1],
-      facadeMaterials[3],
-      invisibleRoofMaterial,
-      undersideMaterial,
-      facadeMaterials[0],
-      facadeMaterials[2],
-    ])
-    building.add(buildingShell)
+      let animationFrame = 0
+      let lastView = -1
+      let inView = false
+      let pageVisible = !document.hidden
+      let baseYaw = 0
+      let userYaw = 0
+      let dragging = false
+      let dragOriginX = 0
+      let dragOriginYaw = 0
+      let paused = false
+      let lastTs = performance.now()
 
-    const smartGlassGeometry = new THREE.PlaneGeometry(1.5, 1.7)
-    geometries.push(smartGlassGeometry)
-    const smartGlassMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x80b5c9,
-      emissive: 0x1c4656,
-      emissiveIntensity: 0.08,
-      metalness: 0.2,
-      roughness: 0.18,
-      transparent: true,
-      opacity: 0.12,
-      clearcoat: 1,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    })
-    materials.push(smartGlassMaterial)
-    const smartGlassPane = new THREE.Mesh(smartGlassGeometry, smartGlassMaterial)
-    smartGlassPane.position.set(0, -0.65, buildingDepth / 2 + 0.025)
-    smartGlassPane.renderOrder = 2
-    building.add(smartGlassPane)
+      function syncAnimation() {
+        const shouldRun = inView && pageVisible
+        if (shouldRun && animationFrame === 0) {
+          lastTs = performance.now()
+          animationFrame = window.requestAnimationFrame(animate)
+        } else if (!shouldRun && animationFrame !== 0) {
+          window.cancelAnimationFrame(animationFrame)
+          animationFrame = 0
+        }
+      }
 
-    const ledMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffc777,
-      emissive: 0xffa43c,
-      emissiveIntensity: 0.03,
-      metalness: 0.22,
-      roughness: 0.3,
-    })
-    materials.push(ledMaterial)
-    const ledFaces = [
-      { width: buildingWidth, depth: buildingDepth, x: 0, z: buildingDepth / 2 + 0.07, rotation: 0 },
-      { width: buildingDepth, depth: buildingWidth, x: buildingWidth / 2 + 0.07, z: 0, rotation: Math.PI / 2 },
-      { width: buildingWidth, depth: buildingDepth, x: 0, z: -buildingDepth / 2 - 0.07, rotation: Math.PI },
-      { width: buildingDepth, depth: buildingWidth, x: -buildingWidth / 2 - 0.07, z: 0, rotation: -Math.PI / 2 },
-    ] as const
-    ledFaces.forEach(({ width, x, z, rotation }) => {
-      const ledFrame = new THREE.Group()
-      ledFrame.position.set(x, 0, z)
-      ledFrame.rotation.y = rotation
-      building.add(ledFrame)
+      function resize() {
+        const { width, height } = sceneHost.getBoundingClientRect()
+        if (!width || !height) return
+        renderer.setSize(width, height)
+        const aspect = width / height
+        camera.aspect = aspect
+        // Tall mobile: zoom in hard so the facade dominates the frame
+        if (aspect < 0.85) {
+          const zoom = aspect < 0.55 ? 1.45 : 1.25
+          stage.scale.setScalar(zoom)
+          camera.fov = 46
+          camera.position.set(8.2, 1.15, 8.2)
+          camera.lookAt(0, 0.55, 0)
+        } else {
+          stage.scale.setScalar(1)
+          camera.fov = 30
+          camera.position.set(15.2, 3.6, 15.2)
+          camera.lookAt(0, -0.1, 0)
+        }
+        camera.updateProjectionMatrix()
+      }
 
-      const ledBars = [
-        { width: width * 0.86, height: 0.028, x: 0, y: 1.96 },
-        { width: 0.028, height: 3.75, x: -width * 0.43, y: -0.05 },
-        { width: 0.028, height: 3.75, x: width * 0.43, y: -0.05 },
-      ]
-      ledBars.forEach(({ width: barWidth, height, x: barX, y }) => {
-        const geometry = new THREE.BoxGeometry(barWidth, height, 0.018)
-        geometries.push(geometry)
-        const led = new THREE.Mesh(geometry, ledMaterial)
-        led.position.set(barX, y, 0)
-        ledFrame.add(led)
-      })
-    })
-
-    const ambientLight = new THREE.HemisphereLight(0xdce9f5, 0x40414a, 2)
-    const keyLight = new THREE.DirectionalLight(0xffe6bd, 3)
-    keyLight.position.set(-6, 7, 8)
-    const rimLight = new THREE.DirectionalLight(0x83aacc, 0.5)
-    rimLight.position.set(6, 5, -7)
-    const facadeNightLights = [
-      [0, 0, buildingDepth / 2 + 0.8],
-      [buildingWidth / 2 + 0.8, 0, 0],
-      [0, 0, -buildingDepth / 2 - 0.8],
-      [-buildingWidth / 2 - 0.8, 0, 0],
-    ].map(([x, y, z]) => {
-      const light = new THREE.PointLight(0xffc777, 0, 11, 2)
-      light.position.set(x, y, z)
-      building.add(light)
-      return light
-    })
-    scene.add(ambientLight, keyLight, rimLight)
-
-    const startedAt = performance.now()
-    let animationFrame = 0
-    let lastViewIndex = -1
-    let previousOpaque = false
-    let isInViewport = false
-    let isPageVisible = !document.hidden
-
-    function updateAnimationState() {
-      const shouldAnimate = isInViewport && isPageVisible
-      if (shouldAnimate && animationFrame === 0) {
-        animationFrame = window.requestAnimationFrame(animate)
-      } else if (!shouldAnimate && animationFrame !== 0) {
-        window.cancelAnimationFrame(animationFrame)
+      function animate(now: number) {
         animationFrame = 0
-      }
-    }
+        const dt = Math.min(0.05, (now - lastTs) / 1000)
+        lastTs = now
 
-    function handleVisibilityChange() {
-      isPageVisible = !document.hidden
-      updateAnimationState()
-    }
+        if (!paused && !dragging) {
+          baseYaw += dt * SPIN_SPEED
+        }
 
-    function resize() {
-      const { width, height } = sceneHost.getBoundingClientRect()
-      if (!width || !height) return
-      renderer.setSize(width, height)
-      camera.aspect = width / height
-      camera.updateProjectionMatrix()
-    }
+        building.rotation.y = baseYaw + userYaw
+        building.position.y = Math.sin(now * 0.0011) * 0.05
+        shadow.rotation.z = -building.rotation.y * 0.12
+        glow.intensity = 5.5 + Math.sin(now * 0.0014) * 0.7
 
-    function animate() {
-      animationFrame = 0
-      const elapsed = (performance.now() - startedAt) / 1000
-      building.rotation.y = elapsed * turnSpeed
+        const viewIndex =
+          Math.floor(
+            ((((building.rotation.y % (Math.PI * 2)) + Math.PI * 2) %
+              (Math.PI * 2)) /
+              (Math.PI / 2) +
+              0.5) %
+              4,
+          )
+        if (viewIndex !== lastView) {
+          lastView = viewIndex
+          setVisibleView(facadeViews[viewIndex].label)
+        }
 
-      const night = Math.floor(elapsed) % 2 === 0
-      const daylight = night ? 0 : 1
-      ambientLight.intensity = 0.55 + daylight * 1.15
-      keyLight.intensity = 0.3 + daylight * 1.65
-      rimLight.intensity = 0.3 + (1 - daylight) * 1.2
-      const nightLevel = 1 - daylight
-      facadeNightLights.forEach((light, index) => {
-        const lightPulse = 0.82 + Math.max(0, Math.sin(elapsed * 2.4 + index * 1.6)) * 0.18
-        light.intensity = nightLevel * 12 * lightPulse
-      })
-      ledMaterial.emissiveIntensity =
-        0.03 + nightLevel * (2.3 + Math.max(0, Math.sin(elapsed * 3.2)) * 0.7)
-
-      const viewIndex =
-        Math.floor(
-          ((((building.rotation.y % (Math.PI * 2)) + Math.PI * 2) %
-            (Math.PI * 2)) /
-            (Math.PI / 2)) +
-            0.5,
-        ) % 4
-      if (viewIndex !== lastViewIndex) {
-        lastViewIndex = viewIndex
-        setVisibleView(facadeViews[viewIndex].label)
+        renderer.render(scene, camera)
+        if (inView && pageVisible) {
+          animationFrame = window.requestAnimationFrame(animate)
+        }
       }
 
-      const opaque = Math.floor(elapsed / 5) % 2 === 1
-      smartGlassMaterial.color.set(opaque ? 0xe4edf0 : 0x80b5c9)
-      smartGlassMaterial.emissiveIntensity = opaque ? 0.07 : 0.08
-      smartGlassMaterial.opacity = opaque ? 0.97 : 0.12
-      smartGlassMaterial.roughness = opaque ? 0.78 : 0.18
-      if (opaque !== previousOpaque) {
-        previousOpaque = opaque
-        setIsGlassOpaque(opaque)
-      }
-      if (night !== currentNight) {
-        currentNight = night
-        facadeMaterials.forEach((material, index) => {
-          material.map = night
-            ? nightTextures[index] ?? material.map
-            : daylightTextures[index] ?? material.map
-        })
-        setIsNight(night)
+      let resumeTimer: number | undefined
+
+      function onPointerDown(event: PointerEvent) {
+        if (event.button !== 0) return
+        dragging = true
+        paused = true
+        if (resumeTimer) window.clearTimeout(resumeTimer)
+        dragOriginX = event.clientX
+        dragOriginYaw = userYaw
+        sceneHost.setPointerCapture(event.pointerId)
+        sceneHost.style.cursor = 'grabbing'
       }
 
-      renderer.render(scene, camera)
-      if (isInViewport && isPageVisible) {
-        animationFrame = window.requestAnimationFrame(animate)
+      function onPointerMove(event: PointerEvent) {
+        if (!dragging) return
+        const delta =
+          (event.clientX - dragOriginX) / Math.max(sceneHost.clientWidth, 1)
+        userYaw = dragOriginYaw + delta * Math.PI * 1.25
       }
-    }
 
-    resize()
-    const resizeObserver = new ResizeObserver(resize)
-    resizeObserver.observe(sceneHost)
-    const intersectionObserver = new IntersectionObserver(
-      ([entry]) => {
-        isInViewport = entry.isIntersecting
-        updateAnimationState()
-      },
-      { rootMargin: '100px' },
-    )
-    intersectionObserver.observe(sceneHost)
-    document.addEventListener('visibilitychange', handleVisibilityChange)
+      function onPointerUp(event: PointerEvent) {
+        if (!dragging) return
+        dragging = false
+        sceneHost.releasePointerCapture(event.pointerId)
+        sceneHost.style.cursor = 'grab'
+        resumeTimer = window.setTimeout(() => {
+          // Bake user offset into base so spin continues from current angle
+          baseYaw += userYaw
+          userYaw = 0
+          paused = false
+        }, 2200)
+      }
 
-    cleanupScene = () => {
-      window.cancelAnimationFrame(animationFrame)
-      resizeObserver.disconnect()
-      intersectionObserver.disconnect()
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      textures.forEach((texture) => texture.dispose())
-      geometries.forEach((geometry) => geometry.dispose())
-      materials.forEach((material) => material.dispose())
-      renderer.dispose()
-      renderer.domElement.remove()
-    }
+      resize()
+      const resizeObserver = new ResizeObserver(resize)
+      resizeObserver.observe(sceneHost)
+      const intersectionObserver = new IntersectionObserver(
+        ([entry]) => {
+          inView = entry.isIntersecting
+          syncAnimation()
+        },
+        { rootMargin: '120px' },
+      )
+      intersectionObserver.observe(sceneHost)
+      const onVisibility = () => {
+        pageVisible = !document.hidden
+        syncAnimation()
+      }
+      document.addEventListener('visibilitychange', onVisibility)
+      sceneHost.style.cursor = 'grab'
+      sceneHost.addEventListener('pointerdown', onPointerDown)
+      sceneHost.addEventListener('pointermove', onPointerMove)
+      sceneHost.addEventListener('pointerup', onPointerUp)
+      sceneHost.addEventListener('pointercancel', onPointerUp)
+
+      cleanupScene = () => {
+        window.cancelAnimationFrame(animationFrame)
+        if (resumeTimer) window.clearTimeout(resumeTimer)
+        resizeObserver.disconnect()
+        intersectionObserver.disconnect()
+        document.removeEventListener('visibilitychange', onVisibility)
+        sceneHost.removeEventListener('pointerdown', onPointerDown)
+        sceneHost.removeEventListener('pointermove', onPointerMove)
+        sceneHost.removeEventListener('pointerup', onPointerUp)
+        sceneHost.removeEventListener('pointercancel', onPointerUp)
+        textures.forEach((t) => t.dispose())
+        geometries.forEach((g) => g.dispose())
+        materials.forEach((m) => m.dispose())
+        renderer.dispose()
+        renderer.domElement.remove()
+      }
     }).catch((error: unknown) => {
       console.error('Unable to load the 3D facade renderer.', error)
     })
@@ -353,15 +323,28 @@ export function FacadeShowcase() {
     <div
       ref={hostRef}
       role="img"
-      aria-label={`مبنى رباعي الواجهات يدور نهارًا وليلًا؛ ${visibleView}، والزجاج الذكي ${
-        isGlassOpaque ? 'معتم' : 'شفاف'
-      }`}
-      className={`relative aspect-[5/4] w-full overflow-hidden rounded-xl transition-colors duration-500 md:aspect-[4/3] md:rounded-2xl ${
-        isNight
-          ? 'bg-[radial-gradient(ellipse_at_50%_48%,_#263c59_0%,_#111c2c_58%,_#070b13_100%)]'
-          : 'bg-[radial-gradient(ellipse_at_50%_48%,_#b8cbd7_0%,_#607888_58%,_#263540_100%)]'
-      }`}
+      aria-label={`مبنى ثلاثي الأبعاد يدور ببطء؛ ${visibleView}`}
+      className={
+        fill
+          ? 'relative h-full min-h-0 w-full overflow-hidden rounded-[1.15rem]'
+          : 'relative aspect-[5/4] w-full overflow-hidden rounded-[1.35rem] md:aspect-[4/3]'
+      }
+      style={{
+        background:
+          'radial-gradient(ellipse at 50% 40%, #3d5a7d 0%, #152033 55%, #070b12 100%)',
+      }}
     >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(201,162,39,0.18),transparent_45%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-black/45 to-transparent" />
+      <div
+        className={`pointer-events-none absolute inset-x-3 z-10 flex justify-center ${
+          fill ? 'bottom-2' : 'bottom-2.5 sm:bottom-3'
+        }`}
+      >
+        <span className="max-w-full truncate rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md sm:text-xs">
+          {visibleView}
+        </span>
+      </div>
     </div>
   )
 }

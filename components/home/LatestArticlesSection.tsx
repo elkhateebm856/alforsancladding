@@ -12,14 +12,12 @@ export async function LatestArticlesSection() {
     .slice(0, 3)
 
   return (
-    <section id="latest-articles" className="bg-[#f7f5ef] py-16 md:py-24">
+    <section id="latest-articles" className="section-soft py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ScrollReveal className="mb-9 text-center">
-            <p className="mb-2 text-sm font-bold text-[#8f7016]">من المدونة</p>
-            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              مقالات ونصائح حديثة
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-600">
+        <ScrollReveal className="mb-10 text-center">
+            <p className="section-eyebrow">من المدونة</p>
+            <h2 className="section-title">مقالات ونصائح حديثة</h2>
+            <p className="section-lead mt-3">
               محتوى عملي يساعدك على اختيار حلول الواجهات المناسبة لمشروعك.
             </p>
         </ScrollReveal>
@@ -37,7 +35,7 @@ export async function LatestArticlesSection() {
                   })
               return (
                 <ScrollReveal key={article.slug} className="h-full">
-                <article className="group min-w-0 h-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(31,41,55,0.07)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(31,41,55,0.14)]">
+                <article className="surface-card group h-full min-w-0 overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_45px_-22px_rgba(15,23,42,0.28)]">
                   <Link
                     href={`/blog/${article.slug}`}
                     aria-label={`اقرأ مقال: ${article.title}`}

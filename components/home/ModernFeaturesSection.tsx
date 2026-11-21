@@ -33,7 +33,7 @@ const features = [
 
 export function ModernFeaturesSection() {
   return (
-    <section className="bg-[#f7f5ef] py-16 md:py-20">
+    <section className="section-glass relative py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -42,13 +42,9 @@ export function ModernFeaturesSection() {
           transition={{ duration: 0.5 }}
           className="mx-auto mb-10 max-w-3xl text-center md:mb-12"
         >
-          <span className="mb-3 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-sm font-bold text-[#8f7016]">
-            حلول عصرية للمباني الحديثة
-          </span>
-          <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
-            تقنيات ومميزات ترفع قيمة واجهتك
-          </h2>
-          <p className="text-base leading-8 text-slate-600 md:text-lg">
+          <p className="section-eyebrow">تقنيات الواجهات الحديثة</p>
+          <h2 className="section-title mb-3">مميزات ترفع قيمة واجهتك</h2>
+          <p className="section-lead">
             نجمع بين الزجاج الذكي وأنظمة الواجهات الحديثة وجودة التنفيذ لنقدم
             حلولًا تناسب احتياجات مشروعك.
           </p>
@@ -62,10 +58,10 @@ export function ModernFeaturesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_28px_rgba(31,41,55,0.07)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_16px_34px_rgba(31,41,55,0.12)]"
+              className="glass-panel rounded-2xl p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_45px_-22px_rgba(15,23,42,0.35)]"
             >
-              <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-[#8f7016]">
-                <Icon size={24} aria-hidden="true" />
+              <span className="mb-5 inline-flex size-12 items-center justify-center rounded-2xl bg-primary/12 text-[#8f7016] ring-1 ring-primary/15">
+                <Icon size={22} aria-hidden="true" />
               </span>
               <h3 className="mb-2 text-lg font-bold text-slate-900">{title}</h3>
               <p className="text-sm leading-7 text-slate-600">{description}</p>
@@ -74,10 +70,7 @@ export function ModernFeaturesSection() {
         </div>
 
         <div className="mt-9 text-center">
-          <Link
-            href="/services"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-bold text-white transition hover:-translate-y-0.5 hover:bg-primary/90"
-          >
+          <Link href="/services" className="btn-primary">
             استكشف خدماتنا
             <ArrowLeft size={18} aria-hidden="true" />
           </Link>

@@ -1,70 +1,108 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpLeft, Check } from 'lucide-react'
-import { FacadeShowcase } from '@/components/home/FacadeShowcase'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowLeft, ArrowUpLeft } from 'lucide-react'
+
+const slides = [
+  { src: '/facade-front.png', alt: 'واجهة أمامية بكلادينج وكيرتن وول' },
+  { src: '/facade-right.png', alt: 'واجهة جانبية بتشطيب معدني وإضاءة' },
+  { src: '/facade-back.png', alt: 'واجهة خلفية زجاجية معاصرة' },
+  { src: '/facade-left.png', alt: 'واجهة شمالية بأنظمة ألمنيوم وزجاج' },
+]
 
 export function HeroSlider() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setIndex((current) => (current + 1) % slides.length)
+    }, 5200)
+    return () => window.clearInterval(id)
+  }, [])
+
   return (
-    <section className="relative overflow-hidden bg-[#f7f5ef]">
-      <div className="pointer-events-none absolute -right-32 -top-40 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
+    <section className="relative isolate min-h-[calc(100svh-3.5rem)] overflow-hidden bg-[#0b121c] text-white md:min-h-[min(92svh,900px)]">
+      <div className="absolute inset-0">
+        <AnimatePresence mode="sync" initial={false}>
+          <motion.div
+            key={slides[index].src}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.06 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Image
+              src={slides[index].src}
+              alt={slides[index].alt}
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </motion.div>
+        </AnimatePresence>
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 md:min-h-[620px] md:grid-cols-2 md:gap-x-10 md:gap-y-4 md:py-20 lg:px-8">
-        <div className="relative z-10 text-right md:col-start-1 md:row-start-1">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white/80 px-4 py-2 text-sm font-semibold text-primary shadow-sm">
-            <span className="h-2 w-2 rounded-full bg-primary" />
-            خبرة هندسية وجودة تُرى في كل تفصيلة
-          </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070b12] via-[#070b12]/55 to-[#070b12]/25" />
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#070b12]/55" />
+        <div className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
+      </div>
 
-          <h1 className="mb-6 text-balance text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl lg:text-6xl">
-            واجهات تصنع
-            <span className="block text-primary">انطباعًا يدوم</span>
-          </h1>
-
-        </div>
-
-        <div className="relative mx-auto w-full max-w-[620px] md:col-start-2 md:row-span-2 md:row-start-1">
-          <div className="absolute -inset-4 rounded-[2rem] bg-primary/15 blur-2xl" />
-          <div className="relative rounded-[1.75rem] border border-primary/30 bg-white p-2 shadow-2xl shadow-slate-900/20 md:p-3">
-            <FacadeShowcase />
-          </div>
-        </div>
-
-        <div className="relative z-10 text-right md:col-start-1 md:row-start-2">
-          <p className="mb-6 max-w-xl text-lg leading-9 text-slate-600 sm:text-xl">
-            في الفرسان نصمم وننفذ الواجهات الزجاجية والكلادينج والكيرتن وول،
-            ونقدم الزجاج الذكي الذي يغيّر درجة شفافيته لخصوصية وراحة أكبر.
+      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-3.5rem)] w-full max-w-7xl flex-col items-center justify-end px-4 pb-8 pt-6 text-center sm:px-6 md:min-h-[min(92svh,900px)] md:justify-center md:pb-20 md:pt-16 lg:px-8">
+        <motion.div
+          className="mx-auto max-w-3xl"
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="mb-3 text-sm font-semibold tracking-[0.22em] text-primary md:mb-4 md:text-base">
+            الفرسان
           </p>
 
-          <div className="mb-7 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-slate-700 sm:text-base">
-            <span className="inline-flex items-center gap-2">
-              <Check size={18} className="text-primary" aria-hidden="true" />
-              تصميم وتنفيذ متكامل
+          <h1 className="text-balance text-[2rem] font-extrabold leading-[1.15] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.35rem]">
+            واجهات تصنع
+            <span className="mt-1 block bg-gradient-to-l from-[#c9a227] via-[#dfc056] to-[#8f7016] bg-clip-text text-transparent">
+              انطباعًا يدوم
             </span>
-            <span className="inline-flex items-center gap-2">
-              <Check size={18} className="text-primary" aria-hidden="true" />
-              حلول للمباني والمحلات
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Check size={18} className="text-primary" aria-hidden="true" />
-              عرض متكامل للنهار والليل والزجاج الذكي
-            </span>
-          </div>
+          </h1>
 
-          <div className="flex flex-wrap gap-3">
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-white/80 sm:text-base md:mt-5 md:text-lg md:leading-8">
+            تصميم وتنفيذ واجهات زجاجية وكلادينج وكيرتن وول بمعايير دقيقة تليق بمشروعك.
+          </p>
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 md:mt-8">
             <Link
               href="/services"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:bg-primary/90"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-bold text-white shadow-[0_14px_34px_-12px_rgba(201,162,39,0.65)] transition hover:-translate-y-0.5 hover:bg-primary/90 md:min-h-12 md:px-7 md:text-base"
             >
               اكتشف خدماتنا
-              <ArrowLeft size={18} aria-hidden="true" />
+              <ArrowLeft className="size-4 md:size-[18px]" aria-hidden="true" />
             </Link>
             <a
               href="tel:+201094656501"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-7 py-3 font-bold text-slate-800 transition hover:border-primary hover:text-primary"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-6 text-sm font-bold text-white backdrop-blur-md transition hover:border-white/40 hover:bg-white/15 md:min-h-12 md:px-7 md:text-base"
             >
               تواصل معنا
-              <ArrowUpLeft size={18} aria-hidden="true" />
+              <ArrowUpLeft className="size-4 md:size-[18px]" aria-hidden="true" />
             </a>
           </div>
+        </motion.div>
+
+        <div className="mt-7 flex items-center justify-center gap-2 md:mt-10" aria-hidden="true">
+          {slides.map((slide, i) => (
+            <button
+              key={slide.src}
+              type="button"
+              onClick={() => setIndex(i)}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                i === index ? 'w-8 bg-primary' : 'w-3 bg-white/35 hover:bg-white/55'
+              }`}
+              aria-label={`عرض الشريحة ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

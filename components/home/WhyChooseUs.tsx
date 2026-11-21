@@ -105,25 +105,20 @@ export function WhyChooseUs() {
   }
 
   return (
-    <section className="bg-slate-50 py-16 md:py-24">
+    <section className="section-soft py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            لماذا تختار الفرسان؟
-          </h2>
-
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+        <div className="mb-12 text-center">
+          <p className="section-eyebrow">لماذا الفرسان</p>
+          <h2 className="section-title mb-4">لماذا تختار الفرسان؟</h2>
+          <p className="section-lead">
             نجمع بين الخبرة الهندسية الطويلة والتدريب الاحترافي وأحدث تقنيات
             التنفيذ لنقدم واجهات زجاجية وكلادينج بمعايير جودة عالية تناسب مختلف
             أنواع المشاريع.
           </p>
         </div>
 
-        {/* Reasons Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -136,34 +131,27 @@ export function WhyChooseUs() {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-xl hover:border-primary/40 transition-all duration-300 hover:-translate-y-2"
+                className="surface-card rounded-2xl p-6 text-center transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_45px_-24px_rgba(15,23,42,0.3)]"
               >
-                <div className={`mb-5 inline-flex items-center justify-center w-16 h-16 ${reason.iconBackground} rounded-full`}>
-                  <Icon className={reason.iconColor} size={30} />
+                <div
+                  className={`mb-5 inline-flex size-14 items-center justify-center rounded-2xl ${reason.iconBackground}`}
+                >
+                  <Icon className={reason.iconColor} size={26} />
                 </div>
 
-                <h3 className="text-lg font-bold text-foreground mb-3">
-                  {reason.title}
-                </h3>
-
-                <p className="text-sm leading-7 text-muted-foreground">
-                  {reason.description}
-                </p>
+                <h3 className="mb-3 text-lg font-bold text-slate-900">{reason.title}</h3>
+                <p className="text-sm leading-7 text-slate-600">{reason.description}</p>
               </motion.div>
             )
           })}
         </motion.div>
 
         <div className="mt-10 text-center">
-          <Link
-            href="/contact"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 font-bold text-white transition-colors hover:bg-primary/90"
-          >
+          <Link href="/contact" className="btn-primary">
             اطلب استشارة لمشروعك
             <ArrowLeft size={16} aria-hidden="true" />
           </Link>
         </div>
-
       </div>
     </section>
   )

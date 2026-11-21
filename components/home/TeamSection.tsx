@@ -24,28 +24,23 @@ const team = [
 
 export function TeamSection() {
   return (
-    <section className="bg-slate-50 py-16 md:py-24">
+    <section className="section-light py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-12 text-center md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            فريقنا المحترف
-          </h2>
-
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="section-eyebrow">فريق العمل</p>
+          <h2 className="section-title mb-4">فريقنا المحترف</h2>
+          <p className="section-lead">
             فريق هندسي متخصص يمتلك الخبرة والكفاءة لتنفيذ جميع مشاريع الواجهات الزجاجية والكلادينج بأعلى مستويات الجودة.
           </p>
         </motion.div>
 
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           {team.map((member, idx) => (
             <motion.div
               key={idx}
@@ -53,47 +48,36 @@ export function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: idx * 0.15 }}
               viewport={{ once: true }}
-              className="group text-center"
+              className="surface-card group overflow-hidden rounded-[1.5rem] text-center"
             >
-              <div className="relative overflow-hidden rounded-xl shadow-lg">
+              <div className="relative overflow-hidden">
                 <Image
                   src={member.image}
                   alt={member.name}
                   width={500}
                   height={500}
-                  className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="h-80 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-6">
-                  <p className="text-white text-sm leading-7">
-                    {member.bio}
-                  </p>
+                <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <p className="text-sm leading-7 text-white">{member.bio}</p>
                 </div>
               </div>
 
-              <h3 className="mt-6 text-2xl font-bold text-foreground">
-                {member.name}
-              </h3>
-
-              <p className="text-primary font-semibold mt-2">
-                {member.role}
-              </p>
-
-              <div className="w-16 h-1 bg-primary mx-auto rounded-full mt-4"></div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-slate-900">{member.name}</h3>
+                <p className="mt-2 font-semibold text-[#8f7016]">{member.role}</p>
+                <div className="mx-auto mt-4 h-1 w-14 rounded-full bg-primary" />
+              </div>
             </motion.div>
           ))}
         </div>
 
         <div className="mt-10 text-center">
-          <Link
-            href="/contact"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-5 py-3 font-bold text-slate-800 transition-colors hover:border-primary hover:text-primary"
-          >
+          <Link href="/contact" className="btn-secondary">
             تواصل مع فريقنا
             <ArrowLeft size={16} aria-hidden="true" />
           </Link>
         </div>
-
       </div>
     </section>
   )

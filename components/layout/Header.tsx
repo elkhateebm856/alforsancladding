@@ -16,26 +16,29 @@ export function Header() {
 
   return (
     <motion.header
-      initial={prefersReducedMotion ? false : { opacity: 0, y: -12 }}
+      // Keep SSR/client markup identical — animate only after mount via animate prop.
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: motionDuration, ease: 'easeOut' }}
-      className="sticky top-0 z-40 w-full border-b border-primary/15 bg-white/95 shadow-[0_6px_20px_rgba(15,23,42,0.08)] backdrop-blur-md"
+      className="sticky top-0 z-40 w-full border-b border-slate-200/70 bg-white/80 shadow-[0_8px_28px_rgba(15,23,42,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/70"
     >
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[76px] items-center justify-between gap-3 sm:h-20">
-          {/* Logo */}
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+      <nav className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <div className="flex h-14 items-center justify-between gap-2 sm:h-[76px] sm:gap-3">
+          {/* Logo + badge */}
+          <div className="flex min-w-0 shrink items-center gap-1.5 sm:gap-3">
             <Link
               href="/"
               aria-label="الفرسان للواجهات الزجاجية والكلادينج، الصفحة الرئيسية"
-              className="flex items-center"
+              className="flex shrink-0 items-center"
             >
-              <div className="relative h-16 w-16 shrink-0 sm:h-[4.5rem] sm:w-[4.5rem]">
+              <div className="relative h-11 w-11 shrink-0 sm:h-16 sm:w-16 lg:h-[4.5rem] lg:w-[4.5rem]">
                 <Image
                   src="/images/logo.png"
                   alt=""
                   fill
+                  sizes="(max-width: 640px) 44px, 72px"
                   className="object-contain"
+                  priority
                 />
               </div>
             </Link>
@@ -43,18 +46,20 @@ export function Header() {
             <div
               aria-label="20 عامًا من الخبرة"
               title="20 عامًا من الخبرة"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 text-amber-900 shadow-sm sm:gap-2 sm:px-3"
+              className="glass-chip inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 text-[#8f7016] sm:gap-1.5 sm:px-3 sm:py-1.5"
             >
-              <Award size={17} aria-hidden="true" />
-              <span className="flex flex-col leading-tight">
-                <span className="text-xs font-extrabold sm:text-sm">20 سنة</span>
-                <span className="hidden text-[10px] text-amber-800 sm:block">خبرة</span>
+              <Award className="size-3.5 sm:size-4" aria-hidden="true" />
+              <span className="flex flex-col leading-none">
+                <span className="text-[11px] font-extrabold sm:text-sm">20 سنة</span>
+                <span className="mt-0.5 hidden text-[10px] font-medium text-amber-800 sm:block">
+                  خبرة
+                </span>
               </span>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden items-center gap-1 rounded-full bg-slate-50 p-1 ring-1 ring-slate-200/70 lg:flex">
+          <div className="glass-panel hidden items-center gap-1 rounded-full p-1 lg:flex">
             {NAVIGATION_ITEMS.map((item) => {
               const isActive =
                 pathname === item.href ||
@@ -77,34 +82,38 @@ export function Header() {
             })}
           </div>
 
-          {/* CTA Buttons */}
+          {/* Desktop CTA */}
           <div className="hidden items-center gap-4 lg:flex">
             <a
               href={CONTACT_TEL}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-primary/20 transition-all hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg"
             >
-              <Phone size={17} aria-hidden="true" />
+              <Phone className="size-4" aria-hidden="true" />
               اتصل بنا
             </a>
           </div>
 
           {/* Mobile Actions */}
-          <div className="flex shrink-0 items-center gap-2 lg:hidden">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2 lg:hidden">
             <a
               href={CONTACT_TEL}
               aria-label="اتصل بالفرسان"
-              className="grid size-11 place-items-center rounded-full bg-primary text-white shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="grid size-10 place-items-center rounded-full bg-primary text-white shadow-[0_8px_20px_-8px_rgba(201,162,39,0.55)] transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:size-11"
             >
-              <Phone size={19} aria-hidden="true" />
+              <Phone className="size-4 sm:size-5" aria-hidden="true" />
             </a>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="grid size-11 place-items-center rounded-full border border-border bg-white text-foreground shadow-sm transition-colors hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="glass-btn grid size-10 place-items-center rounded-full text-foreground transition-colors hover:bg-white/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:size-11"
               aria-label={isMenuOpen ? 'إغلاق القائمة' : 'فتح القائمة'}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation"
             >
-              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {isMenuOpen ? (
+                <X className="size-5" aria-hidden="true" />
+              ) : (
+                <Menu className="size-5" aria-hidden="true" />
+              )}
             </button>
           </div>
         </div>
@@ -118,10 +127,10 @@ export function Header() {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: motionDuration, ease: 'easeInOut' }}
-              className="overflow-hidden border-t border-border bg-white/95 lg:hidden"
+              className="overflow-hidden border-t border-white/40 bg-white/70 backdrop-blur-xl lg:hidden"
             >
-              <div className="py-4">
-                <nav className="space-y-2">
+              <div className="py-3">
+                <nav className="space-y-1">
                   {NAVIGATION_ITEMS.map((item) => {
                     const isActive =
                       pathname === item.href ||
@@ -132,10 +141,10 @@ export function Header() {
                         key={item.href}
                         href={item.href}
                         aria-current={isActive ? 'page' : undefined}
-                        className={`block rounded-xl px-4 py-3 font-medium transition-colors ${
+                        className={`block rounded-xl px-3.5 py-2.5 text-[15px] font-semibold transition-colors ${
                           isActive
                             ? 'bg-primary/10 text-primary'
-                            : 'text-foreground hover:bg-muted'
+                            : 'text-slate-800 hover:bg-muted'
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -145,9 +154,9 @@ export function Header() {
                   })}
                   <a
                     href={CONTACT_TEL}
-                    className="mt-3 flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-center font-bold text-white shadow-sm transition-colors hover:bg-primary/90"
+                    className="mt-2 flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-center text-sm font-bold text-white shadow-sm transition-colors hover:bg-primary/90"
                   >
-                    <Phone size={17} aria-hidden="true" />
+                    <Phone className="size-4" aria-hidden="true" />
                     اتصل بنا
                   </a>
                 </nav>

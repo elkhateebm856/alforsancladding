@@ -8,6 +8,7 @@ import {
   getPublicDocument,
   getPublicDocuments,
   getPublicDocumentsAny,
+  isPublicFirebaseConfigured,
 } from '@/lib/firebase/public-server'
 
 export type ArticleStatus = 'draft' | 'published' | 'deleted'
@@ -146,6 +147,12 @@ export async function getAdminArticles(): Promise<ArticleRecord[]> {
 async function loadPublishedArticles(): Promise<ArticleRecord[]> {
   if (isFirebaseAdminConfigured()) {
     return (await getAdminArticles())
+      .filter((article) => article.status === 'published')
+      .sort((first, second) => second.date.localeCompare(first.date))
+  }
+
+  if (!isPublicFirebaseConfigured()) {
+    return legacyArticles()
       .filter((article) => article.status === 'published')
       .sort((first, second) => second.date.localeCompare(first.date))
   }
@@ -314,6 +321,12 @@ export async function getApprovedTestimonials(): Promise<TestimonialRecord[]> {
   let testimonials: TestimonialRecord[]
   if (isFirebaseAdminConfigured()) {
     testimonials = await getAdminTestimonials()
+  } else if (!isPublicFirebaseConfigured()) {
+    testimonials = legacyTestimonials.map((item) => ({
+      ...item,
+      id: String(item.id),
+      status: 'approved' as const,
+    }))
   } else {
     try {
       const [remote, states] = await Promise.all([
