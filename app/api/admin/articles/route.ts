@@ -3,11 +3,12 @@ import { FieldValue } from 'firebase-admin/firestore'
 import { getAdminSession } from '@/lib/firebase/admin-auth'
 import { adminDb, isFirebaseAdminConfigured } from '@/lib/firebase/admin'
 import { getAdminArticles, sanitizeArticleContent } from '@/lib/content-store'
+import { isValidArticleSlug } from '@/lib/slug'
 
 export const runtime = 'nodejs'
 
 function isValidSlug(slug: string) {
-  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
+  return isValidArticleSlug(slug)
 }
 
 export async function GET(request: NextRequest) {

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { getAdminSession } from '@/lib/firebase/admin-auth'
 import { adminDb, isFirebaseAdminConfigured } from '@/lib/firebase/admin'
 import { getAdminArticles, sanitizeArticleContent } from '@/lib/content-store'
+import { isValidArticleSlug } from '@/lib/slug'
 
 export const runtime = 'nodejs'
 
@@ -12,7 +13,7 @@ interface RouteContext {
 }
 
 function isValidSlug(slug: string) {
-  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)
+  return isValidArticleSlug(slug)
 }
 
 export async function GET(_request: NextRequest, context: RouteContext) {

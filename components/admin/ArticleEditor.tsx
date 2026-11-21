@@ -8,6 +8,7 @@ import { doc, getDoc, serverTimestamp, writeBatch } from 'firebase/firestore'
 import { ArrowRight, ImagePlus, Save } from 'lucide-react'
 import { getFirebaseDb } from '@/lib/firebase/client'
 import { uploadFirestoreImage } from '@/lib/firebase/firestore-media'
+import { isValidArticleSlug, slugifyArabicTitle } from '@/lib/slug'
 
 interface ArticleDraft {
   id?: string
@@ -89,6 +90,7 @@ export function ArticleEditor({
   const [loadingExistingImages, setLoadingExistingImages] = useState(true)
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
   const contentRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -154,7 +156,13 @@ export function ArticleEditor({
   }, [])
 
   function update<K extends keyof ArticleDraft>(field: K, value: ArticleDraft[K]) {
-    setArticle((current) => ({ ...current, [field]: value }))
+    setArticle((current) => {
+      const next = { ...current, [field]: value }
+      if (field === 'title' && !slug && !slugManuallyEdited) {
+        next.slug = slugifyArabicTitle(String(value))
+      }
+      return next
+    })
     setSaved(false)
   }
 
@@ -233,8 +241,8 @@ export function ArticleEditor({
     }
 
     try {
-      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(payload.slug)) {
-        throw new Error('استخدم رابطًا مختصرًا باللغة الإنجليزية وأرقامًا وشرطات فقط.')
+      if (!isValidArticleSlug(payload.slug)) {
+        throw new Error('استخدم رابطًا مختصرًا عربيًا أو إنجليزيًا وأرقامًا وشرطات فقط.')
       }
       if (slug && payload.slug !== slug && legacySlugs.includes(payload.slug)) {
         throw new Error('يوجد مقال بهذا الرابط بالفعل. اختر رابطًا مختصرًا آخر.')
@@ -350,7 +358,17 @@ export function ArticleEditor({
           </label>
           <label className="space-y-2 text-sm font-semibold text-slate-700">
             الرابط المختصر
-            <input required dir="ltr" value={article.slug} onChange={(event) => update('slug', event.target.value)} placeholder="article-slug" className={`${fieldClass} text-left`} />
+            <input
+              required
+              dir="rtl"
+              value={article.slug}
+              onChange={(event) => {
+                setSlugManuallyEdited(true)
+                update('slug', event.target.value)
+              }}
+              placeholder="مثال: تركيب-واجهات-ألمنيوم"
+              className={`${fieldClass} text-right`}
+            />
           </label>
           <label className="space-y-2 text-sm font-semibold text-slate-700 md:col-span-2">
             الوصف المختصر
