@@ -15,7 +15,6 @@ import {
   getPublishedArticles,
   sanitizeArticleContent,
 } from '@/lib/content-store'
-import { SITE_NAME } from '@/lib/constants'
 import { slugifyArabicTitle } from '@/lib/slug'
 
 interface BlogPageProps {
@@ -45,14 +44,14 @@ export async function generateMetadata(
   const title = post.seoTitle || post.title
 
   return {
-    title,
+    title: { absolute: title },
     description: post.seoDescription || post.excerpt,
     keywords: post.keywords,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description: post.seoDescription || post.excerpt,
       url: canonicalUrl,
       type: 'article',
@@ -67,7 +66,7 @@ export async function generateMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | ${SITE_NAME}`,
+      title,
       description: post.seoDescription || post.excerpt,
       images: [imageUrl],
     },
